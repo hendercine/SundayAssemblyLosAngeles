@@ -1,0 +1,12 @@
+<component name="CopyrightManager">
+  <settings default="DefaultCopyrightText">
+    <module2copyright>
+      <element module="Project Files" copyright="DefaultCopyrightText" />
+      <element module="All" copyright="DefaultCopyrightText" />
+    </module2copyright>
+    <LanguageOptions name="XML">
+      <option name="fileLocation" value="2" />
+      <option name="prefixLines" value="false" />
+    </LanguageOptions>
+  </settings>
+</component>
