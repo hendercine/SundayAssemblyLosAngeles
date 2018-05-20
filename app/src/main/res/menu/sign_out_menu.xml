@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by James Henderson on 2018
+  ~ Copyright (c) Hendercine Productions and James Henderson 2018.
+  ~ All rights reserved.
+  ~
+  ~ Last modified 5/19/18 6:33 PM
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/sign_out_menu"
+        android:title="@string/sign_out"
+        app:showAsAction="never"/>
+
+</menu>
