@@ -1,0 +1,11 @@
+<!--
+  ~ Created by James Henderson on 2018
+  ~ Copyright (c) Hendercine Productions and James Henderson 2018.
+  ~ All rights reserved.
+  ~
+  ~ Last modified 5/21/18 1:32 PM
+  -->
+
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+</resources>

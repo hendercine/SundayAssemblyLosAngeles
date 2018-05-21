@@ -3,10 +3,10 @@
  * Copyright (c) Hendercine Productions and James Henderson 2018.
  * All rights reserved.
  *
- * Last modified 5/19/18 3:14 PM
+ * Last modified 5/21/18 1:08 PM
  */
 
-package com.hendercine.sala;
+package com.hendercine.sala.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,6 +26,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.hendercine.sala.R;
+import com.hendercine.sala.models.User;
 
 import java.util.Arrays;
 
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int RC_SIGN_IN = 1;
 
     private String mUsername;
+    private User mUser;
 
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
@@ -150,6 +153,10 @@ public class MainActivity extends AppCompatActivity {
             mChildEventListener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    mUser = dataSnapshot.getValue(User.class);
+                    if (mUser != null) {
+                        mUsername = mUser.getUsername();
+                    }
 //                    FriendlyMessage friendlyMessage = dataSnapshot.getValue(FriendlyMessage.class);
 //                    mMessageAdapter.add(friendlyMessage);
                 }

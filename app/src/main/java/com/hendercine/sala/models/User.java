@@ -3,10 +3,10 @@
  * Copyright (c) Hendercine Productions and James Henderson 2018.
  * All rights reserved.
  *
- * Last modified 5/20/18 1:58 PM
+ * Last modified 5/20/18 2:22 PM
  */
 
-package com.hendercine.sala;
+package com.hendercine.sala.models;
 
 import org.parceler.Parcel;
 
