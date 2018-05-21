@@ -24,4 +24,15 @@
     <string name="action_settings">Settings</string>
     <string name="dummy_user_name">User Name</string>
     <string name="nav_profile_picture_description">User\'s profile picture.</string>
+    <string name="about_nav_title">About</string>
+    <string name="program_nav_title">Program</string>
+    <string name="lyrics_nav_title">Lyrics</string>
+    <string name="future_assemblies_nav_title">Future Assemblies</string>
+    <string name="help_often_nav_title">Help Often</string>
+    <string name="live_better_nav_title">Live Better</string>
+    <string name="salamander_chat_nav_title">Salamander Chat</string>
+    <string name="instagram_nav_title">Instagram</string>
+    <string name="facebook_nav_title">Facebook</string>
+    <string name="twitter_nav_title">Twitter</string>
+    <string name="sala_on_the_web_nav_title">Sala on the Web</string>
 </resources>
