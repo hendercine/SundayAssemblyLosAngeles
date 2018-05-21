@@ -55,6 +55,10 @@
             android:id="@+id/site_link_nav"
             android:icon="@mipmap/ic_launcher"
             android:title="@string/sala_on_the_web_nav_title"/>
+        <item
+            android:id="@+id/logout_nav"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/logout_nav_title"/>
     </group>
 
 </menu>

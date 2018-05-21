@@ -11,6 +11,10 @@ package com.hendercine.sala.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,6 +35,7 @@ import com.hendercine.sala.models.User;
 
 import java.util.Arrays;
 
+import butterknife.BindView;
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
@@ -48,13 +53,46 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
+    private ActionBarDrawerToggle mToggle;
+    private ActionBar mActionBar;
+
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawer;
+    @BindView(R.id.nav_view)
+    NavigationView mNavView;
+    @BindView(R.id.toolbar_main)
+    android.support.v7.widget.Toolbar mToolbar;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mUsername = ANONYMOUS;
+        setSupportActionBar(mToolbar);
+        mActionBar = getSupportActionBar();
+        if (mActionBar != null) {
+            mActionBar.setDisplayHomeAsUpEnabled(true);
+            mActionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        }
 
+        // Implement the Nav Drawer
+        mNavView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                menuItem.setChecked(true);
+                mDrawer.closeDrawers();
+
+                // TODO: Add code here to update the UI based on the item selected
+                // For example, swap UI fragments here
+
+                return true;
+            }
+        });
+
+
+        // Implement Firebase Auth
+        mUsername = ANONYMOUS;
         // Initialize Firebase components
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -160,14 +198,22 @@ public class MainActivity extends AppCompatActivity {
 //                    FriendlyMessage friendlyMessage = dataSnapshot.getValue(FriendlyMessage.class);
 //                    mMessageAdapter.add(friendlyMessage);
                 }
+
                 @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                }
+
                 @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+                }
+
                 @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                }
+
                 @Override
-                public void onCancelled(DatabaseError databaseError) {}
+                public void onCancelled(DatabaseError databaseError) {
+                }
             };
             mDatabaseReference.addChildEventListener(mChildEventListener);
         }
