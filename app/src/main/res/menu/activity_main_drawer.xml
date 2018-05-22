@@ -13,8 +13,7 @@
         <item
             android:id="@+id/about_nav"
             android:icon="@android:drawable/ic_menu_info_details"
-            android:title="@string/about_nav_title"
-            app:showAsAction="ifRoom|always|collapseActionView"/>
+            android:title="@string/about_nav_title"/>
         <item
             android:id="@+id/program_nav"
             android:icon="@mipmap/ic_launcher"

@@ -8,7 +8,6 @@
 
 package com.hendercine.sala.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -38,6 +37,7 @@ import com.hendercine.sala.models.User;
 import java.util.Arrays;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
@@ -64,14 +64,13 @@ public class MainActivity extends AppCompatActivity {
     NavigationView mNavView;
     @BindView(R.id.toolbar_main)
     android.support.v7.widget.Toolbar mToolbar;
-    @BindView(R.id.about_nav)
-    MenuItem mAboutNavItem;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         setSupportActionBar(mToolbar);
         mActionBar = getSupportActionBar();
@@ -136,8 +135,12 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+//        authorizeUser();
 
 
+    }
+
+    private void authorizeUser() {
         // Implement Firebase Auth
         mUsername = ANONYMOUS;
         // Initialize Firebase components
@@ -170,27 +173,28 @@ public class MainActivity extends AppCompatActivity {
             }
         };
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_IN) {
-            if (resultCode == RESULT_OK) {
-                Toast.makeText(this, "Signed in!", Toast.LENGTH_SHORT).show();
-            } else if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(this, "Sign in canceled", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        }
-    }
+// TODO: Uncomment and implement for Firebase Auth
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == RC_SIGN_IN) {
+//            if (resultCode == RESULT_OK) {
+//                Toast.makeText(this, "Signed in!", Toast.LENGTH_SHORT).show();
+//            } else if (resultCode == RESULT_CANCELED) {
+//                Toast.makeText(this, "Sign in canceled", Toast.LENGTH_SHORT).show();
+//                finish();
+//            }
+//        }
+//    }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (mAuthStateListener != null) {
-            mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
-        }
-        detachDatabaseReadListener();
+// TODO: Uncomment and implement for Firebase Auth
+//        if (mAuthStateListener != null) {
+//            mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
+//        }
+//        detachDatabaseReadListener();
         // TODO: Clear the adapter
 //        mMessageAdapter.clear();
     }
@@ -198,7 +202,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+// TODO: Uncomment and implement for Firebase Auth
+//        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
     }
 
     @Override
@@ -232,8 +237,6 @@ public class MainActivity extends AppCompatActivity {
     private void onSignedOutCleanup() {
         mUsername = ANONYMOUS;
 //        mMessageAdapter.clear();
-
-
     }
 
     private void attachDatabaseReadListener() {
