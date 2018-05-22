@@ -124,10 +124,10 @@ public class MainActivity extends AppCompatActivity implements AboutSalaFragment
                 Fragment fragment = null;
                 Bundle bundle = new Bundle();
                 if (id == R.id.about_nav) {
-//                    fragment = new AboutSalaFragment();
-                    Toast.makeText(getApplicationContext(),
-                            "This will display AboutSALAFragment",
-                            Toast.LENGTH_SHORT).show();
+                    fragment = new AboutSalaFragment();
+//                    Toast.makeText(getApplicationContext(),
+//                            "This will display AboutSALAFragment",
+//                            Toast.LENGTH_SHORT).show();
                 } else if (id == R.id.program_nav) {
 //                    fragment = new EventProgramFragment();
                     Toast.makeText(getApplicationContext(),
