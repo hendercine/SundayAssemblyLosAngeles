@@ -9,7 +9,7 @@
 
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:android="http://schemas.android.com/apk/res/android">
-    <group>
+    <group android:checkableBehavior="single">
         <item
             android:id="@+id/about_nav"
             android:icon="@android:drawable/ic_menu_info_details"
@@ -24,7 +24,11 @@
             android:icon="@mipmap/ic_launcher"
             android:title="@string/lyrics_nav_title"/>
         <item
-            android:id="speaker_nav"
+            android:id="@+id/speaker_nav"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/speaker_bio_nav_title"/>
+        <item
+            android:id="@+id/future_assemblies_nav"
             android:icon="@mipmap/ic_launcher"
             android:title="@string/future_assemblies_nav_title"/>
         <item
@@ -35,30 +39,38 @@
             android:id="@+id/live_better_nav"
             android:icon="@mipmap/ic_launcher"
             android:title="@string/live_better_nav_title"/>
-        <item
-            android:id="chat_nav"
-            android:icon="@mipmap/ic_launcher"
-            android:title="@string/salamander_chat_nav_title"/>
-        <item
-            android:id="@+id/insta_link_nav"
-            android:icon="@mipmap/ic_launcher"
-            android:title="@string/instagram_nav_title"/>
-        <item
-            android:id="@+id/facebook_link_nav"
-            android:icon="@drawable/com_facebook_favicon_blue"
-            android:title="@string/facebook_nav_title"/>
-        <item
-            android:id="@+id/twitter_link_nav"
-            android:icon="@drawable/tw__ic_logo_default"
-            android:title="@string/twitter_nav_title"/>
-        <item
-            android:id="@+id/site_link_nav"
-            android:icon="@mipmap/ic_launcher"
-            android:title="@string/sala_on_the_web_nav_title"/>
-        <item
-            android:id="@+id/logout_nav"
-            android:icon="@mipmap/ic_launcher"
-            android:title="@string/logout_nav_title"/>
     </group>
+
+    <item android:title="@string/social_nav_title">
+        <menu>
+            <item
+                android:id="@+id/chat_nav"
+                android:icon="@mipmap/ic_launcher"
+                android:title="@string/salamander_chat_nav_title"/>
+            <item
+                android:id="@+id/insta_link_nav"
+                android:icon="@mipmap/ic_launcher"
+                android:title="@string/instagram_nav_title"/>
+            <item
+                android:id="@+id/facebook_link_nav"
+                android:icon="@drawable/com_facebook_favicon_blue"
+                android:title="@string/facebook_nav_title"/>
+            <item
+                android:id="@+id/twitter_link_nav"
+                android:icon="@drawable/tw__ic_logo_default"
+                android:title="@string/twitter_nav_title"/>
+            <item
+                android:id="@+id/site_link_nav"
+                android:icon="@mipmap/ic_launcher"
+                android:title="@string/sala_on_the_web_nav_title"/>
+        </menu>
+
+    </item>
+
+    <item
+        android:id="@+id/logout_nav"
+        android:icon="@mipmap/ic_launcher"
+        android:title="@string/logout_nav_title"/>
+
 
 </menu>

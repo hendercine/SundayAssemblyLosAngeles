@@ -12,6 +12,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -62,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
     NavigationView mNavView;
     @BindView(R.id.toolbar_main)
     android.support.v7.widget.Toolbar mToolbar;
+    @BindView(R.id.about_nav)
+    MenuItem mAboutNavItem;
 
 
     @Override
@@ -76,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
             mActionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         }
 
-        // Implement the Nav Drawer
+        // Handle navigation drawer click events
         mNavView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -85,7 +89,50 @@ public class MainActivity extends AppCompatActivity {
 
                 // TODO: Add code here to update the UI based on the item selected
                 // For example, swap UI fragments here
-
+                int id = menuItem.getItemId();
+                Fragment fragment = null;
+                Bundle bundle = new Bundle();
+                if (id == R.id.about_nav) {
+                    fragment = new AboutSalaFragment();
+                } else if (id == R.id.program_nav) {
+                    fragment = new EventProgramFragment();
+                } else if (id == R.id.lyrics_nav) {
+                    fragment = new LyricsFragment();
+                } else if (id == R.id.speaker_nav) {
+                    fragment = new SpeakerFragment();
+                } else if (id == R.id.future_assemblies_nav) {
+                    fragment = new FutureAssembliesFragment();
+                } else if (id == R.id.help_often_nav) {
+                    fragment = new HelpOftenFragment();
+                } else if (id == R.id.live_better_nav) {
+                    fragment = new LiveBetterFragment();
+                } else if (id == R.id.chat_nav) {
+                    fragment = new ChatFragment();
+                    // TODO: Create intents for Instagram, Facebook and Twitter
+                } else if (id == R.id.insta_link_nav) {
+                    Toast.makeText(getApplicationContext(),
+                            "This will open Instagram",
+                            Toast.LENGTH_SHORT).show();
+                } else if (id == R.id.facebook_link_nav) {
+                    Toast.makeText(getApplicationContext(),
+                            "This will open Facebook",
+                            Toast.LENGTH_SHORT).show();
+                } else if (id == R.id.twitter_link_nav) {
+                    Toast.makeText(getApplicationContext(),
+                            "This will open Twitter",
+                            Toast.LENGTH_SHORT).show();
+                } else if (id == R.id.site_link_nav) {
+                    bundle.putString("url", "https://www.sundayassemblyla.org");
+                    fragment = new WebsiteFragment();
+                    fragment.setArguments(bundle);
+                }
+                if (fragment != null) {
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, fragment)
+                            .commit();
+                }
+                mDrawer.closeDrawer(GravityCompat.START, true);
                 return true;
             }
         });
@@ -164,10 +211,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.sign_out_menu:
-                //sign out
-                AuthUI.getInstance().signOut(this);
+            case R.id.home:
+                mDrawer.openDrawer(GravityCompat.START);
                 return true;
+//            case R.id.logout_menu:
+//                //sign out
+//                AuthUI.getInstance().signOut(this);
+//                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

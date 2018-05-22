@@ -8,7 +8,7 @@
 
 <resources>
     <string name="app_name">Sunday Assembly Los Angeles</string>
-    <string name="sign_out">Sign Out</string>
+    <string name="logout">Logout</string>
     <!-- Facebook and Twitter Keys-->
     <!-- sterces.xml will have to be decrypted to use and re-encrypted before
      commiting to git -->
@@ -27,6 +27,7 @@
     <string name="about_nav_title">About</string>
     <string name="program_nav_title">Program</string>
     <string name="lyrics_nav_title">Lyrics</string>
+    <string name="speaker_bio_nav_title">Speaker Bio</string>
     <string name="future_assemblies_nav_title">Future Assemblies</string>
     <string name="help_often_nav_title">Help Often</string>
     <string name="live_better_nav_title">Live Better</string>
@@ -38,4 +39,5 @@
     <string name="logout_nav_title">Logout</string>
     <string name="navigation_drawer_open">Open the Navigation Drawer</string>
     <string name="navigation_drawer_close">Close the Navigation Drawer</string>
+    <string name="social_nav_title">Social</string>
 </resources>
