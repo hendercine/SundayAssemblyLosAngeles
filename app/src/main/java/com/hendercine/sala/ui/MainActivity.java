@@ -8,10 +8,12 @@
 
 package com.hendercine.sala.ui;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -21,6 +23,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
@@ -41,7 +44,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AboutSalaFragment.OnFragmentSelectedListener{
 
     public static final String ANONYMOUS = "anonymous";
     public static final int DEFAULT_MSG_LENGTH_LIMIT = 1000;
@@ -59,10 +62,15 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mToggle;
     private ActionBar mActionBar;
 
+    private FragmentManager mFragmentManager;
+    private AboutSalaFragment mAboutSalaFragment;
+
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawer;
     @BindView(R.id.nav_view)
     NavigationView mNavView;
+    @BindView(R.id.content_frame)
+    FrameLayout mContentFrame;
 //    @BindView(R.id.toolbar_main)
 //    android.support.v7.widget.Toolbar mToolbar;
 
@@ -81,6 +89,13 @@ public class MainActivity extends AppCompatActivity {
             mActionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         }
 
+        mFragmentManager = getSupportFragmentManager();
+        mAboutSalaFragment = new AboutSalaFragment();
+        mFragmentManager
+                .beginTransaction()
+                .add(mContentFrame.getId(), mAboutSalaFragment)
+                .commit();
+
         mToggle = new ActionBarDrawerToggle(
                 this,
                 mDrawer,
@@ -88,6 +103,14 @@ public class MainActivity extends AppCompatActivity {
                 R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close);
 
+
+        activateDrawerItems();
+
+//        authorizeUser();
+
+    }
+
+    private void activateDrawerItems() {
         // Handle navigation drawer click events
         mNavView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -101,21 +124,45 @@ public class MainActivity extends AppCompatActivity {
                 Fragment fragment = null;
                 Bundle bundle = new Bundle();
                 if (id == R.id.about_nav) {
-                    fragment = new AboutSalaFragment();
+//                    fragment = new AboutSalaFragment();
+                    Toast.makeText(getApplicationContext(),
+                            "This will display AboutSALAFragment",
+                            Toast.LENGTH_SHORT).show();
                 } else if (id == R.id.program_nav) {
-                    fragment = new EventProgramFragment();
+//                    fragment = new EventProgramFragment();
+                    Toast.makeText(getApplicationContext(),
+                            "This will display EventProgramFragment",
+                            Toast.LENGTH_SHORT).show();
                 } else if (id == R.id.lyrics_nav) {
-                    fragment = new LyricsFragment();
+//                    fragment = new LyricsFragment();
+                    Toast.makeText(getApplicationContext(),
+                            "This will display LyricsFragment",
+                            Toast.LENGTH_SHORT).show();
                 } else if (id == R.id.speaker_nav) {
-                    fragment = new SpeakerFragment();
+//                    fragment = new SpeakerFragment();
+                    Toast.makeText(getApplicationContext(),
+                            "This will display SpeakerFragment",
+                            Toast.LENGTH_SHORT).show();
                 } else if (id == R.id.future_assemblies_nav) {
-                    fragment = new FutureAssembliesFragment();
+//                    fragment = new FutureAssembliesFragment();
+                    Toast.makeText(getApplicationContext(),
+                            "This will display FutureAssembliesFragment",
+                            Toast.LENGTH_SHORT).show();
                 } else if (id == R.id.help_often_nav) {
-                    fragment = new HelpOftenFragment();
+//                    fragment = new HelpOftenFragment();
+                    Toast.makeText(getApplicationContext(),
+                            "This will display HelpOftenFragment",
+                            Toast.LENGTH_SHORT).show();
                 } else if (id == R.id.live_better_nav) {
-                    fragment = new LiveBetterFragment();
+//                    fragment = new LiveBetterFragment();
+                    Toast.makeText(getApplicationContext(),
+                            "This will display LiveBetterFragment",
+                            Toast.LENGTH_SHORT).show();
                 } else if (id == R.id.chat_nav) {
-                    fragment = new ChatFragment();
+//                    fragment = new ChatFragment();
+                    Toast.makeText(getApplicationContext(),
+                            "This will display ChatFragment",
+                            Toast.LENGTH_SHORT).show();
                     // TODO: Create intents for Instagram, Facebook and Twitter
                 } else if (id == R.id.insta_link_nav) {
                     Toast.makeText(getApplicationContext(),
@@ -130,23 +177,25 @@ public class MainActivity extends AppCompatActivity {
                             "This will open Twitter",
                             Toast.LENGTH_SHORT).show();
                 } else if (id == R.id.site_link_nav) {
-                    bundle.putString("url", "https://www.sundayassemblyla.org");
-                    fragment = new WebsiteFragment();
-                    fragment.setArguments(bundle);
+//                    bundle.putString("url", "https://www.sundayassemblyla.org");
+//                    fragment = new WebsiteFragment();
+//                    fragment.setArguments(bundle);
+                    Toast.makeText(getApplicationContext(),
+                            "This will display WebsiteFragment",
+                            Toast.LENGTH_SHORT).show();
                 }
                 if (fragment != null) {
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.content_frame, fragment)
+//                            .setTransition(R.anim.fade)
+                            .addToBackStack(null)
                             .commit();
                 }
                 mDrawer.closeDrawer(GravityCompat.START, true);
                 return true;
             }
         });
-//        authorizeUser();
-
-
     }
 
     private void authorizeUser() {
@@ -227,10 +276,8 @@ public class MainActivity extends AppCompatActivity {
         if (mToggle.onOptionsItemSelected(item)) {
             return true;
         }
-//        switch (item.getItemId()) {
-//            case R.id.home:
-//                mDrawer.openDrawer(GravityCompat.START);
-//                return true;
+// TODO: Uncomment for Firebase Auth
+//  switch (item.getItemId()) {
 //            case R.id.logout_menu:
 //                //sign out
 //                AuthUI.getInstance().signOut(this);
@@ -316,11 +363,12 @@ public class MainActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
                 // Failed to read value
                 Timber.w("Failed to read value.", databaseError.toException());
-
             }
         });
-
     }
 
+    @Override
+    public void onFragmentSelected(Uri uri) {
 
+    }
 }

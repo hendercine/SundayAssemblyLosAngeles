@@ -22,7 +22,7 @@ import com.hendercine.sala.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link AboutSalaFragment.OnFragmentInteractionListener} interface
+ * {@link OnFragmentSelectedListener} interface
  * to handle interaction events.
  * Use the {@link AboutSalaFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -30,14 +30,13 @@ import com.hendercine.sala.R;
 public class AboutSalaFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_ITEM_ID = "ARG_ITEM_ID";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
+    private OnFragmentSelectedListener mListener;
 
     public AboutSalaFragment() {
         // Required empty public constructor
@@ -55,7 +54,7 @@ public class AboutSalaFragment extends Fragment {
     public static AboutSalaFragment newInstance(String param1, String param2) {
         AboutSalaFragment fragment = new AboutSalaFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_ITEM_ID, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
@@ -65,7 +64,7 @@ public class AboutSalaFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam1 = getArguments().getString(ARG_ITEM_ID);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
@@ -80,18 +79,18 @@ public class AboutSalaFragment extends Fragment {
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onFragmentSelected(uri);
         }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnFragmentSelectedListener) {
+            mListener = (OnFragmentSelectedListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnFragmentSelectedListener");
         }
     }
 
@@ -111,8 +110,8 @@ public class AboutSalaFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface OnFragmentSelectedListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentSelected(Uri uri);
     }
 }
