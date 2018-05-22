@@ -16,8 +16,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.hendercine.sala.R;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 
 /**
@@ -29,6 +35,10 @@ import com.hendercine.sala.R;
 public class AboutSalaFragment extends Fragment {
 
     private OnFragmentSelectedListener mListener;
+    private Unbinder unbinder;
+
+    @BindView(R.id.about_collapsing_toolbar_backdrop_img)
+    ImageView aboutSalaBanner;
 
     public AboutSalaFragment() {
         // Required empty public constructor
@@ -44,7 +54,15 @@ public class AboutSalaFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_about_sala, container, false);
+        View view = inflater.inflate(R.layout.fragment_about_sala, container,
+                false);
+        unbinder = ButterKnife.bind(this, view);
+
+        Glide.with(this)
+                .load(getString(R.string.about_banner_url))
+                .into(aboutSalaBanner);
+
+        return view;
     }
 
     @Override
@@ -62,6 +80,12 @@ public class AboutSalaFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     /**

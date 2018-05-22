@@ -30,10 +30,10 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
+                android:id="@+id/about_collapsing_toolbar_backdrop_img"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/app_bar_height"
                 android:fitsSystemWindows="true"
-                android:src="https://d3n8a8pro7vhmx.cloudfront.net/sundayassemblyla/pages/6/features/original/banner.jpg?1400796015"
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.7"
@@ -52,10 +52,11 @@
                 android:text="@string/about_sala_title"
                 app:layout_collapseMode="pin"/>
 
+            <!-- TODO: Resolve actionBarSize error -->
             <android.support.v7.widget.Toolbar
                 android:id="@+id/about_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?android:attr/actionBarsize"
+                android:layout_height="56dp"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
