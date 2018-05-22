@@ -8,7 +8,6 @@
 
 package com.hendercine.sala.ui;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -54,7 +53,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity implements AboutSalaFragment.OnFragmentSelectedListener{
+public class MainActivity extends AppCompatActivity {
 
     public static final String ANONYMOUS = "anonymous";
     public static final int DEFAULT_MSG_LENGTH_LIMIT = 1000;
@@ -155,9 +154,6 @@ public class MainActivity extends AppCompatActivity implements AboutSalaFragment
                     fragment = new AboutSalaFragment();
                     mAppBarTitle = mAboutTitle;
                     mAppBarImageUrl = mAboutBannerUrl;
-//                    Toast.makeText(getApplicationContext(),
-//                            "This will display AboutSALAFragment",
-//                            Toast.LENGTH_SHORT).show();
                 } else if (id == R.id.program_nav) {
 //                    fragment = new EventProgramFragment();
                     Toast.makeText(getApplicationContext(),
@@ -434,8 +430,8 @@ public class MainActivity extends AppCompatActivity implements AboutSalaFragment
                 .into(collapsingToolbarBackDrop);
     }
 
-    @Override
-    public void onFragmentSelected(Uri uri) {
-
-    }
+//    @Override
+//    public void onFragmentSelected(Uri uri) {
+//
+//    }
 }
