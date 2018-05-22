@@ -11,6 +11,9 @@ package com.hendercine.sala.ui;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,11 +23,15 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Fade;
+import android.transition.TransitionManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -42,6 +49,7 @@ import com.hendercine.sala.models.User;
 
 import java.util.Arrays;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
@@ -54,6 +62,9 @@ public class MainActivity extends AppCompatActivity implements AboutSalaFragment
 
     private String mUsername;
     private User mUser;
+
+    private String mAppBarTitle;
+    private String mAppBarImageUrl;
 
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
@@ -75,9 +86,19 @@ public class MainActivity extends AppCompatActivity implements AboutSalaFragment
     FrameLayout mContentFrame;
     @BindView(R.id.collapsing_toolbar_backdrop_img)
     ImageView collapsingToolbarBackDrop;
-//    @BindView(R.id.toolbar_main)
-//    android.support.v7.widget.Toolbar mToolbar;
-
+    @BindView(R.id.app_bar_title)
+    TextView mTitleView;
+    @Nullable
+    @BindView(R.id.toolbar_main)
+    Toolbar mToolbar;
+    @Nullable
+    @BindView(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout mCollapsingToolbarLayout;
+    @Nullable
+    @BindView(R.id.app_bar)
+    AppBarLayout mAppBarLayout;
+    @BindString(R.string.about_banner_url)
+    String mAboutBannerUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,8 +106,7 @@ public class MainActivity extends AppCompatActivity implements AboutSalaFragment
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        Toolbar toolbar = findViewById(R.id.toolbar_main);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(mToolbar);
         mActionBar = getSupportActionBar();
         if (mActionBar != null) {
             mActionBar.setDisplayHomeAsUpEnabled(true);
@@ -99,18 +119,17 @@ public class MainActivity extends AppCompatActivity implements AboutSalaFragment
                 .beginTransaction()
                 .add(mContentFrame.getId(), mAboutSalaFragment)
                 .commit();
-        Glide.with(this)
-                .load(getString(R.string.about_banner_url))
-                .into(collapsingToolbarBackDrop);
+        mAppBarImageUrl = mAboutBannerUrl;
 
         mToggle = new ActionBarDrawerToggle(
                 this,
                 mDrawer,
-                toolbar,
+                mToolbar,
                 R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close);
 
         activateDrawerItems();
+        setCollapsingToolbarBehavior();
 
 //        authorizeUser();
 
@@ -131,6 +150,8 @@ public class MainActivity extends AppCompatActivity implements AboutSalaFragment
                 Bundle bundle = new Bundle();
                 if (id == R.id.about_nav) {
                     fragment = new AboutSalaFragment();
+                    mAppBarTitle = getString(R.string.about_sala_title);
+                    mAppBarImageUrl = mAboutBannerUrl;
 //                    Toast.makeText(getApplicationContext(),
 //                            "This will display AboutSALAFragment",
 //                            Toast.LENGTH_SHORT).show();
@@ -371,6 +392,42 @@ public class MainActivity extends AppCompatActivity implements AboutSalaFragment
                 Timber.w("Failed to read value.", databaseError.toException());
             }
         });
+    }
+
+    private void setCollapsingToolbarBehavior() {
+        // Handle transition from expanded to collapsed and in between
+        if (mCollapsingToolbarLayout != null && mToolbar != null &&
+                mAppBarLayout != null) {
+            mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+                @Override
+                public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                    Fade fade = new Fade();
+                    if (Math.abs(verticalOffset) == mAppBarLayout.getTotalScrollRange()) {
+                        // Collapsed
+                        TransitionManager.beginDelayedTransition
+                                (mAppBarLayout, fade);
+                        mCollapsingToolbarLayout.setTitleEnabled(true);
+                        mCollapsingToolbarLayout.setTitle(mAppBarTitle);
+                        mTitleView.setVisibility(View.GONE);
+                    } else if (verticalOffset == 0) {
+                        // Expanded
+                        mCollapsingToolbarLayout.setTitleEnabled(false);
+                        mToolbar.setSubtitle(null);
+                        mTitleView.setText(mAppBarTitle);
+                        mTitleView.setVisibility(View.VISIBLE);
+                    } else {
+                        // Mid-scroll
+                        mCollapsingToolbarLayout.setTitleEnabled(true);
+                        mCollapsingToolbarLayout.setTitle(mAppBarTitle);
+                        mTitleView.setVisibility(View.GONE);
+                    }
+                }
+            });
+        }
+        // Load Backdrop Image
+        Glide.with(this)
+                .load(mAppBarImageUrl)
+                .into(collapsingToolbarBackDrop);
     }
 
     @Override
