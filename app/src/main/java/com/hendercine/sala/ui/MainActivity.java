@@ -17,6 +17,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -62,8 +63,8 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout mDrawer;
     @BindView(R.id.nav_view)
     NavigationView mNavView;
-    @BindView(R.id.toolbar_main)
-    android.support.v7.widget.Toolbar mToolbar;
+//    @BindView(R.id.toolbar_main)
+//    android.support.v7.widget.Toolbar mToolbar;
 
 
     @Override
@@ -72,19 +73,27 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        setSupportActionBar(mToolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar_main);
+        setSupportActionBar(toolbar);
         mActionBar = getSupportActionBar();
         if (mActionBar != null) {
             mActionBar.setDisplayHomeAsUpEnabled(true);
             mActionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         }
 
+        mToggle = new ActionBarDrawerToggle(
+                this,
+                mDrawer,
+                toolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
+
         // Handle navigation drawer click events
         mNavView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 menuItem.setChecked(true);
-                mDrawer.closeDrawers();
+                mDrawer.closeDrawer(GravityCompat.START, true);
 
                 // TODO: Add code here to update the UI based on the item selected
                 // For example, swap UI fragments here
@@ -215,17 +224,21 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.home:
-                mDrawer.openDrawer(GravityCompat.START);
-                return true;
+        if (mToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+//        switch (item.getItemId()) {
+//            case R.id.home:
+//                mDrawer.openDrawer(GravityCompat.START);
+//                return true;
 //            case R.id.logout_menu:
 //                //sign out
 //                AuthUI.getInstance().signOut(this);
 //                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+//            default:
+//        }
+//        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void onSignedInInitialize(String username) {
@@ -308,4 +321,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+
 }
