@@ -99,6 +99,8 @@ public class MainActivity extends AppCompatActivity implements AboutSalaFragment
     AppBarLayout mAppBarLayout;
     @BindString(R.string.about_banner_url)
     String mAboutBannerUrl;
+    @BindString(R.string.about_sala_title)
+    String mAboutTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements AboutSalaFragment
                 .beginTransaction()
                 .add(mContentFrame.getId(), mAboutSalaFragment)
                 .commit();
+        mAppBarTitle = mAboutTitle;
         mAppBarImageUrl = mAboutBannerUrl;
 
         mToggle = new ActionBarDrawerToggle(
@@ -150,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements AboutSalaFragment
                 Bundle bundle = new Bundle();
                 if (id == R.id.about_nav) {
                     fragment = new AboutSalaFragment();
-                    mAppBarTitle = getString(R.string.about_sala_title);
+                    mAppBarTitle = mAboutTitle;
                     mAppBarImageUrl = mAboutBannerUrl;
 //                    Toast.makeText(getApplicationContext(),
 //                            "This will display AboutSALAFragment",
@@ -406,13 +409,14 @@ public class MainActivity extends AppCompatActivity implements AboutSalaFragment
                         // Collapsed
                         TransitionManager.beginDelayedTransition
                                 (mAppBarLayout, fade);
+                        mToolbar.setVisibility(View.VISIBLE);
                         mCollapsingToolbarLayout.setTitleEnabled(true);
                         mCollapsingToolbarLayout.setTitle(mAppBarTitle);
                         mTitleView.setVisibility(View.GONE);
                     } else if (verticalOffset == 0) {
                         // Expanded
                         mCollapsingToolbarLayout.setTitleEnabled(false);
-                        mToolbar.setSubtitle(null);
+                        mToolbar.setVisibility(View.GONE);
                         mTitleView.setText(mAppBarTitle);
                         mTitleView.setVisibility(View.VISIBLE);
                     } else {
