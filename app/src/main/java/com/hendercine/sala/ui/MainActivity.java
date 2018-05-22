@@ -24,8 +24,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -71,6 +73,8 @@ public class MainActivity extends AppCompatActivity implements AboutSalaFragment
     NavigationView mNavView;
     @BindView(R.id.content_frame)
     FrameLayout mContentFrame;
+    @BindView(R.id.collapsing_toolbar_backdrop_img)
+    ImageView collapsingToolbarBackDrop;
 //    @BindView(R.id.toolbar_main)
 //    android.support.v7.widget.Toolbar mToolbar;
 
@@ -95,6 +99,9 @@ public class MainActivity extends AppCompatActivity implements AboutSalaFragment
                 .beginTransaction()
                 .add(mContentFrame.getId(), mAboutSalaFragment)
                 .commit();
+        Glide.with(this)
+                .load(getString(R.string.about_banner_url))
+                .into(collapsingToolbarBackDrop);
 
         mToggle = new ActionBarDrawerToggle(
                 this,
@@ -102,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements AboutSalaFragment
                 toolbar,
                 R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close);
-
 
         activateDrawerItems();
 
