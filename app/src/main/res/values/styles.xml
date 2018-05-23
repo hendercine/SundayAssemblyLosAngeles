@@ -3,9 +3,11 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/grass_dark</item>
+        <item name="colorPrimaryDark">@color/peacock_dark</item>
+        <item name="colorAccent">@color/banana_medium</item>
+        <item name="android:textColor">@color/white</item>
+
     </style>
 
     <style name="AppTheme.NoActionBar">
