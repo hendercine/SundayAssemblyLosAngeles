@@ -15,7 +15,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.SpeakerFragment">
 
-
     <TextView
         android:id="@+id/speaker_name_title"
         android:layout_width="wrap_content"
@@ -27,11 +26,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="James Henderson"/>
+        tools:text="Pippa Evans"/>
 
     <ImageView
         android:id="@+id/speaker_photo"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -39,10 +38,12 @@
         android:adjustViewBounds="true"
         android:minHeight="120dp"
         android:minWidth="60dp"
-        android:src="@mipmap/ic_launcher"
+        android:src="/Users/hendercine/version_control/sala/app/src/main/assets/Pippa-Evans.jpg"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/speaker_name_title"/>
+        app:layout_constraintTop_toBottomOf="@+id/speaker_name_title"
+        tools:ignore="ContentDescription"/>
 
     <TextView
         android:id="@+id/speaker_bio"
@@ -62,5 +63,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/speaker_photo"
         tools:text="@tools:sample/lorem/random"/>
-
 </android.support.constraint.ConstraintLayout>

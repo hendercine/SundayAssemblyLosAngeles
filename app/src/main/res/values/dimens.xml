@@ -10,4 +10,6 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="app_bar_elevation">4dp</dimen>
     <dimen name="app_bar_height">320dp</dimen>
+    <dimen name="default_padding">16dp</dimen>
+    <dimen name="program_list_item_padding">8dp</dimen>
 </resources>

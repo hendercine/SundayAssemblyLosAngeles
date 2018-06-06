@@ -22,15 +22,8 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 
-///**
-// * A simple {@link Fragment} subclass.
-// * Activities that contain this fragment must implement the
-// * {@link OnFragmentSelectedListener} interface
-// * to handle interaction events.
-// */
 public class AboutSalaFragment extends Fragment {
 
-//    private OnFragmentSelectedListener mListener;
     private Unbinder unbinder;
 
     public AboutSalaFragment() {
@@ -57,18 +50,11 @@ public class AboutSalaFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        if (context instanceof OnFragmentSelectedListener) {
-//            mListener = (OnFragmentSelectedListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentSelectedListener");
-//        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-//        mListener = null;
     }
 
     @Override
@@ -76,14 +62,4 @@ public class AboutSalaFragment extends Fragment {
         super.onDestroyView();
         unbinder.unbind();
     }
-
-//    /**
-//     * This interface must be implemented by activities that contain this
-//     * fragment to allow an interaction in this fragment to be communicated
-//     * to the activity and potentially other fragments contained in that
-//     * activity.
-//     */
-//    public interface OnFragmentSelectedListener {
-//        void onFragmentSelected(Uri uri);
-//    }
 }
