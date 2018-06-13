@@ -38,7 +38,7 @@
         android:adjustViewBounds="true"
         android:minHeight="120dp"
         android:minWidth="60dp"
-        android:src="/Users/hendercine/version_control/sala/app/src/main/assets/Pippa-Evans.jpg"
+        android:src="@drawable/pippa_evans"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
