@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by James Henderson on 2018
+  ~ Copyright (c) Hendercine Productions and James Henderson 2018.
+  ~ All rights reserved.
+  ~
+  ~ Last modified 6/13/18 12:10 PM
+  -->
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/future_assmbly_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginBottom="8dp"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                app:layout_constraintBottom_toTopOf="@+id/future_speaker_pic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="spread_inside"
+                tools:text="Assembly Date and Theme"/>
+
+            <ImageView
+                android:id="@+id/future_speaker_pic"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/future_featured_speaker"
+                android:cropToPadding="true"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toTopOf="@+id/future_assembly_description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/future_assmbly_title"
+                app:srcCompat="@drawable/pippa_evans"/>
+
+            <TextView
+                android:id="@+id/future_assembly_description"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:textAlignment="textStart"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/future_assmbly_title"
+                app:layout_constraintTop_toBottomOf="parent"
+                tools:text="@sample/tools:lorem/random"/>
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.v7.widget.CardView>
+</android.support.constraint.ConstraintLayout>
