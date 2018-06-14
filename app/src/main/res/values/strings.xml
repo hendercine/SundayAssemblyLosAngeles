@@ -53,4 +53,6 @@
     <string name="type_your_message_here">Type Your Message Here</string>
     <string name="user_avatar">User Avatar</string>
     <string name="future_featured_speaker">Future Featured Speaker</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>

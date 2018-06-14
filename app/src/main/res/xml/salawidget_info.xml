@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by James Henderson on 2018
+  ~ Copyright (c) Hendercine Productions and James Henderson 2018.
+  ~ All rights reserved.
+  ~
+  ~ Last modified 6/14/18 12:55 PM
+  -->
+
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:initialKeyguardLayout="@layout/salawidget"
+                    android:initialLayout="@layout/salawidget"
+                    android:minHeight="40dp"
+                    android:minWidth="250dp"
+                    android:previewImage="@drawable/example_appwidget_preview"
+                    android:resizeMode="horizontal|vertical"
+                    android:updatePeriodMillis="86400000"
+                    android:widgetCategory="home_screen">
+</appwidget-provider>
