@@ -8,10 +8,14 @@
 
 package com.hendercine.sala.models;
 
+import org.parceler.Parcel;
+
 /**
  * sala created by hendercine on 5/21/18.
  */
 
+@SuppressWarnings("WeakerAccess")
+@Parcel
 public class SalamanderMessage {
 
     String mText;
@@ -19,6 +23,7 @@ public class SalamanderMessage {
     String mPhotoUrl;
 
     public SalamanderMessage() {
+        // Neccessary empty constructor for Parceler
     }
 
     public SalamanderMessage(String text, String name, String photoUrl) {
