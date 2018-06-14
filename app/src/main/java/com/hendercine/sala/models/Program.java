@@ -39,59 +39,59 @@ public class Program {
         this.mTryingName = tryingName;
     }
 
-    public String getmTheme() {
+    public String getTheme() {
         return mTheme;
     }
 
-    public void setmTheme(String mTheme) {
-        this.mTheme = mTheme;
+    public void setTheme(String theme) {
+        this.mTheme = theme;
     }
 
-    public String getmEmceeNameOne() {
+    public String getEmceeNameOne() {
         return mEmceeNameOne;
     }
 
-    public void setmEmceeNameOne(String mEmceeNameOne) {
-        this.mEmceeNameOne = mEmceeNameOne;
+    public void setEmceeNameOne(String emceeNameOne) {
+        this.mEmceeNameOne = emceeNameOne;
     }
 
-    public String getmEmceeNameTwo() {
+    public String getEmceeNameTwo() {
         return mEmceeNameTwo;
     }
 
-    public void setmEmceeNameTwo(String mEmceeNameTwo) {
-        this.mEmceeNameTwo = mEmceeNameTwo;
+    public void setEmceeNameTwo(String emceeNameTwo) {
+        this.mEmceeNameTwo = emceeNameTwo;
     }
 
-    public String getmBandName() {
+    public String getBandName() {
         return mBandName;
     }
 
-    public void setmBandName(String mBandName) {
-        this.mBandName = mBandName;
+    public void setBandName(String bandName) {
+        this.mBandName = bandName;
     }
 
-    public String getmCreativeType() {
+    public String getCreativeType() {
         return mCreativeType;
     }
 
-    public void setmCreativeType(String mCreativeType) {
-        this.mCreativeType = mCreativeType;
+    public void setCreativeType(String creativeType) {
+        this.mCreativeType = creativeType;
     }
 
-    public String getmCreativeName() {
+    public String getCreativeName() {
         return mCreativeName;
     }
 
-    public void setmCreativeName(String mCreativeName) {
-        this.mCreativeName = mCreativeName;
+    public void setCreativeName(String creativeName) {
+        this.mCreativeName = creativeName;
     }
 
-    public String getmTryingName() {
+    public String getTryingName() {
         return mTryingName;
     }
 
-    public void setmTryingName(String mTryingName) {
-        this.mTryingName = mTryingName;
+    public void setTryingName(String tryingName) {
+        this.mTryingName = tryingName;
     }
 }

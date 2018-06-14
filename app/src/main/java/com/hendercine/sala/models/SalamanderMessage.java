@@ -18,41 +18,41 @@ import org.parceler.Parcel;
 @Parcel
 public class SalamanderMessage {
 
-    String mText;
-    String mName;
-    String mPhotoUrl;
+    String mChatText;
+    String mChatName;
+    String mChatPhotoUrl;
 
     public SalamanderMessage() {
         // Neccessary empty constructor for Parceler
     }
 
     public SalamanderMessage(String text, String name, String photoUrl) {
-        this.mText = text;
-        this.mName = name;
-        this.mPhotoUrl = photoUrl;
+        this.mChatText = text;
+        this.mChatName = name;
+        this.mChatPhotoUrl = photoUrl;
     }
 
-    public String getText() {
-        return mText;
+    public String getChatText() {
+        return mChatText;
     }
 
-    public void setText(String text) {
-        this.mText = text;
+    public void setChatText(String text) {
+        this.mChatText = text;
     }
 
-    public String getName() {
-        return mName;
+    public String getChatName() {
+        return mChatName;
     }
 
-    public void setName(String name) {
-        this.mName = name;
+    public void setChatName(String name) {
+        this.mChatName = name;
     }
 
-    public String getPhotoUrl() {
-        return mPhotoUrl;
+    public String getChatPhotoUrl() {
+        return mChatPhotoUrl;
     }
 
-    public void setPhotoUrl(String photoUrl) {
-        this.mPhotoUrl = photoUrl;
+    public void setChatPhotoUrl(String photoUrl) {
+        this.mChatPhotoUrl = photoUrl;
     }
 }
