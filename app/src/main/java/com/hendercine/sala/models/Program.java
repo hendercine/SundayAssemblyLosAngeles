@@ -23,19 +23,23 @@ public class Program {
     String mBandName;
     String mCreativeType;
     String mCreativeName;
+    String mCreativeTitle;
     String mTryingName;
 
     public Program() {
         // Neccessary empty constructor for Parceler
     }
 
-    public Program(String theme, String emceeNameOne, String emceeNameTwo, String bandName, String creativeType, String creativeName, String tryingName) {
+    public Program(String theme, String emceeNameOne, String emceeNameTwo,
+                   String bandName, String creativeType, String creativeName,
+                   String creativeTitle, String tryingName) {
         this.mTheme = theme;
         this.mEmceeNameOne = emceeNameOne;
         this.mEmceeNameTwo = emceeNameTwo;
         this.mBandName = bandName;
         this.mCreativeType = creativeType;
         this.mCreativeName = creativeName;
+        this.mCreativeTitle = creativeTitle;
         this.mTryingName = tryingName;
     }
 
@@ -85,6 +89,14 @@ public class Program {
 
     public void setCreativeName(String creativeName) {
         this.mCreativeName = creativeName;
+    }
+
+    public String getCreativeTitle() {
+        return mCreativeTitle;
+    }
+
+    public void setCreativeTitle(String creativeTitle) {
+        this.mCreativeTitle = creativeTitle;
     }
 
     public String getTryingName() {
