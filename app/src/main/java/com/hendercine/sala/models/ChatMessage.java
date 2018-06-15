@@ -16,17 +16,17 @@ import org.parceler.Parcel;
 
 @SuppressWarnings("WeakerAccess")
 @Parcel
-public class SalamanderMessage {
+public class ChatMessage {
 
     String mChatText;
     String mChatName;
     String mChatPhotoUrl;
 
-    public SalamanderMessage() {
+    public ChatMessage() {
         // Neccessary empty constructor for Parceler
     }
 
-    public SalamanderMessage(String text, String name, String photoUrl) {
+    public ChatMessage(String text, String name, String photoUrl) {
         this.mChatText = text;
         this.mChatName = name;
         this.mChatPhotoUrl = photoUrl;
