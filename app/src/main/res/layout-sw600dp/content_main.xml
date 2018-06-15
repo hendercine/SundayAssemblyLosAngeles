@@ -4,7 +4,7 @@
   ~ Copyright (c) Hendercine Productions and James Henderson 2018.
   ~ All rights reserved.
   ~
-  ~ Last modified 5/22/18 2:37 PM
+  ~ Last modified 5/22/18 2:39 PM
   -->
 
 <android.support.v4.widget.NestedScrollView
@@ -17,8 +17,23 @@
     tools:context=".ui.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <FrameLayout
-        android:id="@+id/content_frame"
+    <LinearLayout
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:orientation="horizontal"
+        android:baselineAligned="false">
+
+        <FrameLayout
+            android:id="@+id/fragment_list_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+        <FrameLayout
+            android:id="@+id/content_frame"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"/>
+
+    </LinearLayout>
+
 </android.support.v4.widget.NestedScrollView>
