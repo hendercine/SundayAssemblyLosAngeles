@@ -21,15 +21,17 @@ public class Song {
     int mSongId;
     String mSongTitle;
     String mSongBy;
+    String mLyrics;
 
     public Song() {
         // Neccessary empty constructor for Parceler
     }
 
-    public Song(int songId, String songTitle, String songBy) {
+    public Song(int songId, String songTitle, String songBy, String lyrics) {
         this.mSongId = songId;
         this.mSongTitle = songTitle;
         this.mSongBy = songBy;
+        this.mLyrics = lyrics;
     }
 
     public int getSongId() {
@@ -54,5 +56,13 @@ public class Song {
 
     public void setSongBy(String songBy) {
         this.mSongBy = songBy;
+    }
+
+    public String getLyrics() {
+        return mLyrics;
+    }
+
+    public void setLyrics(String lyrics) {
+        this.mLyrics = lyrics;
     }
 }
