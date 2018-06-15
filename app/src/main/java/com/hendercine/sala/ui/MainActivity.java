@@ -45,6 +45,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hendercine.sala.R;
 import com.hendercine.sala.models.User;
+import com.hendercine.sala.ui.masterDetail.ItemDetailFragment;
 
 import java.util.Arrays;
 
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String ANONYMOUS = "anonymous";
     public static final int DEFAULT_MSG_LENGTH_LIMIT = 1000;
     public static final int RC_SIGN_IN = 1;
+    public static boolean mTwoPane;
 
     private String mUsername;
     private User mUser;
@@ -83,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
     NavigationView mNavView;
     @BindView(R.id.content_frame)
     FrameLayout mContentFrame;
+    @BindView(R.id.item_detail_container)
+    FrameLayout mItemDetailContainer;
     @BindView(R.id.collapsing_toolbar_backdrop_img)
     ImageView collapsingToolbarBackDrop;
     @BindView(R.id.app_bar_title)
@@ -114,23 +118,38 @@ public class MainActivity extends AppCompatActivity {
             mActionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         }
 
+        if (mItemDetailContainer != null) {
+            mTwoPane = true;
+
+//TODO: Write code to set list items to activated state in two-pane mode
+//            ((ItemListFragment) mFragmentManager.findFragmentById(R.id
+//                    .item_list)).setActivateOnItemClick(true);
+        }
+
         mFragmentManager = getSupportFragmentManager();
-        mAboutSalaFragment = new AboutSalaFragment();
-        mFragmentManager
-                .beginTransaction()
-                .add(mContentFrame.getId(), mAboutSalaFragment)
-                .commit();
-        mAppBarTitle = mAboutTitle;
-        mAppBarImageUrl = mAboutBannerUrl;
 
-        mToggle = new ActionBarDrawerToggle(
-                this,
-                mDrawer,
-                mToolbar,
-                R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close);
+        if (mTwoPane) {
+            Bundle arguments = new Bundle();
+            arguments.putString(ItemDetailFragment.ARG_ITEM_ID, id);
+        } else {
+            mAboutSalaFragment = new AboutSalaFragment();
+            mFragmentManager
+                    .beginTransaction()
+                    .add(mContentFrame.getId(), mAboutSalaFragment)
+                    .commit();
+            mAppBarTitle = mAboutTitle;
+            mAppBarImageUrl = mAboutBannerUrl;
 
-        activateDrawerItems();
+            mToggle = new ActionBarDrawerToggle(
+                    this,
+                    mDrawer,
+                    mToolbar,
+                    R.string.navigation_drawer_open,
+                    R.string.navigation_drawer_close);
+
+            activateDrawerItems();
+        }
+
         setCollapsingToolbarBehavior();
 
 //        authorizeUser();
