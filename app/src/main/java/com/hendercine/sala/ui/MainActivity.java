@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
             mActionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         }
 
+        //TODO: Check for savedInstanceState if != null restore last active state
         mFragmentManager = getSupportFragmentManager();
         mAboutSalaFragment = new AboutSalaFragment();
         mFragmentManager
