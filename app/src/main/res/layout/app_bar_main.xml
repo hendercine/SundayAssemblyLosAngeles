@@ -34,7 +34,7 @@
             <ImageView
                 android:id="@+id/collapsing_toolbar_backdrop_img"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/app_bar_height"
+                android:layout_height="@dimen/custom_app_bar_height"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax"

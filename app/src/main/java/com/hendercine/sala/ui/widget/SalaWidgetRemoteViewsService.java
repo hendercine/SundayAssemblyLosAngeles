@@ -6,7 +6,7 @@
  * Last modified 6/14/18 1:06 PM
  */
 
-package com.hendercine.sala.widget;
+package com.hendercine.sala.ui.widget;
 
 import android.widget.RemoteViewsService;
 
