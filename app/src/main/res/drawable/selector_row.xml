@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by James Henderson on 2018
+  ~ Copyright (c) Hendercine Productions and James Henderson 2018.
+  ~ All rights reserved.
+  ~
+  ~ Last modified 6/14/18 1:00 PM
+  -->
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Color when row item is selected -->
+    <item android:drawable="@color/colorAccent" android:state_selected="true"/>
+    <!-- Color when row item is not selected -->
+    <item android:drawable="@android:color/transparent" android:state_selected="false"/>
+
+</selector>

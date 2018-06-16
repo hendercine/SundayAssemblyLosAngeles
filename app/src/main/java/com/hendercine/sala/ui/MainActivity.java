@@ -21,6 +21,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.transition.Fade;
 import android.transition.TransitionManager;
@@ -76,9 +78,15 @@ public class MainActivity extends AppCompatActivity {
 
     private FragmentManager mFragmentManager;
     private AboutSalaFragment mAboutSalaFragment;
+    private boolean mTwoPane;
+    private String[] mDrawerArray;
+    private DrawerRecyclerViewAdapter mAdapter;
 
+    @Nullable
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawer;
+    @BindView(R.id.main_recycler_view)
+    RecyclerView mDrawerRecyclerView;
     @BindView(R.id.nav_view)
     NavigationView mNavView;
     @BindView(R.id.content_frame)
@@ -114,6 +122,15 @@ public class MainActivity extends AppCompatActivity {
             mActionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         }
 
+        mTwoPane = getResources().getBoolean(R.bool.isTablet);
+
+        if (!mTwoPane) {
+            mDrawerArray = getResources().getStringArray(R.array.drawer_array);
+            mDrawerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            mAdapter = new DrawerRecyclerViewAdapter(mDrawerArray);
+            mDrawerRecyclerView.setAdapter(mAdapter);
+        }
+
         //TODO: Check for savedInstanceState if != null restore last active state
         mFragmentManager = getSupportFragmentManager();
         mAboutSalaFragment = new AboutSalaFragment();
@@ -144,7 +161,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 menuItem.setChecked(true);
-                mDrawer.closeDrawer(GravityCompat.START, true);
+                if (mDrawer != null) {
+                    mDrawer.closeDrawer(GravityCompat.START, true);
+                }
 
                 // TODO: Add code here to update the UI based on the item selected
                 // For example, swap UI fragments here

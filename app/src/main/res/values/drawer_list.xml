@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by James Henderson on 2018
+  ~ Copyright (c) Hendercine Productions and James Henderson 2018.
+  ~ All rights reserved.
+  ~
+  ~ Last modified 6/15/18 5:58 PM
+  -->
+
+<resources xmlns:android="http://schemas.android.com/tools">
+    <string-array name="drawer_array">
+        <item android:title="@string/about_nav_title"/>
+        <item android:title="@string/program_nav_title"/>
+        <item android:title="@string/lyrics_nav_title"/>
+        <item android:title="@string/speaker_bio_nav_title"/>
+        <item android:title="@string/future_assemblies_nav_title"/>
+        <item android:title="@string/help_often_nav_title"/>
+        <item android:title="@string/live_better_nav_title"/>
+        <item android:title="@string/social_nav_title"/>
+        <item android:title="@string/salamander_chat_nav_title"/>
+        <item android:title="@string/instagram_nav_title"/>
+        <item android:title="@string/facebook_nav_title"/>
+        <item android:title="@string/twitter_nav_title"/>
+        <item android:title="@string/sala_on_the_web_nav_title"/>
+        <item android:title="@string/logout_nav_title"/>
+    </string-array>
+</resources>
