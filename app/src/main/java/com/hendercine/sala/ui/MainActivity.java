@@ -79,14 +79,14 @@ public class MainActivity extends AppCompatActivity {
     private FragmentManager mFragmentManager;
     private AboutSalaFragment mAboutSalaFragment;
     private boolean mTwoPane;
-    private String[] mDrawerArray;
-    private DrawerRecyclerViewAdapter mAdapter;
+    private String[] mSideBarArray;
+    private SideBarRecyclerViewAdapter mSideBarAdapter;
 
     @Nullable
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawer;
-    @BindView(R.id.main_recycler_view)
-    RecyclerView mDrawerRecyclerView;
+    @BindView(R.id.main_side_bar_recycler_view)
+    RecyclerView mSideBarRecyclerView;
     @BindView(R.id.nav_view)
     NavigationView mNavView;
     @BindView(R.id.content_frame)
@@ -124,31 +124,33 @@ public class MainActivity extends AppCompatActivity {
 
         mTwoPane = getResources().getBoolean(R.bool.isTablet);
 
-        if (!mTwoPane) {
-            mDrawerArray = getResources().getStringArray(R.array.drawer_array);
-            mDrawerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-            mAdapter = new DrawerRecyclerViewAdapter(mDrawerArray);
-            mDrawerRecyclerView.setAdapter(mAdapter);
+        if (!mTwoPane && mSideBarRecyclerView != null) {
+            mSideBarArray = getResources().getStringArray(R.array.drawer_array);
+            mSideBarRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            mSideBarAdapter = new SideBarRecyclerViewAdapter(mSideBarArray);
+            mSideBarRecyclerView.setAdapter(mSideBarAdapter);
+            activateSideBarItems();
+        } else {
+            //TODO: Check for savedInstanceState if != null restore last active state
+            mFragmentManager = getSupportFragmentManager();
+            mAboutSalaFragment = new AboutSalaFragment();
+            mFragmentManager
+                    .beginTransaction()
+                    .add(mContentFrame.getId(), mAboutSalaFragment)
+                    .commit();
+            mAppBarTitle = mAboutTitle;
+            mAppBarImageUrl = mAboutBannerUrl;
+
+            mToggle = new ActionBarDrawerToggle(
+                    this,
+                    mDrawer,
+                    mToolbar,
+                    R.string.navigation_drawer_open,
+                    R.string.navigation_drawer_close);
+
+            activateDrawerItems();
         }
 
-        //TODO: Check for savedInstanceState if != null restore last active state
-        mFragmentManager = getSupportFragmentManager();
-        mAboutSalaFragment = new AboutSalaFragment();
-        mFragmentManager
-                .beginTransaction()
-                .add(mContentFrame.getId(), mAboutSalaFragment)
-                .commit();
-        mAppBarTitle = mAboutTitle;
-        mAppBarImageUrl = mAboutBannerUrl;
-
-        mToggle = new ActionBarDrawerToggle(
-                this,
-                mDrawer,
-                mToolbar,
-                R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close);
-
-        activateDrawerItems();
         setCollapsingToolbarBehavior();
 
 //        authorizeUser();
@@ -242,6 +244,101 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    private void activateSideBarItems() {
+        // Handle two-pane side bar drawer click events
+        mSideBarAdapter.setClickListener(new SideBarRecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                // TODO: Add code here to update the UI based on the item selected
+                // For example, swap UI fragments here
+                Fragment fragment = null;
+                Bundle bundle = new Bundle();
+                if (position == mSideBarAdapter.getItemId(0)) {
+                    fragment = new AboutSalaFragment();
+                    mAppBarTitle = mAboutTitle;
+                    mAppBarImageUrl = mAboutBannerUrl;
+                } else if (position == mSideBarAdapter.getItemId(1)) {
+//                    fragment = new EventProgramFragment();
+                    Toast.makeText(getApplicationContext(),
+                            "This will display EventProgramFragment",
+                            Toast.LENGTH_SHORT).show();
+                } else if (position == mSideBarAdapter.getItemId(2)) {
+//                    fragment = new LyricsFragment();
+                    Toast.makeText(getApplicationContext(),
+                            "This will display LyricsFragment",
+                            Toast.LENGTH_SHORT).show();
+                } else if (position == mSideBarAdapter.getItemId(3)) {
+//                    fragment = new SpeakerFragment();
+                    Toast.makeText(getApplicationContext(),
+                            "This will display SpeakerFragment",
+                            Toast.LENGTH_SHORT).show();
+                } else if (position == mSideBarAdapter.getItemId(4)) {
+//                    fragment = new FutureAssembliesFragment();
+                    Toast.makeText(getApplicationContext(),
+                            "This will display FutureAssembliesFragment",
+                            Toast.LENGTH_SHORT).show();
+                } else if (position == mSideBarAdapter.getItemId(5)) {
+//                    fragment = new HelpOftenFragment();
+                    Toast.makeText(getApplicationContext(),
+                            "This will display HelpOftenFragment",
+                            Toast.LENGTH_SHORT).show();
+                } else if (position == mSideBarAdapter.getItemId(6)) {
+//                    fragment = new LiveBetterFragment();
+                    Toast.makeText(getApplicationContext(),
+                            "This will display LiveBetterFragment",
+                            Toast.LENGTH_SHORT).show();
+                } else if (position == mSideBarAdapter.getItemId(7)) {
+//                    fragment = new ChatFragment();
+                    Toast.makeText(getApplicationContext(),
+                            "This will display ChatFragment",
+                            Toast.LENGTH_SHORT).show();
+                    // TODO: Create intents for Instagram, Facebook and Twitter
+                } else if (position == mSideBarAdapter.getItemId(8)) {
+                    Toast.makeText(getApplicationContext(),
+                            "This will open Instagram",
+                            Toast.LENGTH_SHORT).show();
+                } else if (position == mSideBarAdapter.getItemId(9)) {
+                    Toast.makeText(getApplicationContext(),
+                            "This will open Facebook",
+                            Toast.LENGTH_SHORT).show();
+                } else if (position == mSideBarAdapter.getItemId(10)) {
+                    Toast.makeText(getApplicationContext(),
+                            "This will open Twitter",
+                            Toast.LENGTH_SHORT).show();
+                } else if (position == mSideBarAdapter.getItemId(11)) {
+//                    bundle.putString("url", "https://www.sundayassemblyla.org");
+//                    fragment = new WebsiteFragment();
+//                    fragment.setArguments(bundle);
+                    Toast.makeText(getApplicationContext(),
+                            "This will display WebsiteFragment",
+                            Toast.LENGTH_SHORT).show();
+                }
+                if (fragment != null) {
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, fragment)
+//                            .setTransition(R.anim.fade)
+                            .addToBackStack(null)
+                            .commit();
+                }
+
+            }
+        });
+
+//        mNavView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+//                menuItem.setChecked(true);
+//                if (mDrawer != null) {
+//                    mDrawer.closeDrawer(GravityCompat.START, true);
+//                }
+//
+//                mDrawer.closeDrawer(GravityCompat.START, true);
+//                return true;
+//            }
+//        });
     }
 
     private void authorizeUser() {

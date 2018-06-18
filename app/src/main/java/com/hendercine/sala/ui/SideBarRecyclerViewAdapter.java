@@ -13,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.hendercine.sala.R;
@@ -24,29 +23,35 @@ import butterknife.ButterKnife;
 /**
  * sala created by hendercine on 6/15/18.
  */
-public class DrawerRecyclerViewAdapter extends RecyclerView
-        .Adapter<DrawerRecyclerViewAdapter.DrawerViewHolder> {
+public class SideBarRecyclerViewAdapter extends RecyclerView
+        .Adapter<SideBarRecyclerViewAdapter.SideBarViewHolder> {
 
     private String[] mTitleArray;
-    private AdapterView.OnItemClickListener mClickListener;
+    private OnItemClickListener mClickListener;
     private int focusedItem = RecyclerView.NO_POSITION;
 
-    public DrawerRecyclerViewAdapter(String[] titleArray) {
+    public SideBarRecyclerViewAdapter(String[] titleArray) {
         this.mTitleArray = titleArray;
     }
 
     @NonNull
     @Override
-    public DrawerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SideBarViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout
-                .list_item_drawer, parent, false);
-        return new DrawerViewHolder(view);
+                .list_item_side_bar, parent, false);
+        return new SideBarViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DrawerViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final SideBarViewHolder holder, final int position) {
         holder.itemView.setSelected(focusedItem == position);
         holder.mDrawerListTextView.setText(mTitleArray[position]);
+        holder.mDrawerListTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mClickListener.onItemClick(holder.getAdapterPosition());
+            }
+        });
 
     }
 
@@ -55,13 +60,17 @@ public class DrawerRecyclerViewAdapter extends RecyclerView
         return mTitleArray.length;
     }
 
-    class DrawerViewHolder extends RecyclerView.ViewHolder implements
+    public long getItemId(int position) {
+        return position;
+    }
+
+    class SideBarViewHolder extends RecyclerView.ViewHolder implements
             View.OnClickListener {
 
         @BindView(R.id.drawer_item_text_view)
         TextView mDrawerListTextView;
 
-        DrawerViewHolder(View itemView) {
+        SideBarViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
@@ -69,7 +78,18 @@ public class DrawerRecyclerViewAdapter extends RecyclerView
 
         @Override
         public void onClick(View v) {
-
+            notifyItemChanged(focusedItem);
+            focusedItem = getLayoutPosition();
+            notifyItemChanged(focusedItem);
         }
+    }
+
+    public void setClickListener(OnItemClickListener itemClickListener) {
+        this.mClickListener = itemClickListener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+
     }
 }

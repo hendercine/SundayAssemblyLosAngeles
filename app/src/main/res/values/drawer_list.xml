@@ -16,7 +16,6 @@
         <item android:title="@string/future_assemblies_nav_title"/>
         <item android:title="@string/help_often_nav_title"/>
         <item android:title="@string/live_better_nav_title"/>
-        <item android:title="@string/social_nav_title"/>
         <item android:title="@string/salamander_chat_nav_title"/>
         <item android:title="@string/instagram_nav_title"/>
         <item android:title="@string/facebook_nav_title"/>
