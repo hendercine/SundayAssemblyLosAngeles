@@ -26,6 +26,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/salawidget_info"/>
         </receiver>
+        <service android:name=".ui.widget.SalaWidgetRemoteViewsService"/>
     </application>
 
 </manifest>

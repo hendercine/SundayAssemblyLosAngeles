@@ -18,7 +18,7 @@
     android:background="@drawable/selector_row"
     android:padding="8dp"
     android:gravity="center_vertical"
-    android:textAppearance="@android:style/TextAppearance.Material.ListItem"
+    style="@style/AppTheme.SideBar"
     android:drawableStart="@android:drawable/ic_menu_info_details"
     android:drawablePadding="8dp"
     tools:text="Label"/>

@@ -8,10 +8,15 @@
 
 package com.hendercine.sala.ui.widget;
 
+import android.content.Intent;
 import android.widget.RemoteViewsService;
 
 /**
  * sala created by hendercine on 6/14/18.
  */
 public class SalaWidgetRemoteViewsService extends RemoteViewsService {
+    @Override
+    public RemoteViewsFactory onGetViewFactory(Intent intent) {
+        return null;
+    }
 }
