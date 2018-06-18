@@ -26,12 +26,12 @@ import butterknife.ButterKnife;
 public class SideBarRecyclerViewAdapter extends RecyclerView
         .Adapter<SideBarRecyclerViewAdapter.SideBarViewHolder> {
 
-    private String[] mTitleArray;
+    private String[] mSideBarArray;
     private OnItemClickListener mClickListener;
     private int focusedItem = RecyclerView.NO_POSITION;
 
-    public SideBarRecyclerViewAdapter(String[] titleArray) {
-        this.mTitleArray = titleArray;
+    public SideBarRecyclerViewAdapter(String[] sideBarArray) {
+        this.mSideBarArray = sideBarArray;
     }
 
     @NonNull
@@ -45,8 +45,8 @@ public class SideBarRecyclerViewAdapter extends RecyclerView
     @Override
     public void onBindViewHolder(@NonNull final SideBarViewHolder holder, final int position) {
         holder.itemView.setSelected(focusedItem == position);
-        holder.mDrawerListTextView.setText(mTitleArray[position]);
-        holder.mDrawerListTextView.setOnClickListener(new View.OnClickListener() {
+        holder.mSideBarListTextView.setText(mSideBarArray[position]);
+        holder.mSideBarListTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mClickListener.onItemClick(holder.getAdapterPosition());
@@ -57,7 +57,7 @@ public class SideBarRecyclerViewAdapter extends RecyclerView
 
     @Override
     public int getItemCount() {
-        return mTitleArray.length;
+        return mSideBarArray.length;
     }
 
     public long getItemId(int position) {
@@ -67,8 +67,8 @@ public class SideBarRecyclerViewAdapter extends RecyclerView
     class SideBarViewHolder extends RecyclerView.ViewHolder implements
             View.OnClickListener {
 
-        @BindView(R.id.drawer_item_text_view)
-        TextView mDrawerListTextView;
+        @BindView(R.id.side_bar_item_text_view)
+        TextView mSideBarListTextView;
 
         SideBarViewHolder(View itemView) {
             super(itemView);

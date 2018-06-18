@@ -32,6 +32,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout mDrawer;
     @Nullable
     @BindView(R.id.side_bar_layout)
-    FrameLayout mSideBarLayout;
+    LinearLayout mSideBarLayout;
     @BindView(R.id.main_side_bar_recycler_view)
     RecyclerView mSideBarRecyclerView;
     @Nullable
@@ -119,22 +120,25 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        setSupportActionBar(mToolbar);
-        mActionBar = getSupportActionBar();
-        if (mActionBar != null) {
-            mActionBar.setDisplayHomeAsUpEnabled(true);
-            mActionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
-        }
-
         mTwoPane = getResources().getBoolean(R.bool.isTablet);
 
         if (!mTwoPane && mSideBarRecyclerView != null) {
             mSideBarArray = getResources().getStringArray(R.array.drawer_array);
+//            mSideBarArray =(getResources().getStringArray(R.array.drawer_array));
+//            for (int i = 0; i < mSideBarArray.size(); i++) {
+//
+//            }
             mSideBarRecyclerView.setLayoutManager(new LinearLayoutManager(this));
             mSideBarAdapter = new SideBarRecyclerViewAdapter(mSideBarArray);
             mSideBarRecyclerView.setAdapter(mSideBarAdapter);
             activateSideBarItems();
         } else {
+            setSupportActionBar(mToolbar);
+            mActionBar = getSupportActionBar();
+            if (mActionBar != null) {
+                mActionBar.setDisplayHomeAsUpEnabled(true);
+                mActionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+            }
             //TODO: Check for savedInstanceState if != null restore last active state
             mFragmentManager = getSupportFragmentManager();
             mAboutSalaFragment = new AboutSalaFragment();
@@ -163,91 +167,93 @@ public class MainActivity extends AppCompatActivity {
 
     private void activateDrawerItems() {
         // Handle navigation drawer click events
-        mNavView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                menuItem.setChecked(true);
-                if (mDrawer != null) {
-                    mDrawer.closeDrawer(GravityCompat.START, true);
-                }
+        if (mNavView != null) {
+            mNavView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                    menuItem.setChecked(true);
+                    if (mDrawer != null) {
+                        mDrawer.closeDrawer(GravityCompat.START, true);
+                    }
 
-                // TODO: Add code here to update the UI based on the item selected
-                // For example, swap UI fragments here
-                int id = menuItem.getItemId();
-                Fragment fragment = null;
-                Bundle bundle = new Bundle();
-                if (id == R.id.about_nav) {
-                    fragment = new AboutSalaFragment();
-                    mAppBarTitle = mAboutTitle;
-                    mAppBarImageUrl = mAboutBannerUrl;
-                } else if (id == R.id.program_nav) {
-//                    fragment = new EventProgramFragment();
-                    Toast.makeText(getApplicationContext(),
-                            "This will display EventProgramFragment",
-                            Toast.LENGTH_SHORT).show();
-                } else if (id == R.id.lyrics_nav) {
-//                    fragment = new LyricsFragment();
-                    Toast.makeText(getApplicationContext(),
-                            "This will display LyricsFragment",
-                            Toast.LENGTH_SHORT).show();
-                } else if (id == R.id.speaker_nav) {
-//                    fragment = new SpeakerFragment();
-                    Toast.makeText(getApplicationContext(),
-                            "This will display SpeakerFragment",
-                            Toast.LENGTH_SHORT).show();
-                } else if (id == R.id.future_assemblies_nav) {
-//                    fragment = new FutureAssembliesFragment();
-                    Toast.makeText(getApplicationContext(),
-                            "This will display FutureAssembliesFragment",
-                            Toast.LENGTH_SHORT).show();
-                } else if (id == R.id.help_often_nav) {
-//                    fragment = new HelpOftenFragment();
-                    Toast.makeText(getApplicationContext(),
-                            "This will display HelpOftenFragment",
-                            Toast.LENGTH_SHORT).show();
-                } else if (id == R.id.live_better_nav) {
-//                    fragment = new LiveBetterFragment();
-                    Toast.makeText(getApplicationContext(),
-                            "This will display LiveBetterFragment",
-                            Toast.LENGTH_SHORT).show();
-                } else if (id == R.id.chat_nav) {
-//                    fragment = new ChatFragment();
-                    Toast.makeText(getApplicationContext(),
-                            "This will display ChatFragment",
-                            Toast.LENGTH_SHORT).show();
-                    // TODO: Create intents for Instagram, Facebook and Twitter
-                } else if (id == R.id.insta_link_nav) {
-                    Toast.makeText(getApplicationContext(),
-                            "This will open Instagram",
-                            Toast.LENGTH_SHORT).show();
-                } else if (id == R.id.facebook_link_nav) {
-                    Toast.makeText(getApplicationContext(),
-                            "This will open Facebook",
-                            Toast.LENGTH_SHORT).show();
-                } else if (id == R.id.twitter_link_nav) {
-                    Toast.makeText(getApplicationContext(),
-                            "This will open Twitter",
-                            Toast.LENGTH_SHORT).show();
-                } else if (id == R.id.site_link_nav) {
-//                    bundle.putString("url", "https://www.sundayassemblyla.org");
-//                    fragment = new WebsiteFragment();
-//                    fragment.setArguments(bundle);
-                    Toast.makeText(getApplicationContext(),
-                            "This will display WebsiteFragment",
-                            Toast.LENGTH_SHORT).show();
+                    // TODO: Add code here to update the UI based on the item selected
+                    // For example, swap UI fragments here
+                    int id = menuItem.getItemId();
+                    Fragment fragment = null;
+                    Bundle bundle = new Bundle();
+                    if (id == R.id.about_nav) {
+                        fragment = new AboutSalaFragment();
+                        mAppBarTitle = mAboutTitle;
+                        mAppBarImageUrl = mAboutBannerUrl;
+                    } else if (id == R.id.program_nav) {
+    //                    fragment = new EventProgramFragment();
+                        Toast.makeText(getApplicationContext(),
+                                "This will display EventProgramFragment",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (id == R.id.lyrics_nav) {
+    //                    fragment = new LyricsFragment();
+                        Toast.makeText(getApplicationContext(),
+                                "This will display LyricsFragment",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (id == R.id.speaker_nav) {
+    //                    fragment = new SpeakerFragment();
+                        Toast.makeText(getApplicationContext(),
+                                "This will display SpeakerFragment",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (id == R.id.future_assemblies_nav) {
+    //                    fragment = new FutureAssembliesFragment();
+                        Toast.makeText(getApplicationContext(),
+                                "This will display FutureAssembliesFragment",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (id == R.id.help_often_nav) {
+    //                    fragment = new HelpOftenFragment();
+                        Toast.makeText(getApplicationContext(),
+                                "This will display HelpOftenFragment",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (id == R.id.live_better_nav) {
+    //                    fragment = new LiveBetterFragment();
+                        Toast.makeText(getApplicationContext(),
+                                "This will display LiveBetterFragment",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (id == R.id.chat_nav) {
+    //                    fragment = new ChatFragment();
+                        Toast.makeText(getApplicationContext(),
+                                "This will display ChatFragment",
+                                Toast.LENGTH_SHORT).show();
+                        // TODO: Create intents for Instagram, Facebook and Twitter
+                    } else if (id == R.id.insta_link_nav) {
+                        Toast.makeText(getApplicationContext(),
+                                "This will open Instagram",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (id == R.id.facebook_link_nav) {
+                        Toast.makeText(getApplicationContext(),
+                                "This will open Facebook",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (id == R.id.twitter_link_nav) {
+                        Toast.makeText(getApplicationContext(),
+                                "This will open Twitter",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (id == R.id.site_link_nav) {
+    //                    bundle.putString("url", "https://www.sundayassemblyla.org");
+    //                    fragment = new WebsiteFragment();
+    //                    fragment.setArguments(bundle);
+                        Toast.makeText(getApplicationContext(),
+                                "This will display WebsiteFragment",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    if (fragment != null) {
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.content_frame, fragment)
+    //                            .setTransition(R.anim.fade)
+                                .addToBackStack(null)
+                                .commit();
+                    }
+                    mDrawer.closeDrawer(GravityCompat.START, true);
+                    return true;
                 }
-                if (fragment != null) {
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.content_frame, fragment)
-//                            .setTransition(R.anim.fade)
-                            .addToBackStack(null)
-                            .commit();
-                }
-                mDrawer.closeDrawer(GravityCompat.START, true);
-                return true;
-            }
-        });
+            });
+        }
     }
 
     private void activateSideBarItems() {
