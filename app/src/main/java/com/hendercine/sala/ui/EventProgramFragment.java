@@ -29,7 +29,7 @@ import com.hendercine.sala.R;
 public class EventProgramFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_ITEM_ID = "ARG_ITEM_ID";
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
@@ -54,7 +54,7 @@ public class EventProgramFragment extends Fragment {
     public static EventProgramFragment newInstance(String param1, String param2) {
         EventProgramFragment fragment = new EventProgramFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_ITEM_ID, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
@@ -64,7 +64,7 @@ public class EventProgramFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam1 = getArguments().getString(ARG_ITEM_ID);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
