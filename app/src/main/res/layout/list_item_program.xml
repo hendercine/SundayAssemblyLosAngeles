@@ -20,7 +20,7 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="@dimen/program_list_item_padding"
-        app:layout_constraintBottom_toTopOf="@+id/guideline5"
+        app:layout_constraintBottom_toTopOf="@+id/program_list_item_guide"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -57,7 +57,7 @@
     </LinearLayout>
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideline5"
+        android:id="@+id/program_list_item_guide"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="horizontal"

@@ -47,6 +47,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hendercine.sala.R;
 import com.hendercine.sala.models.User;
+import com.hendercine.sala.ui.adapters.SideBarRVAdapter;
 
 import java.util.Arrays;
 
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
     private AboutSalaFragment mAboutSalaFragment;
     private boolean mTwoPane;
     private String[] mSideBarArray;
-    private SideBarRecyclerViewAdapter mSideBarAdapter;
+    private SideBarRVAdapter mSideBarAdapter;
 
     @Nullable
     @BindView(R.id.drawer_layout)
@@ -154,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                     mHelpSideBar, mLiveSideBar, mChatSideBar, mInstaSideBar,
                     mFacebookSideBar, mTwitterSideBar, mWebsiteSideBar, mLogoutSideBar};
             mSideBarRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-            mSideBarAdapter = new SideBarRecyclerViewAdapter(mSideBarArray);
+            mSideBarAdapter = new SideBarRVAdapter(mSideBarArray);
             mSideBarRecyclerView.setAdapter(mSideBarAdapter);
             activateSideBarItems();
         } else {
@@ -279,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void activateSideBarItems() {
         // Handle two-pane side bar drawer click events
-        mSideBarAdapter.setClickListener(new SideBarRecyclerViewAdapter.OnItemClickListener() {
+        mSideBarAdapter.setClickListener(new SideBarRVAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 // TODO: Add code here to update the UI based on the item selected
@@ -357,19 +358,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-//        mNavView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-//                menuItem.setChecked(true);
-//                if (mDrawer != null) {
-//                    mDrawer.closeDrawer(GravityCompat.START, true);
-//                }
-//
-//                mDrawer.closeDrawer(GravityCompat.START, true);
-//                return true;
-//            }
-//        });
     }
 
     private void authorizeUser() {

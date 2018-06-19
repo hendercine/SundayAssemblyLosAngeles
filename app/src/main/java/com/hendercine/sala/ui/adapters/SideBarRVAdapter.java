@@ -3,10 +3,10 @@
  * Copyright (c) Hendercine Productions and James Henderson 2018.
  * All rights reserved.
  *
- * Last modified 6/15/18 5:06 PM
+ * Last modified 6/18/18 4:48 PM
  */
 
-package com.hendercine.sala.ui;
+package com.hendercine.sala.ui.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -23,14 +23,14 @@ import butterknife.ButterKnife;
 /**
  * sala created by hendercine on 6/15/18.
  */
-public class SideBarRecyclerViewAdapter extends RecyclerView
-        .Adapter<SideBarRecyclerViewAdapter.SideBarViewHolder> {
+public class SideBarRVAdapter extends RecyclerView
+        .Adapter<SideBarRVAdapter.SideBarViewHolder> {
 
     private String[] mSideBarArray;
     private OnItemClickListener mClickListener;
     private int focusedItem = RecyclerView.NO_POSITION;
 
-    public SideBarRecyclerViewAdapter(String[] sideBarArray) {
+    public SideBarRVAdapter(String[] sideBarArray) {
         this.mSideBarArray = sideBarArray;
     }
 
