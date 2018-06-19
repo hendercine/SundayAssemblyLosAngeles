@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
     @Nullable
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawer;
+    @Nullable
     @BindView(R.id.main_side_bar_recycler_view)
     RecyclerView mSideBarRecyclerView;
     @Nullable
