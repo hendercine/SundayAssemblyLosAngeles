@@ -17,54 +17,60 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hendercine.sala.R;
+import com.hendercine.sala.models.Performer;
+import com.hendercine.sala.models.Program;
+import com.hendercine.sala.models.Song;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link EventProgramFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link EventProgramFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class EventProgramFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_ITEM_ID = "ARG_ITEM_ID";
-    private static final String ARG_PARAM2 = "param2";
+import java.util.ArrayList;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+///**
+// * A simple {@link Fragment} subclass.
+// * Activities that contain this fragment must implement the
+// * {@link ProgramFragment.OnFragmentInteractionListener} interface
+// * to handle interaction events.
+// * Use the {@link ProgramFragment#newInstance} factory method to
+// * create an instance of this fragment.
+// */
+public class ProgramFragment extends Fragment {
+
+    private static final String TAG = ProgramFragment.class.getSimpleName();
+    private static final String ASSEMBLY = "program";
+
+    private Program mProgram;
+    private Performer mPerformer;
+    private Song mSong;
+    private ArrayList<Performer> mPerformerArrayList;
+    private ArrayList<Song> mSongArrayList;
 
     private OnFragmentInteractionListener mListener;
 
-    public EventProgramFragment() {
+    public ProgramFragment() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment EventProgramFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static EventProgramFragment newInstance(String param1, String param2) {
-        EventProgramFragment fragment = new EventProgramFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_ITEM_ID, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+//
+//    /**
+//     * Use this factory method to create a new instance of
+//     * this fragment using the provided parameters.
+//     *
+//     * @param param1 Parameter 1.
+//     * @param param2 Parameter 2.
+//     * @return A new instance of fragment ProgramFragment.
+//     */
+//    // TODO: Rename and change types and number of parameters
+//    public static ProgramFragment newInstance(String param1, String param2) {
+//        ProgramFragment fragment = new ProgramFragment();
+//        Bundle args = new Bundle();
+//        args.putString(ASSEMBLY, param1);
+//        args.putString(ARG_PARAM2, param2);
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_ITEM_ID);
+            mParam1 = getArguments().getString(ASSEMBLY);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
@@ -73,7 +79,7 @@ public class EventProgramFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_event_program, container, false);
+        return inflater.inflate(R.layout.fragment_program, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

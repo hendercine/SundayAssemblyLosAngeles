@@ -208,9 +208,9 @@ public class MainActivity extends AppCompatActivity {
                         mAppBarTitle = mAboutTitle;
                         mAppBarImageUrl = mAboutBannerUrl;
                     } else if (id == R.id.program_nav) {
-    //                    fragment = new EventProgramFragment();
+    //                    fragment = new ProgramFragment();
                         Toast.makeText(getApplicationContext(),
-                                "This will display EventProgramFragment",
+                                "This will display ProgramFragment",
                                 Toast.LENGTH_SHORT).show();
                     } else if (id == R.id.lyrics_nav) {
     //                    fragment = new LyricsFragment();
@@ -292,9 +292,9 @@ public class MainActivity extends AppCompatActivity {
                     mAppBarTitle = mAboutTitle;
                     mAppBarImageUrl = mAboutBannerUrl;
                 } else if (position == mSideBarAdapter.getItemId(1)) {
-//                    fragment = new EventProgramFragment();
+//                    fragment = new ProgramFragment();
                     Toast.makeText(getApplicationContext(),
-                            "This will display EventProgramFragment",
+                            "This will display ProgramFragment",
                             Toast.LENGTH_SHORT).show();
                 } else if (position == mSideBarAdapter.getItemId(2)) {
 //                    fragment = new LyricsFragment();
