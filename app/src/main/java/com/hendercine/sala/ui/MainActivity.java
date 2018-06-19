@@ -32,7 +32,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -86,9 +85,6 @@ public class MainActivity extends AppCompatActivity {
     @Nullable
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawer;
-    @Nullable
-    @BindView(R.id.side_bar_layout)
-    LinearLayout mSideBarLayout;
     @BindView(R.id.main_side_bar_recycler_view)
     RecyclerView mSideBarRecyclerView;
     @Nullable
