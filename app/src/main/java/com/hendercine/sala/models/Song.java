@@ -23,8 +23,8 @@ import java.io.Serializable;
 public class Song implements Serializable {
 
     // Fields must be public for Parceler.
-    @SerializedName("song_id")
-    public int mSongId;
+    @SerializedName("song_number")
+    public int mSongNumber;
     @SerializedName("song_title")
     public String mSongTitle;
     @SerializedName("song_by")
@@ -36,19 +36,19 @@ public class Song implements Serializable {
         // Necessary empty constructor for Parceler
     }
 
-    public Song(int songId, String songTitle, String songBy, String lyrics) {
-        this.mSongId = songId;
+    public Song(int songNumber, String songTitle, String songBy, String lyrics) {
+        this.mSongNumber = songNumber;
         this.mSongTitle = songTitle;
         this.mSongBy = songBy;
         this.mLyrics = lyrics;
     }
 
-    public int getSongId() {
-        return mSongId;
+    public int getSongNumber() {
+        return mSongNumber;
     }
 
-    public void setSongId(int songId) {
-        this.mSongId = songId;
+    public void setSongNumber(int songNumber) {
+        this.mSongNumber = songNumber;
     }
 
     public String getSongTitle() {

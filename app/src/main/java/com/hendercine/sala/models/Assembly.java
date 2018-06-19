@@ -30,8 +30,6 @@ public class Assembly implements Serializable {
     public String mAssemblyDate;
     @SerializedName("assembly_theme")
     public String mAssemblyTheme;
-    @SerializedName("assembly_feature")
-    public String mAssemblyFeature;
     @SerializedName("assembly_description")
     public String mAssemblyDescription;
     @SerializedName("assembly_location")
@@ -40,10 +38,6 @@ public class Assembly implements Serializable {
     public String mAssemblyPhotoUrl;
     @SerializedName("performers")
     public ArrayList<Performer> mPerformerList;
-    @SerializedName("better_events")
-    public ArrayList<LiveBetterEvent> mBetterEventsList;
-    @SerializedName("help_events")
-    public ArrayList<HelpOftenEvent> mHelpEventsList;
     @SerializedName("songs")
     public ArrayList<Song> mSongsList;
 
@@ -73,14 +67,6 @@ public class Assembly implements Serializable {
 
     public void setAssemblyTheme(String assemblyTheme) {
         mAssemblyTheme = assemblyTheme;
-    }
-
-    public String getAssemblyFeature() {
-        return mAssemblyFeature;
-    }
-
-    public void setAssemblyFeature(String assemblyFeature) {
-        mAssemblyFeature = assemblyFeature;
     }
 
     public String getAssemblyDescription() {
@@ -113,22 +99,6 @@ public class Assembly implements Serializable {
 
     public void setPerformerList(ArrayList<Performer> performerList) {
         mPerformerList = performerList;
-    }
-
-    public ArrayList<LiveBetterEvent> getBetterEventsList() {
-        return mBetterEventsList;
-    }
-
-    public void setBetterEventsList(ArrayList<LiveBetterEvent> betterEventsList) {
-        mBetterEventsList = betterEventsList;
-    }
-
-    public ArrayList<HelpOftenEvent> getHelpEventsList() {
-        return mHelpEventsList;
-    }
-
-    public void setHelpEventsList(ArrayList<HelpOftenEvent> helpEventsList) {
-        mHelpEventsList = helpEventsList;
     }
 
     public ArrayList<Song> getSongsList() {

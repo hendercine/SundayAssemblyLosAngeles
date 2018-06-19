@@ -12,101 +12,87 @@ import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
 
-import java.io.Serializable;
-
 /**
  * sala created by hendercine on 6/14/18.
  */
 
 //@SuppressWarnings("WeakerAccess")
-@Parcel(Parcel.Serialization.BEAN)
-public class Program implements Serializable {
+@Parcel
+public class Program {
 
     // Fields must be public for Parceler.
-    @SerializedName("emcee_name_one")
-    public String mEmceeNameOne;
-    @SerializedName("emcee_name_two")
-    public String mEmceeNameTwo;
-    @SerializedName("band_name")
-    public String mBandName;
-    @SerializedName("creative_genre")
-    public String mCreativeType;
-    @SerializedName("creative_name")
-    public String mCreativeName;
-    @SerializedName("creative_title")
-    public String mCreativeTitle;
-    @SerializedName("trying_name")
-    public String mTryingName;
+    @SerializedName("performance_category_header")
+    public String mPerformanceCategoryHeader;
+    @SerializedName("song_number_header")
+    public String mSongNumberHeader;
+    @SerializedName("milestone_header")
+    public String mMilestoneHeader;
+    @SerializedName("kids_header")
+    public String mKidsHeader;
+    @SerializedName("audience_interaction_header")
+    public String mAudienceInteractionHeader;
+    @SerializedName("quiet_reflection_header")
+    public String mQuietReflectionHeader;
+    @SerializedName("collection_announcements_header")
+    public String mCollectionHeader;
 
     public Program() {
         // Necessary empty constructor for Parceler
     }
 
-    public Program(String emceeNameOne, String emceeNameTwo,
-                   String bandName, String creativeType, String creativeName,
-                   String creativeTitle, String tryingName) {
-        this.mEmceeNameOne = emceeNameOne;
-        this.mEmceeNameTwo = emceeNameTwo;
-        this.mBandName = bandName;
-        this.mCreativeType = creativeType;
-        this.mCreativeName = creativeName;
-        this.mCreativeTitle = creativeTitle;
-        this.mTryingName = tryingName;
+    public String getPerformanceCategoryHeader() {
+        return mPerformanceCategoryHeader;
     }
 
-    public String getEmceeNameOne() {
-        return mEmceeNameOne;
+    public void setPerformanceCategoryHeader(String performanceCategoryHeader) {
+        mPerformanceCategoryHeader = performanceCategoryHeader;
     }
 
-    public void setEmceeNameOne(String emceeNameOne) {
-        this.mEmceeNameOne = emceeNameOne;
+    public String getSongNumberHeader() {
+        return mSongNumberHeader;
     }
 
-    public String getEmceeNameTwo() {
-        return mEmceeNameTwo;
+    public void setSongNumberHeader(String songNumberHeader) {
+        mSongNumberHeader = songNumberHeader;
     }
 
-    public void setEmceeNameTwo(String emceeNameTwo) {
-        this.mEmceeNameTwo = emceeNameTwo;
+    public String getMilestoneHeader() {
+        return mMilestoneHeader;
     }
 
-    public String getBandName() {
-        return mBandName;
+    public void setMilestoneHeader(String milestoneHeader) {
+        mMilestoneHeader = milestoneHeader;
     }
 
-    public void setBandName(String bandName) {
-        this.mBandName = bandName;
+    public String getKidsHeader() {
+        return mKidsHeader;
     }
 
-    public String getCreativeType() {
-        return mCreativeType;
+    public void setKidsHeader(String kidsHeader) {
+        mKidsHeader = kidsHeader;
     }
 
-    public void setCreativeType(String creativeType) {
-        this.mCreativeType = creativeType;
+    public String getAudienceInteractionHeader() {
+        return mAudienceInteractionHeader;
     }
 
-    public String getCreativeName() {
-        return mCreativeName;
+    public void setAudienceInteractionHeader(String audienceInteractionHeader) {
+        mAudienceInteractionHeader = audienceInteractionHeader;
     }
 
-    public void setCreativeName(String creativeName) {
-        this.mCreativeName = creativeName;
+    public String getQuietReflectionHeader() {
+        return mQuietReflectionHeader;
     }
 
-    public String getCreativeTitle() {
-        return mCreativeTitle;
+    public void setQuietReflectionHeader(String quietReflectionHeader) {
+        mQuietReflectionHeader = quietReflectionHeader;
     }
 
-    public void setCreativeTitle(String creativeTitle) {
-        this.mCreativeTitle = creativeTitle;
+    public String getCollectionHeader() {
+        return mCollectionHeader;
     }
 
-    public String getTryingName() {
-        return mTryingName;
-    }
-
-    public void setTryingName(String tryingName) {
-        this.mTryingName = tryingName;
+    public void setCollectionHeader(String collectionHeader) {
+        mCollectionHeader = collectionHeader;
     }
 }
