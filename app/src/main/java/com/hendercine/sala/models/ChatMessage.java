@@ -8,51 +8,59 @@
 
 package com.hendercine.sala.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.parceler.Parcel;
+
+import java.io.Serializable;
 
 /**
  * sala created by hendercine on 5/21/18.
  */
 
-@SuppressWarnings("WeakerAccess")
-@Parcel
-public class ChatMessage {
+//@SuppressWarnings("WeakerAccess")
+@Parcel(Parcel.Serialization.BEAN)
+public class ChatMessage implements Serializable {
 
-    String mChatText;
-    String mChatName;
-    String mChatPhotoUrl;
+    // Fields must be public for Parceler.
+    @SerializedName("chat_message")
+    public String mChatMessage;
+    @SerializedName("sender_name")
+    public String mChatSenderName;
+    @SerializedName("chat_user_avatar_url")
+    public String mChatUserAvatarUrl;
 
     public ChatMessage() {
-        // Neccessary empty constructor for Parceler
+        // Necessary empty constructor for Parceler
     }
 
-    public ChatMessage(String text, String name, String photoUrl) {
-        this.mChatText = text;
-        this.mChatName = name;
-        this.mChatPhotoUrl = photoUrl;
+    public ChatMessage(String message, String senderName, String avatarUrl) {
+        this.mChatMessage = message;
+        this.mChatSenderName = senderName;
+        this.mChatUserAvatarUrl = avatarUrl;
     }
 
-    public String getChatText() {
-        return mChatText;
+    public String getChatMessage() {
+        return mChatMessage;
     }
 
-    public void setChatText(String text) {
-        this.mChatText = text;
+    public void setChatMessage(String message) {
+        this.mChatMessage = message;
     }
 
-    public String getChatName() {
-        return mChatName;
+    public String getChatSenderName() {
+        return mChatSenderName;
     }
 
-    public void setChatName(String name) {
-        this.mChatName = name;
+    public void setChatSenderName(String senderName) {
+        this.mChatSenderName = senderName;
     }
 
-    public String getChatPhotoUrl() {
-        return mChatPhotoUrl;
+    public String getChatUserAvatarUrl() {
+        return mChatUserAvatarUrl;
     }
 
-    public void setChatPhotoUrl(String photoUrl) {
-        this.mChatPhotoUrl = photoUrl;
+    public void setChatUserAvatarUrl(String avatarUrl) {
+        this.mChatUserAvatarUrl = avatarUrl;
     }
 }

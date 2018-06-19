@@ -8,25 +8,36 @@
 
 package com.hendercine.sala.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.parceler.Parcel;
+
+import java.io.Serializable;
 
 /**
  * sala created by hendercine on 6/14/18.
  */
 
-@SuppressWarnings("WeakerAccess")
-@Parcel
-public class HelpOftenEvent {
+//@SuppressWarnings("WeakerAccess")
+@Parcel(Parcel.Serialization.BEAN)
+public class HelpOftenEvent implements Serializable {
 
-    String mHelpOftenEventId;
-    String mHelpOftenEventDate;
-    String mHelpOftenEventTitle;
-    String mHelpOftenEventLocation;
-    String mHelpOftenEventContact;
-    String mHelpOftenEventPhotoUrl;
+    // Fields must be public for Parceler.
+    @SerializedName("help_event_id")
+    public String mHelpOftenEventId;
+    @SerializedName("help_event_date")
+    public String mHelpOftenEventDate;
+    @SerializedName("help_event_title")
+    public String mHelpOftenEventTitle;
+    @SerializedName("help_event_location")
+    public String mHelpOftenEventLocation;
+    @SerializedName("help_event_contact")
+    public String mHelpOftenEventContact;
+    @SerializedName("help_event_photo_url")
+    public String mHelpOftenEventPhotoUrl;
 
     public HelpOftenEvent() {
-        // Neccessary empty constructor for Parceler
+        // Necessary empty constructor for Parceler
     }
 
     public HelpOftenEvent(String helpOftenEventId, String helpOftenEventDate, String helpOftenEventTitle, String helpOftenEventLocation, String helpOftenEventContact, String helpOftenEventPhotoUrl) {

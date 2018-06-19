@@ -8,32 +8,43 @@
 
 package com.hendercine.sala.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.parceler.Parcel;
+
+import java.io.Serializable;
 
 /**
  * sala created by hendercine on 6/14/18.
  */
 
-@SuppressWarnings("WeakerAccess")
-@Parcel
-public class Program {
-    String mTheme;
-    String mEmceeNameOne;
-    String mEmceeNameTwo;
-    String mBandName;
-    String mCreativeType;
-    String mCreativeName;
-    String mCreativeTitle;
-    String mTryingName;
+//@SuppressWarnings("WeakerAccess")
+@Parcel(Parcel.Serialization.BEAN)
+public class Program implements Serializable {
+
+    // Fields must be public for Parceler.
+    @SerializedName("emcee_name_one")
+    public String mEmceeNameOne;
+    @SerializedName("emcee_name_two")
+    public String mEmceeNameTwo;
+    @SerializedName("band_name")
+    public String mBandName;
+    @SerializedName("creative_genre")
+    public String mCreativeType;
+    @SerializedName("creative_name")
+    public String mCreativeName;
+    @SerializedName("creative_title")
+    public String mCreativeTitle;
+    @SerializedName("trying_name")
+    public String mTryingName;
 
     public Program() {
-        // Neccessary empty constructor for Parceler
+        // Necessary empty constructor for Parceler
     }
 
-    public Program(String theme, String emceeNameOne, String emceeNameTwo,
+    public Program(String emceeNameOne, String emceeNameTwo,
                    String bandName, String creativeType, String creativeName,
                    String creativeTitle, String tryingName) {
-        this.mTheme = theme;
         this.mEmceeNameOne = emceeNameOne;
         this.mEmceeNameTwo = emceeNameTwo;
         this.mBandName = bandName;
@@ -41,14 +52,6 @@ public class Program {
         this.mCreativeName = creativeName;
         this.mCreativeTitle = creativeTitle;
         this.mTryingName = tryingName;
-    }
-
-    public String getTheme() {
-        return mTheme;
-    }
-
-    public void setTheme(String theme) {
-        this.mTheme = theme;
     }
 
     public String getEmceeNameOne() {

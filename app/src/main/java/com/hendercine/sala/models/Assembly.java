@@ -8,44 +8,55 @@
 
 package com.hendercine.sala.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.parceler.Parcel;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * sala created by hendercine on 6/14/18.
  */
 
-@SuppressWarnings("WeakerAccess")
-@Parcel
-public class Assembly {
+//@SuppressWarnings("WeakerAccess")
+@Parcel(Parcel.Serialization.BEAN)
+public class Assembly implements Serializable {
 
-    String mAssemblyId;
-    String mAssemblyDate;
-    String mAssemblyTheme;
-    String mAssemblyFeature;
-    String mAssemblyDescription;
-    String mAssemblyLocation;
-    String mAssemblyPhotoUrl;
+    // Fields must be public for Parceler.
+    @SerializedName("_id")
+    public int mAssemblyId;
+    @SerializedName("assembly_date")
+    public String mAssemblyDate;
+    @SerializedName("assembly_theme")
+    public String mAssemblyTheme;
+    @SerializedName("assembly_feature")
+    public String mAssemblyFeature;
+    @SerializedName("assembly_description")
+    public String mAssemblyDescription;
+    @SerializedName("assembly_location")
+    public String mAssemblyLocation;
+    @SerializedName("assembly_location")
+    public String mAssemblyPhotoUrl;
+    @SerializedName("performers")
+    public ArrayList<Performer> mPerformerList;
+    @SerializedName("better_events")
+    public ArrayList<LiveBetterEvent> mBetterEventsList;
+    @SerializedName("help_events")
+    public ArrayList<HelpOftenEvent> mHelpEventsList;
+    @SerializedName("songs")
+    public ArrayList<Song> mSongsList;
 
     public Assembly() {
         // Neccessary empty constructor for Parceler
     }
 
-    public Assembly(String assemblyId, String assemblyDate, String assemblyTheme, String assemblyFeature, String assemblyDescription, String assemblyLocation, String assemblyPhotoUrl) {
-        this.mAssemblyId = assemblyId;
-        this.mAssemblyDate = assemblyDate;
-        this.mAssemblyTheme = assemblyTheme;
-        this.mAssemblyFeature = assemblyFeature;
-        this.mAssemblyDescription = assemblyDescription;
-        this.mAssemblyLocation = assemblyLocation;
-        this.mAssemblyPhotoUrl = assemblyPhotoUrl;
-    }
-
-    public String getAssemblyId() {
+    public int getAssemblyId() {
         return mAssemblyId;
     }
 
-    public void setAssemblyId(String assemblyId) {
-        this.mAssemblyId = assemblyId;
+    public void setAssemblyId(int assemblyId) {
+        mAssemblyId = assemblyId;
     }
 
     public String getAssemblyDate() {
@@ -53,7 +64,7 @@ public class Assembly {
     }
 
     public void setAssemblyDate(String assemblyDate) {
-        this.mAssemblyDate = assemblyDate;
+        mAssemblyDate = assemblyDate;
     }
 
     public String getAssemblyTheme() {
@@ -61,7 +72,7 @@ public class Assembly {
     }
 
     public void setAssemblyTheme(String assemblyTheme) {
-        this.mAssemblyTheme = assemblyTheme;
+        mAssemblyTheme = assemblyTheme;
     }
 
     public String getAssemblyFeature() {
@@ -69,7 +80,7 @@ public class Assembly {
     }
 
     public void setAssemblyFeature(String assemblyFeature) {
-        this.mAssemblyFeature = assemblyFeature;
+        mAssemblyFeature = assemblyFeature;
     }
 
     public String getAssemblyDescription() {
@@ -77,7 +88,7 @@ public class Assembly {
     }
 
     public void setAssemblyDescription(String assemblyDescription) {
-        this.mAssemblyDescription = assemblyDescription;
+        mAssemblyDescription = assemblyDescription;
     }
 
     public String getAssemblyLocation() {
@@ -85,7 +96,7 @@ public class Assembly {
     }
 
     public void setAssemblyLocation(String assemblyLocation) {
-        this.mAssemblyLocation = assemblyLocation;
+        mAssemblyLocation = assemblyLocation;
     }
 
     public String getAssemblyPhotoUrl() {
@@ -93,6 +104,38 @@ public class Assembly {
     }
 
     public void setAssemblyPhotoUrl(String assemblyPhotoUrl) {
-        this.mAssemblyPhotoUrl = assemblyPhotoUrl;
+        mAssemblyPhotoUrl = assemblyPhotoUrl;
+    }
+
+    public ArrayList<Performer> getPerformerList() {
+        return mPerformerList;
+    }
+
+    public void setPerformerList(ArrayList<Performer> performerList) {
+        mPerformerList = performerList;
+    }
+
+    public ArrayList<LiveBetterEvent> getBetterEventsList() {
+        return mBetterEventsList;
+    }
+
+    public void setBetterEventsList(ArrayList<LiveBetterEvent> betterEventsList) {
+        mBetterEventsList = betterEventsList;
+    }
+
+    public ArrayList<HelpOftenEvent> getHelpEventsList() {
+        return mHelpEventsList;
+    }
+
+    public void setHelpEventsList(ArrayList<HelpOftenEvent> helpEventsList) {
+        mHelpEventsList = helpEventsList;
+    }
+
+    public ArrayList<Song> getSongsList() {
+        return mSongsList;
+    }
+
+    public void setSongsList(ArrayList<Song> songsList) {
+        mSongsList = songsList;
     }
 }

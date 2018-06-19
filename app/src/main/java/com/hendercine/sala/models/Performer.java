@@ -8,48 +8,61 @@
 
 package com.hendercine.sala.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.parceler.Parcel;
+
+import java.io.Serializable;
 
 /**
  * sala created by hendercine on 6/14/18.
  */
 
-@SuppressWarnings("WeakerAccess")
-@Parcel
-public class Performer {
+//@SuppressWarnings("WeakerAccess")
+@Parcel(Parcel.Serialization.BEAN)
+public class Performer implements Serializable {
 
-    String mPerformerId;
-    String mPerformerName;
-    String mPerformanceTitle;
-    String mPerformerBio;
-    String mPerformerPhotoUrl;
+    // Fields must be public for Parceler.
+    @SerializedName("performer_id")
+    public int mPerformerId;
+    @SerializedName("performance_category")
+    public String mPerformanceCategory;
+    @SerializedName("performance_title")
+    public String mPerformanceTitle;
+    @SerializedName("performer_name")
+    public String mPerformerName;
+    @SerializedName("performer_bio")
+    public String mPerformerBio;
+    @SerializedName("performer_photo_url")
+    public String mPerformerPhotoUrl;
 
     public Performer() {
-        // Neccessary empty constructor for Parceler
+        // Necessary empty constructor for Parceler
     }
 
-    public Performer(String performerId, String performerName, String performanceTitle, String performerBio, String performerPhotoUrl) {
+    public Performer(int performerId, String performanceCategory, String performanceTitle, String performerName, String performerBio, String performerPhotoUrl) {
         this.mPerformerId = performerId;
-        this.mPerformerName = performerName;
+        this.mPerformanceCategory = performanceCategory;
         this.mPerformanceTitle = performanceTitle;
+        this.mPerformerName = performerName;
         this.mPerformerBio = performerBio;
         this.mPerformerPhotoUrl = performerPhotoUrl;
     }
 
-    public String getPerformerId() {
+    public int getPerformerId() {
         return mPerformerId;
     }
 
-    public void setPerformerId(String performerId) {
+    public void setPerformerId(int performerId) {
         this.mPerformerId = performerId;
     }
 
-    public String getPerformerName() {
-        return mPerformerName;
+    public String getPerformanceCategory() {
+        return mPerformanceCategory;
     }
 
-    public void setPerformerName(String performerName) {
-        this.mPerformerName = performerName;
+    public void setPerformanceCategory(String performanceCategory) {
+        this.mPerformanceCategory = performanceCategory;
     }
 
     public String getPerformanceTitle() {
@@ -58,6 +71,14 @@ public class Performer {
 
     public void setPerformanceTitle(String performanceTitle) {
         this.mPerformanceTitle = performanceTitle;
+    }
+
+    public String getPerformerName() {
+        return mPerformerName;
+    }
+
+    public void setPerformerName(String performerName) {
+        this.mPerformerName = performerName;
     }
 
     public String getPerformerBio() {

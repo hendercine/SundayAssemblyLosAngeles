@@ -8,23 +8,32 @@
 
 package com.hendercine.sala.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.parceler.Parcel;
+
+import java.io.Serializable;
 
 /**
  * sala created by hendercine on 5/20/18.
  */
 
-@SuppressWarnings("WeakerAccess")
-@Parcel
-public class User {
-    // Fields must not be private for Parceler
-    String firstName;
-    String lastName;
-    String username;
-    String email;
+//@SuppressWarnings("WeakerAccess")
+@Parcel(Parcel.Serialization.BEAN)
+public class User implements Serializable {
+
+    // Fields must be public for Parceler.
+    @SerializedName("full_first_name")
+    public String firstName;
+    @SerializedName("full_last_name")
+    public String lastName;
+    @SerializedName("user_name")
+    public String username;
+    @SerializedName("user_email")
+    public String email;
 
     public User() {
-        // Neccessary empty constructor for Parceler
+        // Necessary empty constructor for Parceler
     }
 
     public User(String firstName, String lastName, String username, String email) {

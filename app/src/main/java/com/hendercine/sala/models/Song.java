@@ -8,23 +8,32 @@
 
 package com.hendercine.sala.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.parceler.Parcel;
+
+import java.io.Serializable;
 
 /**
  * sala created by hendercine on 6/14/18.
  */
 
-@SuppressWarnings("WeakerAccess")
-@Parcel
-public class Song {
+//@SuppressWarnings("WeakerAccess")
+@Parcel(Parcel.Serialization.BEAN)
+public class Song implements Serializable {
 
-    int mSongId;
-    String mSongTitle;
-    String mSongBy;
-    String mLyrics;
+    // Fields must be public for Parceler.
+    @SerializedName("song_id")
+    public int mSongId;
+    @SerializedName("song_title")
+    public String mSongTitle;
+    @SerializedName("song_by")
+    public String mSongBy;
+    @SerializedName("lyrics")
+    public String mLyrics;
 
     public Song() {
-        // Neccessary empty constructor for Parceler
+        // Necessary empty constructor for Parceler
     }
 
     public Song(int songId, String songTitle, String songBy, String lyrics) {
