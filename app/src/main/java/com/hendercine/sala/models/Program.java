@@ -21,10 +21,10 @@ import org.parceler.Parcel;
 public class Program {
 
     // Fields must be public for Parceler.
-    @SerializedName("performance_category_header")
-    public String mPerformanceCategoryHeader;
-    @SerializedName("song_number_header")
-    public String mSongNumberHeader;
+//    @SerializedName("performance_category_header")
+//    public String mPerformanceCategoryHeader;
+//    @SerializedName("song_number_header")
+//    public String mSongNumberHeader;
     @SerializedName("milestone_header")
     public String mMilestoneHeader;
     @SerializedName("kids_header")
@@ -39,22 +39,22 @@ public class Program {
     public Program() {
         // Necessary empty constructor for Parceler
     }
-
-    public String getPerformanceCategoryHeader() {
-        return mPerformanceCategoryHeader;
-    }
-
-    public void setPerformanceCategoryHeader(String performanceCategoryHeader) {
-        mPerformanceCategoryHeader = performanceCategoryHeader;
-    }
-
-    public String getSongNumberHeader() {
-        return mSongNumberHeader;
-    }
-
-    public void setSongNumberHeader(String songNumberHeader) {
-        mSongNumberHeader = songNumberHeader;
-    }
+// TODO: Remove or uncomment commented code as required
+//    public String getPerformanceCategoryHeader() {
+//        return mPerformanceCategoryHeader;
+//    }
+//
+//    public void setPerformanceCategoryHeader(String performanceCategoryHeader) {
+//        mPerformanceCategoryHeader = performanceCategoryHeader;
+//    }
+//
+//    public String getSongNumberHeader() {
+//        return mSongNumberHeader;
+//    }
+//
+//    public void setSongNumberHeader(String songNumberHeader) {
+//        mSongNumberHeader = songNumberHeader;
+//    }
 
     public String getMilestoneHeader() {
         return mMilestoneHeader;

@@ -23,8 +23,8 @@ import java.io.Serializable;
 public class Performer implements Serializable {
 
     // Fields must be public for Parceler.
-    @SerializedName("performance_date")
-    public String mPerformanceDate;
+//    @SerializedName("performance_date")
+//    public String mPerformanceDate;
     @SerializedName("performance_category")
     public String mPerformanceCategory;
     @SerializedName("performance_title")
@@ -40,22 +40,23 @@ public class Performer implements Serializable {
         // Necessary empty constructor for Parceler
     }
 
-    public Performer(String performanceDate, String performanceCategory, String performanceTitle, String performerName, String performerBio, String performerPhotoUrl) {
-        this.mPerformanceDate = performanceDate;
-        this.mPerformanceCategory = performanceCategory;
-        this.mPerformanceTitle = performanceTitle;
-        this.mPerformerName = performerName;
-        this.mPerformerBio = performerBio;
-        this.mPerformerPhotoUrl = performerPhotoUrl;
-    }
+// TODO: Remove or uncomment commented code as required
+//    public Performer(String performanceDate, String performanceCategory, String performanceTitle, String performerName, String performerBio, String performerPhotoUrl) {
+//        this.mPerformanceDate = performanceDate;
+//        this.mPerformanceCategory = performanceCategory;
+//        this.mPerformanceTitle = performanceTitle;
+//        this.mPerformerName = performerName;
+//        this.mPerformerBio = performerBio;
+//        this.mPerformerPhotoUrl = performerPhotoUrl;
+//    }
 
-    public String getPerformanceDate() {
-        return mPerformanceDate;
-    }
-
-    public void setPerformanceDate(String performanceDate) {
-        this.mPerformanceDate = performanceDate;
-    }
+//    public String getPerformanceDate() {
+//        return mPerformanceDate;
+//    }
+//
+//    public void setPerformanceDate(String performanceDate) {
+//        this.mPerformanceDate = performanceDate;
+//    }
 
     public String getPerformanceCategory() {
         return mPerformanceCategory;
