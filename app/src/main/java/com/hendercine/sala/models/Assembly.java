@@ -34,7 +34,7 @@ public class Assembly implements Serializable {
     public String mAssemblyDescription;
     @SerializedName("assembly_location")
     public String mAssemblyLocation;
-    @SerializedName("assembly_location")
+    @SerializedName("assembly_photo_url")
     public String mAssemblyPhotoUrl;
     @SerializedName("performers")
     public ArrayList<Performer> mPerformerList;
