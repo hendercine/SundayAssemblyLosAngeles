@@ -45,12 +45,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.hendercine.sala.R;
+import com.hendercine.sala.models.Assembly;
+import com.hendercine.sala.models.Performer;
+import com.hendercine.sala.models.Song;
 import com.hendercine.sala.models.User;
 import com.hendercine.sala.ui.adapters.SideBarRVAdapter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import butterknife.BindString;
@@ -71,9 +74,11 @@ public class MainActivity extends AppCompatActivity {
     private String mAppBarImageUrl;
 
     private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mDatabaseReference;
+    private DatabaseReference mAssemblyDbRef;
+    private DatabaseReference mChatDbReference;
     private StorageReference mStorageReference;
     private ChildEventListener mChildEventListener;
+    private ValueEventListener mAssemblyListener;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
@@ -85,6 +90,12 @@ public class MainActivity extends AppCompatActivity {
     private boolean mTwoPane;
     private String[] mSideBarArray;
     private SideBarRVAdapter mSideBarAdapter;
+
+    private Assembly mAssemblyData;
+    private Assembly mAssembly;
+    private Performer mPerformer;
+    private Song mSong;
+    private ArrayList<Assembly> mAssembliesList;
 
     @Nullable
     @BindView(R.id.drawer_layout)
@@ -146,14 +157,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        // Initialize Firebase Cloud Storage
-        mStorageReference = FirebaseStorage.getInstance().getReference();
+        // Initialize Database and access data
+        mAssemblyDbRef = FirebaseDatabase
+                .getInstance()
+                .getReference()
+                .child("assemblies");
+        makeMasterAssembliesList();
 
         mTwoPane = getResources().getBoolean(R.bool.isTablet);
         setSupportActionBar(mToolbar);
         mActionBar = getSupportActionBar();
         mAppBarTitle = mAboutTitle;
         mAppBarImageUrl = mAboutBannerUrl;
+
         if (!mTwoPane && mSideBarRecyclerView != null) {
             mSideBarArray = new String[]{mAboutSideBar, mProgramSidebar,
                     mLyricsSideBar, mSpeakerSideBar, mFutureSideBar,
@@ -190,6 +206,41 @@ public class MainActivity extends AppCompatActivity {
 
 //        authorizeUser();
 
+    }
+
+    private void makeMasterAssembliesList() {
+        // Add value event listener to get Assembly data
+        mAssemblyListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mAssembliesList = new ArrayList<>();
+                mAssemblyData = dataSnapshot.getValue(Assembly.class);
+                for (int i = 0; i < mAssembliesList.size(); i++) {
+                    mAssembly = new Assembly();
+                    mAssembly.setAssemblyDate(mAssemblyData.getAssemblyDate());
+                    mAssembly.setAssemblyDescription(mAssemblyData.getAssemblyDescription());
+                    mAssembly.setAssemblyTheme(mAssemblyData.getAssemblyTheme());
+                    mAssembly.setAssemblyLocation(mAssemblyData.getAssemblyLocation());
+                    mAssembly.setAssemblyPhotoUrl(mAssemblyData.getAssemblyPhotoUrl());
+                    mAssembly.setPerformerList(mAssemblyData.getPerformerList());
+                    mAssembly.setSongsList(mAssemblyData.getSongsList());
+
+                    mAssembliesList.add(mAssembly);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Timber.e("Database load error", databaseError.toException());
+                Toast.makeText(MainActivity.this,
+                        "Failed to retrieve data.",
+                        Toast.LENGTH_SHORT)
+                        .show();
+            }
+        };
+
+        mAssemblyDbRef.addValueEventListener(mAssemblyListener);
     }
 
     private void activateDrawerItems() {
@@ -365,6 +416,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // TODO: Uncomment and/or implement to include Firebase Auth
     private void authorizeUser() {
         // Implement Firebase Auth
         mUsername = ANONYMOUS;
@@ -413,6 +465,12 @@ public class MainActivity extends AppCompatActivity {
 //    }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
 // TODO: Uncomment and implement for Firebase Auth
@@ -429,6 +487,14 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 // TODO: Uncomment and implement for Firebase Auth
 //        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mAssemblyListener != null) {
+            mAssemblyDbRef.removeEventListener(mAssemblyListener);
+        }
     }
 
     @Override
@@ -471,53 +537,52 @@ public class MainActivity extends AppCompatActivity {
             mChildEventListener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, String s) {
-                    mUser = dataSnapshot.getValue(User.class);
-                    if (mUser != null) {
-                        mUsername = mUser.getUsername();
-                    }
+// TODO: Uncomment to hook up chat feature
+//                    mUser = dataSnapshot.getValue(User.class);
+//                    if (mUser != null) {
+//                        mUsername = mUser.getUsername();
+//                    }
 //                    FriendlyMessage friendlyMessage = dataSnapshot.getValue(FriendlyMessage.class);
 //                    mMessageAdapter.add(friendlyMessage);
                 }
 
                 @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, String s) {
                 }
 
                 @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
                 }
 
                 @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, String s) {
                 }
 
                 @Override
-                public void onCancelled(DatabaseError databaseError) {
+                public void onCancelled(@NonNull DatabaseError databaseError) {
                 }
             };
-            mDatabaseReference.addChildEventListener(mChildEventListener);
+            mChatDbReference.addChildEventListener(mChildEventListener);
+            mAssemblyDbRef.addChildEventListener(mChildEventListener);
         }
     }
 
     private void detachDatabaseReadListener() {
         if (mChildEventListener != null) {
-            mDatabaseReference.removeEventListener(mChildEventListener);
+            mChatDbReference.removeEventListener(mChildEventListener);
             mChildEventListener = null;
         }
     }
 
-    private void readAndWriteRealtimeDatabase() {
-        // TODO: Refactor this method to store appropriate data - chat or user
-        // data or whatever.
-
+    private void readAndWriteChatDatabase() {
+        // TODO: Refactor this method to store message and user data
         // Write a message to the database
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mDatabaseReference = mFirebaseDatabase.getReference("message");
+        mChatDbReference = mFirebaseDatabase.getReference("message");
 
-        mDatabaseReference.setValue("Hello, world!");
+        mChatDbReference.setValue("Hello, world!");
 
         // Read from the database
-        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+        mChatDbReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
