@@ -64,6 +64,7 @@ dependencies {
     implementation 'io.andref:Rx.Network:1.0.1'
     // Firebase
     implementation "com.google.firebase:firebase-database:$firebaseVersion"
+    implementation "com.google.firebase:firebase-storage:$firebaseVersion"
     implementation "com.google.firebase:firebase-auth:16.0.2"
     implementation 'com.google.firebase:firebase-messaging:17.0.0'
     // Firebase UI Auth

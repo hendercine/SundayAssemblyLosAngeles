@@ -45,6 +45,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.hendercine.sala.R;
 import com.hendercine.sala.models.User;
 import com.hendercine.sala.ui.adapters.SideBarRVAdapter;
@@ -70,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
+    private StorageReference mStorageReference;
     private ChildEventListener mChildEventListener;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -143,6 +146,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        // Initialize Firebase Cloud Storage
+        mStorageReference = FirebaseStorage.getInstance().getReference();
 
         mTwoPane = getResources().getBoolean(R.bool.isTablet);
         setSupportActionBar(mToolbar);
@@ -465,7 +470,7 @@ public class MainActivity extends AppCompatActivity {
         if (mChildEventListener == null) {
             mChildEventListener = new ChildEventListener() {
                 @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, String s) {
                     mUser = dataSnapshot.getValue(User.class);
                     if (mUser != null) {
                         mUsername = mUser.getUsername();

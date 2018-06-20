@@ -23,8 +23,8 @@ import java.io.Serializable;
 public class Performer implements Serializable {
 
     // Fields must be public for Parceler.
-    @SerializedName("performer_id")
-    public int mPerformerId;
+    @SerializedName("performance_date")
+    public String mPerformanceDate;
     @SerializedName("performance_category")
     public String mPerformanceCategory;
     @SerializedName("performance_title")
@@ -40,8 +40,8 @@ public class Performer implements Serializable {
         // Necessary empty constructor for Parceler
     }
 
-    public Performer(int performerId, String performanceCategory, String performanceTitle, String performerName, String performerBio, String performerPhotoUrl) {
-        this.mPerformerId = performerId;
+    public Performer(String performanceDate, String performanceCategory, String performanceTitle, String performerName, String performerBio, String performerPhotoUrl) {
+        this.mPerformanceDate = performanceDate;
         this.mPerformanceCategory = performanceCategory;
         this.mPerformanceTitle = performanceTitle;
         this.mPerformerName = performerName;
@@ -49,12 +49,12 @@ public class Performer implements Serializable {
         this.mPerformerPhotoUrl = performerPhotoUrl;
     }
 
-    public int getPerformerId() {
-        return mPerformerId;
+    public String getPerformanceDate() {
+        return mPerformanceDate;
     }
 
-    public void setPerformerId(int performerId) {
-        this.mPerformerId = performerId;
+    public void setPerformanceDate(String performanceDate) {
+        this.mPerformanceDate = performanceDate;
     }
 
     public String getPerformanceCategory() {
