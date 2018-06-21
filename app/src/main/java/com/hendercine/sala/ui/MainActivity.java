@@ -20,7 +20,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -36,16 +35,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.firebase.ui.auth.AuthUI;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.StorageReference;
+import com.hendercine.sala.BaseActivity;
 import com.hendercine.sala.R;
 import com.hendercine.sala.models.Assembly;
 import com.hendercine.sala.models.Performer;
@@ -56,14 +52,13 @@ import com.hendercine.sala.ui.adapters.SideBarRVAdapter;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     public static final String ANONYMOUS = "anonymous";
     public static final int DEFAULT_MSG_LENGTH_LIMIT = 1000;
@@ -78,11 +73,9 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mAssemblyDbRef;
     private DatabaseReference mChatDbReference;
-    private StorageReference mStorageReference;
+
     private ChildEventListener mChildEventListener;
     private ValueEventListener mAssemblyListener;
-    private FirebaseAuth mFirebaseAuth;
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     private ActionBarDrawerToggle mToggle;
     private ActionBar mActionBar;
@@ -420,39 +413,40 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // TODO: Uncomment and/or implement to include Firebase Auth
-    private void authorizeUser() {
-        // Implement Firebase Auth
-        mUsername = ANONYMOUS;
-        // Initialize Firebase components
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // user is signed in
-                    onSignedInInitialize(user.getDisplayName());
-                } else {
-                    // user is signed out
-                    onSignedOutCleanup();
-                    startActivityForResult(
-                            AuthUI.getInstance()
-                                    .createSignInIntentBuilder()
-                                    .setAvailableProviders(Arrays.asList(
-                                            new AuthUI.IdpConfig.EmailBuilder().build(),
-                                            new AuthUI.IdpConfig.PhoneBuilder().build(),
-                                            new AuthUI.IdpConfig.GoogleBuilder().build(),
-                                            new AuthUI.IdpConfig.FacebookBuilder().build(),
-                                            new AuthUI.IdpConfig.TwitterBuilder().build()
-                                    ))
-                                    .build(),
-                            RC_SIGN_IN);
-                }
+//    private void authorizeUser() {
+//        // Implement Firebase Auth
+//        mUsername = ANONYMOUS;
+//        // Initialize Firebase components
+//        mFirebaseDatabase = FirebaseDatabase.getInstance();
+//        mFirebaseAuth = FirebaseAuth.getInstance();
+//        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+//            @Override
+//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//                FirebaseUser user = firebaseAuth.getCurrentUser();
+//                if (user != null) {
+//                    // user is signed in
+//                    onSignedInInitialize(user.getDisplayName());
+//                } else {
+//                    // user is signed out
+//                    onSignedOutCleanup();
+//                    startActivityForResult(
+//                            AuthUI.getInstance()
+//                                    .createSignInIntentBuilder()
+//                                    .setAvailableProviders(Arrays.asList(
+//                                            new AuthUI.IdpConfig.EmailBuilder().build(),
+//                                            new AuthUI.IdpConfig.PhoneBuilder().build(),
+//                                            new AuthUI.IdpConfig.GoogleBuilder().build(),
+//                                            new AuthUI.IdpConfig.FacebookBuilder().build(),
+//                                            new AuthUI.IdpConfig.TwitterBuilder().build()
+//                                    ))
+//                                    .build(),
+//                            RC_SIGN_IN);
+//                }
+//
+//            }
+//        };
+//    }
 
-            }
-        };
-    }
 // TODO: Uncomment and implement for Firebase Auth
 //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
