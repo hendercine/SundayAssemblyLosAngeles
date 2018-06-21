@@ -63,16 +63,21 @@ dependencies {
     // RxNetwork
     implementation 'io.andref:Rx.Network:1.0.1'
     // Firebase
+    implementation "com.google.firebase:firebase-core:$firebaseVersion"
     implementation "com.google.firebase:firebase-database:$firebaseVersion"
     implementation "com.google.firebase:firebase-storage:$firebaseVersion"
     implementation "com.google.firebase:firebase-auth:16.0.2"
     implementation 'com.google.firebase:firebase-messaging:17.0.0'
+    // Firebase UI Database
+    implementation 'com.firebaseui:firebase-ui-database:4.0.1'
     // Firebase UI Auth
     // Find the latest Facebook SDK releases here: https://goo.gl/Ce5L94
     // Find the latest Twitter SDK releases here: https://goo.gl/E5wZvQ
-    implementation 'com.firebaseui:firebase-ui-auth:3.3.1'
+    implementation 'com.firebaseui:firebase-ui-auth:4.0.0'
     implementation 'com.facebook.android:facebook-login:4.33.0'
-    implementation 'com.twitter.sdk.android:twitter-core:3.1.1'
+    implementation 'com.twitter.sdk.android:twitter-core:3.2.0'
+    // Needed to fix a dependency conflict with FirebaseUI'
+    implementation 'android.arch.core:runtime:1.1.1'
     // Google Services
 //    implementation 'com.google.gms:google-services:3.2.0'
 

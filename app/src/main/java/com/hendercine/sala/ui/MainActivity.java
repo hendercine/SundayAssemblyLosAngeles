@@ -164,6 +164,18 @@ public class MainActivity extends AppCompatActivity {
                 .getInstance()
                 .getReference()
                 .child("assemblies");
+
+        mAssemblyDbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mAssemblyData = (Assembly) dataSnapshot.getChildren();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 //        makeMasterAssembliesList();
 
         mTwoPane = getResources().getBoolean(R.bool.isTablet);
@@ -210,28 +222,27 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void makeMasterAssembliesList() {
-        // Add value event listener to get Assembly data
-        mAssemblyListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mAssembliesList = new ArrayList<>();
-                mAssemblyData = dataSnapshot.getValue(Assembly.class);
-//                mAssembliesList.add(mAssemblyData);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Timber.e("Database load error", databaseError.toException());
-                Toast.makeText(MainActivity.this,
-                        "Failed to retrieve data.",
-                        Toast.LENGTH_SHORT)
-                        .show();
-            }
-        };
-
-        mAssemblyDbRef.addValueEventListener(mAssemblyListener);
-    }
+// TODO: Remove if not ultimately useful
+//    private void makeMasterAssembliesList() {
+//        // Add value event listener to get Assembly data
+//        mAssemblyListener = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                mAssemblyData = dataSnapshot.getValue(Assembly.class);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                Timber.e("Database load error", databaseError.toException());
+//                Toast.makeText(MainActivity.this,
+//                        "Failed to retrieve data.",
+//                        Toast.LENGTH_SHORT)
+//                        .show();
+//            }
+//        };
+//
+//        mAssemblyDbRef.addValueEventListener(mAssemblyListener);
+//    }
 
     private void activateDrawerItems() {
         // Handle navigation drawer click events
@@ -271,9 +282,9 @@ public class MainActivity extends AppCompatActivity {
                                 "This will display SpeakerFragment",
                                 Toast.LENGTH_SHORT).show();
                     } else if (position == R.id.future_assemblies_nav) {
-                        //                    fragment = new FutureAssembliesFragment();
+                        //                    fragment = new AssembliesFragment();
                         Toast.makeText(getApplicationContext(),
-                                "This will display FutureAssembliesFragment",
+                                "This will display AssembliesFragment",
                                 Toast.LENGTH_SHORT).show();
                     } else if (position == R.id.help_often_nav) {
                         //                    fragment = new HelpOftenFragment();
@@ -355,9 +366,9 @@ public class MainActivity extends AppCompatActivity {
                             "This will display SpeakerFragment",
                             Toast.LENGTH_SHORT).show();
                 } else if (position == mSideBarAdapter.getItemId(4)) {
-//                    fragment = new FutureAssembliesFragment();
+//                    fragment = new AssembliesFragment();
                     Toast.makeText(getApplicationContext(),
-                            "This will display FutureAssembliesFragment",
+                            "This will display AssembliesFragment",
                             Toast.LENGTH_SHORT).show();
                 } else if (position == mSideBarAdapter.getItemId(5)) {
 //                    fragment = new HelpOftenFragment();
