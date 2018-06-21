@@ -8,104 +8,47 @@
 
 package com.hendercine.sala.models;
 
-import com.google.gson.annotations.SerializedName;
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
 
-import org.parceler.Parcel;
-
-import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * sala created by hendercine on 6/14/18.
  */
 
-//@SuppressWarnings("WeakerAccess")
-@Parcel(Parcel.Serialization.BEAN)
-public class Assembly implements Serializable {
+// [START assembly_class]
+@IgnoreExtraProperties
+public class Assembly {
 
-    // Fields must be public for Parceler.
-    @SerializedName("_id")
-    public int mAssemblyId;
-    @SerializedName("assembly_date")
     public String mAssemblyDate;
-    @SerializedName("assembly_theme")
     public String mAssemblyTheme;
-    @SerializedName("assembly_description")
     public String mAssemblyDescription;
-    @SerializedName("assembly_location")
-    public String mAssemblyLocation;
-    @SerializedName("assembly_photo_url")
     public String mAssemblyPhotoUrl;
-    @SerializedName("performers")
-    public ArrayList<Performer> mPerformerList;
-    @SerializedName("songs")
-    public ArrayList<Song> mSongsList;
 
     public Assembly() {
         // Neccessary empty constructor for Parceler
     }
 
-    public int getAssemblyId() {
-        return mAssemblyId;
+    public Assembly(String assemblyDate, String assemblyTheme, String assemblyDescription, String assemblyPhotoUrl) {
+        this.mAssemblyDate = assemblyDate;
+        this.mAssemblyTheme = assemblyTheme;
+        this.mAssemblyDescription = assemblyDescription;
+        this.mAssemblyPhotoUrl = assemblyPhotoUrl;
     }
 
-    public void setAssemblyId(int assemblyId) {
-        mAssemblyId = assemblyId;
-    }
+    // [START assembly_to_map]
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("assembly_date", mAssemblyDate);
+        result.put("assembly_theme", mAssemblyTheme);
+        result.put("assembly_description", mAssemblyDescription);
+        result.put("assembly_photo_url", mAssemblyPhotoUrl);
 
-    public String getAssemblyDate() {
-        return mAssemblyDate;
+        return result;
     }
-
-    public void setAssemblyDate(String assemblyDate) {
-        mAssemblyDate = assemblyDate;
-    }
-
-    public String getAssemblyTheme() {
-        return mAssemblyTheme;
-    }
-
-    public void setAssemblyTheme(String assemblyTheme) {
-        mAssemblyTheme = assemblyTheme;
-    }
-
-    public String getAssemblyDescription() {
-        return mAssemblyDescription;
-    }
-
-    public void setAssemblyDescription(String assemblyDescription) {
-        mAssemblyDescription = assemblyDescription;
-    }
-
-    public String getAssemblyLocation() {
-        return mAssemblyLocation;
-    }
-
-    public void setAssemblyLocation(String assemblyLocation) {
-        mAssemblyLocation = assemblyLocation;
-    }
-
-    public String getAssemblyPhotoUrl() {
-        return mAssemblyPhotoUrl;
-    }
-
-    public void setAssemblyPhotoUrl(String assemblyPhotoUrl) {
-        mAssemblyPhotoUrl = assemblyPhotoUrl;
-    }
-
-    public ArrayList<Performer> getPerformerList() {
-        return mPerformerList;
-    }
-
-    public void setPerformerList(ArrayList<Performer> performerList) {
-        mPerformerList = performerList;
-    }
-
-    public ArrayList<Song> getSongsList() {
-        return mSongsList;
-    }
-
-    public void setSongsList(ArrayList<Song> songsList) {
-        mSongsList = songsList;
-    }
+    // [END assembly_to_map]
 }
+// [END assembly_class]

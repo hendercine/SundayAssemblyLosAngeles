@@ -8,7 +8,7 @@
 
 <resources>
     <string name="app_name">Sunday Assembly Los Angeles</string>
-    <string name="logout">Logout</string>
+    <string name="logout">Log out</string>
     <!-- Facebook and Twitter Keys-->
     <!-- sterces.xml will have to be decrypted to use and re-encrypted before
      commiting to git -->
