@@ -100,9 +100,9 @@ public class ProgramFragment extends Fragment {
                 false);
         ButterKnife.bind(this, view);
         mUnbinder = ButterKnife.bind(this, view);
-
-        String assemblyTheme = mAssembly.getAssemblyTheme();
-        mProgramTitle.setText(assemblyTheme);
+//
+//        String assemblyTheme = mAssembly.getAssemblyTheme();
+//        mProgramTitle.setText(assemblyTheme);
 
         return view;
     }

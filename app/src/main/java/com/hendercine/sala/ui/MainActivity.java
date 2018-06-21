@@ -98,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
     private Performer mPerformer;
     private Song mSong;
     private ArrayList<Assembly> mAssembliesList;
-    private int mId;
 
     @Nullable
     @BindView(R.id.drawer_layout)
@@ -165,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                 .getInstance()
                 .getReference()
                 .child("assemblies");
-        makeMasterAssembliesList();
+//        makeMasterAssembliesList();
 
         mTwoPane = getResources().getBoolean(R.bool.isTablet);
         setSupportActionBar(mToolbar);
@@ -234,83 +233,6 @@ public class MainActivity extends AppCompatActivity {
         mAssemblyDbRef.addValueEventListener(mAssemblyListener);
     }
 
-    private void displaySelectedFragment() {
-        // TODO: Add code here to update the UI based on the item selected
-        // For example, swap UI fragments here
-        Fragment fragment = null;
-        Bundle bundle = new Bundle();
-        if (mId == R.id.about_nav) {
-            fragment = new AboutSalaFragment();
-            mAppBarTitle = mAboutTitle;
-            mAppBarImageUrl = mAboutBannerUrl;
-        } else if (mId == R.id.program_nav) {
-            bundle.putParcelable("latest_assembly", Parcels.wrap
-                    (mAssembliesList.get(0))); // Get data at index 0 for the most recent Assembly
-            fragment = new ProgramFragment();
-            fragment.setArguments(bundle);
-            Toast.makeText(getApplicationContext(),
-                    "This will display ProgramFragment",
-                    Toast.LENGTH_SHORT).show();
-        } else if (mId == R.id.lyrics_nav) {
-            //                    fragment = new LyricsFragment();
-            Toast.makeText(getApplicationContext(),
-                    "This will display LyricsFragment",
-                    Toast.LENGTH_SHORT).show();
-        } else if (mId == R.id.speaker_nav) {
-            //                    fragment = new SpeakerFragment();
-            Toast.makeText(getApplicationContext(),
-                    "This will display SpeakerFragment",
-                    Toast.LENGTH_SHORT).show();
-        } else if (mId == R.id.future_assemblies_nav) {
-            //                    fragment = new FutureAssembliesFragment();
-            Toast.makeText(getApplicationContext(),
-                    "This will display FutureAssembliesFragment",
-                    Toast.LENGTH_SHORT).show();
-        } else if (mId == R.id.help_often_nav) {
-            //                    fragment = new HelpOftenFragment();
-            Toast.makeText(getApplicationContext(),
-                    "This will display HelpOftenFragment",
-                    Toast.LENGTH_SHORT).show();
-        } else if (mId == R.id.live_better_nav) {
-            //                    fragment = new LiveBetterFragment();
-            Toast.makeText(getApplicationContext(),
-                    "This will display LiveBetterFragment",
-                    Toast.LENGTH_SHORT).show();
-        } else if (mId == R.id.chat_nav) {
-            //                    fragment = new ChatFragment();
-            Toast.makeText(getApplicationContext(),
-                    "This will display ChatFragment",
-                    Toast.LENGTH_SHORT).show();
-            // TODO: Create intents for Instagram, Facebook and Twitter
-        } else if (mId == R.id.insta_link_nav) {
-            Toast.makeText(getApplicationContext(),
-                    "This will open Instagram",
-                    Toast.LENGTH_SHORT).show();
-        } else if (mId == R.id.facebook_link_nav) {
-            Toast.makeText(getApplicationContext(),
-                    "This will open Facebook",
-                    Toast.LENGTH_SHORT).show();
-        } else if (mId == R.id.twitter_link_nav) {
-            Toast.makeText(getApplicationContext(),
-                    "This will open Twitter",
-                    Toast.LENGTH_SHORT).show();
-        } else if (mId == R.id.site_link_nav) {
-            //                    bundle.putString("url", "https://www.sundayassemblyla.org");
-            //                    fragment = new WebsiteFragment();
-            //                    fragment.setArguments(bundle);
-            Toast.makeText(getApplicationContext(),
-                    "This will display WebsiteFragment",
-                    Toast.LENGTH_SHORT).show();
-        }
-        if (fragment != null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.content_frame, fragment)
-                    //                            .setTransition(R.anim.fade)
-                    .addToBackStack(null)
-                    .commit();
-        }
-    }
     private void activateDrawerItems() {
         // Handle navigation drawer click events
         if (mNavView != null) {
@@ -321,8 +243,82 @@ public class MainActivity extends AppCompatActivity {
                     if (mDrawer != null) {
                         mDrawer.closeDrawer(GravityCompat.START, true);
                     }
-                    mId = menuItem.getItemId();
-                    displaySelectedFragment();
+                    // TODO: Add code here to update the UI based on the item selected
+                    // For example, swap UI fragments here
+                    Fragment fragment = null;
+                    Bundle bundle = new Bundle();
+                    int position = menuItem.getItemId();
+                    if (position == R.id.about_nav) {
+                        fragment = new AboutSalaFragment();
+                        mAppBarTitle = mAboutTitle;
+                        mAppBarImageUrl = mAboutBannerUrl;
+                    } else if (position == R.id.program_nav) {
+                        bundle.putParcelable("latest_assembly", Parcels.wrap
+                                (mAssembliesList.get(0))); // Get data at index 0 for the most recent Assembly
+                        fragment = new ProgramFragment();
+                        fragment.setArguments(bundle);
+                        Toast.makeText(getApplicationContext(),
+                                "This will display ProgramFragment",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (position == R.id.lyrics_nav) {
+                        //                    fragment = new LyricsFragment();
+                        Toast.makeText(getApplicationContext(),
+                                "This will display LyricsFragment",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (position == R.id.speaker_nav) {
+                        //                    fragment = new SpeakerFragment();
+                        Toast.makeText(getApplicationContext(),
+                                "This will display SpeakerFragment",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (position == R.id.future_assemblies_nav) {
+                        //                    fragment = new FutureAssembliesFragment();
+                        Toast.makeText(getApplicationContext(),
+                                "This will display FutureAssembliesFragment",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (position == R.id.help_often_nav) {
+                        //                    fragment = new HelpOftenFragment();
+                        Toast.makeText(getApplicationContext(),
+                                "This will display HelpOftenFragment",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (position == R.id.live_better_nav) {
+                        //                    fragment = new LiveBetterFragment();
+                        Toast.makeText(getApplicationContext(),
+                                "This will display LiveBetterFragment",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (position == R.id.chat_nav) {
+                        //                    fragment = new ChatFragment();
+                        Toast.makeText(getApplicationContext(),
+                                "This will display ChatFragment",
+                                Toast.LENGTH_SHORT).show();
+                        // TODO: Create intents for Instagram, Facebook and Twitter
+                    } else if (position == R.id.insta_link_nav) {
+                        Toast.makeText(getApplicationContext(),
+                                "This will open Instagram",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (position == R.id.facebook_link_nav) {
+                        Toast.makeText(getApplicationContext(),
+                                "This will open Facebook",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (position == R.id.twitter_link_nav) {
+                        Toast.makeText(getApplicationContext(),
+                                "This will open Twitter",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (position == R.id.site_link_nav) {
+                        //                    bundle.putString("url", "https://www.sundayassemblyla.org");
+                        //                    fragment = new WebsiteFragment();
+                        //                    fragment.setArguments(bundle);
+                        Toast.makeText(getApplicationContext(),
+                                "This will display WebsiteFragment",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    if (fragment != null) {
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.content_frame, fragment)
+                                //                            .setTransition(R.anim.fade)
+                                .addToBackStack(null)
+                                .commit();
+                    }
                     mDrawer.closeDrawer(GravityCompat.START, true);
                     return true;
                 }
@@ -335,8 +331,81 @@ public class MainActivity extends AppCompatActivity {
         mSideBarAdapter.setClickListener(new SideBarRVAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                mId = position;
-                displaySelectedFragment();
+                // TODO: Add code here to update the UI based on the item selected
+                // For example, swap UI fragments here
+                Fragment fragment = null;
+                Bundle bundle = new Bundle();
+                if (position == R.id.about_nav) {
+                    fragment = new AboutSalaFragment();
+                    mAppBarTitle = mAboutTitle;
+                    mAppBarImageUrl = mAboutBannerUrl;
+                } else if (position == R.id.program_nav) {
+                    bundle.putParcelable("latest_assembly", Parcels.wrap
+                            (mAssembliesList.get(0))); // Get data at index 0 for the most recent Assembly
+                    fragment = new ProgramFragment();
+                    fragment.setArguments(bundle);
+                    Toast.makeText(getApplicationContext(),
+                            "This will display ProgramFragment",
+                            Toast.LENGTH_SHORT).show();
+                } else if (position == R.id.lyrics_nav) {
+                    //                    fragment = new LyricsFragment();
+                    Toast.makeText(getApplicationContext(),
+                            "This will display LyricsFragment",
+                            Toast.LENGTH_SHORT).show();
+                } else if (position == R.id.speaker_nav) {
+                    //                    fragment = new SpeakerFragment();
+                    Toast.makeText(getApplicationContext(),
+                            "This will display SpeakerFragment",
+                            Toast.LENGTH_SHORT).show();
+                } else if (position == R.id.future_assemblies_nav) {
+                    //                    fragment = new FutureAssembliesFragment();
+                    Toast.makeText(getApplicationContext(),
+                            "This will display FutureAssembliesFragment",
+                            Toast.LENGTH_SHORT).show();
+                } else if (position == R.id.help_often_nav) {
+                    //                    fragment = new HelpOftenFragment();
+                    Toast.makeText(getApplicationContext(),
+                            "This will display HelpOftenFragment",
+                            Toast.LENGTH_SHORT).show();
+                } else if (position == R.id.live_better_nav) {
+                    //                    fragment = new LiveBetterFragment();
+                    Toast.makeText(getApplicationContext(),
+                            "This will display LiveBetterFragment",
+                            Toast.LENGTH_SHORT).show();
+                } else if (position == R.id.chat_nav) {
+                    //                    fragment = new ChatFragment();
+                    Toast.makeText(getApplicationContext(),
+                            "This will display ChatFragment",
+                            Toast.LENGTH_SHORT).show();
+                    // TODO: Create intents for Instagram, Facebook and Twitter
+                } else if (position == R.id.insta_link_nav) {
+                    Toast.makeText(getApplicationContext(),
+                            "This will open Instagram",
+                            Toast.LENGTH_SHORT).show();
+                } else if (position == R.id.facebook_link_nav) {
+                    Toast.makeText(getApplicationContext(),
+                            "This will open Facebook",
+                            Toast.LENGTH_SHORT).show();
+                } else if (position == R.id.twitter_link_nav) {
+                    Toast.makeText(getApplicationContext(),
+                            "This will open Twitter",
+                            Toast.LENGTH_SHORT).show();
+                } else if (position == R.id.site_link_nav) {
+                    //                    bundle.putString("url", "https://www.sundayassemblyla.org");
+                    //                    fragment = new WebsiteFragment();
+                    //                    fragment.setArguments(bundle);
+                    Toast.makeText(getApplicationContext(),
+                            "This will display WebsiteFragment",
+                            Toast.LENGTH_SHORT).show();
+                }
+                if (fragment != null) {
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, fragment)
+                            //                            .setTransition(R.anim.fade)
+                            .addToBackStack(null)
+                            .commit();
+                }
             }
         });
     }

@@ -49,9 +49,7 @@
         app:layout_constraintEnd_toStartOf="@+id/two_pane_divider"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include"
-        tools:listitem="@layout/list_item_side_bar">
-
-    </android.support.v7.widget.RecyclerView>
+        tools:listitem="@layout/list_item_side_bar"/>
 
     <include
         layout="@layout/app_bar_main"

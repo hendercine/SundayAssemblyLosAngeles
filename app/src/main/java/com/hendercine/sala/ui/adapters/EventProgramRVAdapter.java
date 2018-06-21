@@ -52,27 +52,16 @@ public class EventProgramRVAdapter extends RecyclerView.Adapter<EventProgramRVAd
 
     @Override
     public void onBindViewHolder(@NonNull ProgramViewHolder holder, int position) {
-        mAssemblies = new ArrayList<>();
-        final Assembly assembly = mAssemblies.get(position);
-        if (assembly != null) {
-            ArrayList<Performer> latestPerformers = new ArrayList<>();
-            mPerformers = new ArrayList<>();
-            mSongs = new ArrayList<>();
-            for (int i = 0; i < mPerformers.size(); i++) {
-                mPerformer = new Performer();
-                mPerformer.setPerformanceCategory(
-                        assembly.getPerformerList().get(i).getPerformanceCategory());
-                mPerformer.setPerformanceTitle(
-                        assembly.getPerformerList().get(i).getPerformanceTitle());
-                mPerformer.setPerformerName(
-                        assembly.getPerformerList().get(i).getPerformerName());
-
-                latestPerformers.add(mPerformer);
-            }
-            holder.segmentTitleView.setText(mPerformer.getPerformanceTitle());
-            holder.segmentCreatorView.setText(mPerformer.getPerformerName());
-            holder.segmentCategoryView.setText(mPerformer.getPerformanceCategory());
-        }
+//        mAssemblies = new ArrayList<>();
+//        final Assembly assembly = mAssemblies.get(position);
+//        if (assembly != null) {
+//            ArrayList<Performer> latestPerformers = new ArrayList<>();
+//            mPerformers = new ArrayList<>();
+//            mSongs = new ArrayList<>();
+//            holder.segmentTitleView.setText(mPerformer.getPerformanceTitle());
+//            holder.segmentCreatorView.setText(mPerformer.getPerformerName());
+//            holder.segmentCategoryView.setText(mPerformer.getPerformanceCategory());
+//        }
 
     }
 
