@@ -13,7 +13,7 @@
         <item android:title="@string/program_nav_title"/>
         <item android:title="@string/lyrics_nav_title"/>
         <item android:title="@string/speaker_bio_nav_title"/>
-        <item android:title="@string/future_assemblies_nav_title"/>
+        <item android:title="@string/assemblies_nav_title"/>
         <item android:title="@string/help_often_nav_title"/>
         <item android:title="@string/live_better_nav_title"/>
         <item android:title="@string/salamander_chat_nav_title"/>

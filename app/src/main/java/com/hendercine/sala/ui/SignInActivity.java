@@ -44,13 +44,13 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     private FirebaseAuth mAuth;
 
     @BindView(R.id.field_email)
-    private EditText mEmailField;
+    EditText mEmailField;
     @BindView(R.id.field_password)
-    private EditText mPasswordField;
+    EditText mPasswordField;
     @BindView(R.id.button_sign_in)
-    private Button mSignInButton;
+    Button mSignInButton;
     @BindView(R.id.button_sign_up)
-    private Button mSignUpButton;
+    Button mSignUpButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -50,20 +50,23 @@ import com.hendercine.sala.models.Performer;
 import com.hendercine.sala.models.Song;
 import com.hendercine.sala.ui.adapters.SideBarRVAdapter;
 
-import org.parceler.Parcels;
-
 import java.util.ArrayList;
 
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class MainActivity extends BaseActivity {
 
     private String mAppBarTitle;
     private String mAppBarImageUrl;
+    private String mAssemblyDateAndTheme;
+    private String mAssemblyBackDrop;
 
-    private DatabaseReference mAssemblyDbRef;
+    // [START declare_database_ref]
+    private DatabaseReference mDatabase;
+    // [END declare_database_ref]
 
     private ChildEventListener mChildEventListener;
     private ValueEventListener mAssemblyListener;
@@ -87,13 +90,13 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawer;
     @Nullable
-    @BindView(R.id.main_side_bar_recycler_view)
-    RecyclerView mSideBarRecyclerView;
-    @Nullable
     @BindView(R.id.nav_view)
     NavigationView mNavView;
-    @BindView(R.id.content_frame)
-    FrameLayout mContentFrame;
+
+    @Nullable
+    @BindView(R.id.main_side_bar_recycler_view)
+    RecyclerView mSideBarRecyclerView;
+
     @BindView(R.id.collapsing_toolbar_backdrop_img)
     ImageView collapsingToolbarBackDrop;
     @BindView(R.id.app_bar_title)
@@ -107,6 +110,10 @@ public class MainActivity extends BaseActivity {
     @Nullable
     @BindView(R.id.app_bar)
     AppBarLayout mAppBarLayout;
+
+    @BindView(R.id.content_frame)
+    FrameLayout mContentFrame;
+
     @BindString(R.string.about_banner_url)
     String mAboutBannerUrl;
     @BindString(R.string.about_sala_title)
@@ -119,7 +126,7 @@ public class MainActivity extends BaseActivity {
     String mLyricsSideBar;
     @BindString(R.string.speaker_bio_nav_title)
     String mSpeakerSideBar;
-    @BindString(R.string.future_assemblies_nav_title)
+    @BindString(R.string.assemblies_nav_title)
     String mFutureSideBar;
     @BindString(R.string.help_often_nav_title)
     String mHelpSideBar;
@@ -143,23 +150,12 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        // Initialize Database and access data
-        mAssemblyDbRef = FirebaseDatabase
-                .getInstance()
-                .getReference()
-                .child("assemblies");
 
-        mAssemblyDbRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mAssemblyData = (Assembly) dataSnapshot.getChildren();
-            }
+        // [START initialize_database_ref]
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        // [END initialize_database_ref]
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+        getLastAssemblyData();
 
         mTwoPane = getResources().getBoolean(R.bool.isTablet);
         setSupportActionBar(mToolbar);
@@ -194,13 +190,47 @@ public class MainActivity extends BaseActivity {
                     mDrawer,
                     mToolbar,
                     R.string.navigation_drawer_open,
-                    R.string.navigation_drawer_close);
+                    R.string.navigation_drawer_close
+            );
 
             activateDrawerItems();
         }
 
         setCollapsingToolbarBehavior();
 
+    }
+
+    private void getLastAssemblyData() {
+        // [START single_value_read]
+        mDatabase.child("assemblies").child("assembly_date")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        // Get assembly value
+                        Assembly assembly = dataSnapshot.getValue(Assembly.class);
+
+                        // [START_EXCLUDE]
+                        if (assembly == null) {
+                            // Assembly is null, error out
+                            Timber.e("Assembly is null");
+                            Toast.makeText(
+                                    MainActivity.this,
+                                    "Error: Could not fetch assembly",
+                                    Toast.LENGTH_SHORT
+                            ).show();
+                        } else {
+                            mAssemblyDateAndTheme =
+                                    assembly.mAssemblyDate + " " +
+                                    assembly.mAssemblyTheme;
+                            mAssemblyBackDrop = assembly.mAssemblyPhotoUrl;
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
     }
 
     private void activateDrawerItems() {
@@ -222,64 +252,88 @@ public class MainActivity extends BaseActivity {
                         fragment = new AboutSalaFragment();
                         mAppBarTitle = mAboutTitle;
                         mAppBarImageUrl = mAboutBannerUrl;
+                    } else if (position == R.id.assemblies_nav) {
+//                        fragment = new AssembliesFragment();
+                        mAppBarTitle = mAssemblyDateAndTheme;
+                        mAboutBannerUrl = mAssemblyBackDrop;
+                        Toast.makeText(
+                                getApplicationContext(),
+                                "This will display AssembliesFragment",
+                                Toast.LENGTH_SHORT
+                        ).show();
                     } else if (position == R.id.program_nav) {
-                        bundle.putParcelable("latest_assembly", Parcels.wrap
-                                (mAssembliesList.get(0))); // Get data at index 0 for the most recent Assembly
-                        fragment = new ProgramFragment();
-                        fragment.setArguments(bundle);
-                        Toast.makeText(getApplicationContext(),
+//                        bundle.putParcelable("latest_assembly", Parcels.wrap
+//                                (mAssembliesList.get(0))); // Get data at index 0 for the most recent Assembly
+//                        fragment = new ProgramFragment();
+//                        fragment.setArguments(bundle);
+                        Toast.makeText(
+                                getApplicationContext(),
                                 "This will display ProgramFragment",
-                                Toast.LENGTH_SHORT).show();
+                                Toast.LENGTH_SHORT
+                        ).show();
                     } else if (position == R.id.lyrics_nav) {
                         //                    fragment = new LyricsFragment();
-                        Toast.makeText(getApplicationContext(),
+                        Toast.makeText(
+                                getApplicationContext(),
                                 "This will display LyricsFragment",
-                                Toast.LENGTH_SHORT).show();
+                                Toast.LENGTH_SHORT
+                        ).show();
                     } else if (position == R.id.speaker_nav) {
                         //                    fragment = new SpeakerFragment();
-                        Toast.makeText(getApplicationContext(),
+                        Toast.makeText(
+                                getApplicationContext(),
                                 "This will display SpeakerFragment",
-                                Toast.LENGTH_SHORT).show();
-                    } else if (position == R.id.future_assemblies_nav) {
-                        //                    fragment = new AssembliesFragment();
-                        Toast.makeText(getApplicationContext(),
-                                "This will display AssembliesFragment",
-                                Toast.LENGTH_SHORT).show();
+                                Toast.LENGTH_SHORT
+                        ).show();
                     } else if (position == R.id.help_often_nav) {
                         //                    fragment = new HelpOftenFragment();
-                        Toast.makeText(getApplicationContext(),
+                        Toast.makeText(
+                                getApplicationContext(),
                                 "This will display HelpOftenFragment",
-                                Toast.LENGTH_SHORT).show();
+                                Toast.LENGTH_SHORT
+                        ).show();
                     } else if (position == R.id.live_better_nav) {
                         //                    fragment = new LiveBetterFragment();
-                        Toast.makeText(getApplicationContext(),
+                        Toast.makeText(
+                                getApplicationContext(),
                                 "This will display LiveBetterFragment",
-                                Toast.LENGTH_SHORT).show();
+                                Toast.LENGTH_SHORT
+                        ).show();
                     } else if (position == R.id.chat_nav) {
                         //                    fragment = new ChatFragment();
-                        Toast.makeText(getApplicationContext(),
+                        Toast.makeText(
+                                getApplicationContext(),
                                 "This will display ChatFragment",
-                                Toast.LENGTH_SHORT).show();
+                                Toast.LENGTH_SHORT
+                        ).show();
                         // TODO: Create intents for Instagram, Facebook and Twitter
                     } else if (position == R.id.insta_link_nav) {
-                        Toast.makeText(getApplicationContext(),
+                        Toast.makeText(
+                                getApplicationContext(),
                                 "This will open Instagram",
-                                Toast.LENGTH_SHORT).show();
+                                Toast.LENGTH_SHORT
+                        ).show();
                     } else if (position == R.id.facebook_link_nav) {
-                        Toast.makeText(getApplicationContext(),
+                        Toast.makeText(
+                                getApplicationContext(),
                                 "This will open Facebook",
-                                Toast.LENGTH_SHORT).show();
+                                Toast.LENGTH_SHORT
+                        ).show();
                     } else if (position == R.id.twitter_link_nav) {
-                        Toast.makeText(getApplicationContext(),
+                        Toast.makeText(
+                                getApplicationContext(),
                                 "This will open Twitter",
-                                Toast.LENGTH_SHORT).show();
+                                Toast.LENGTH_SHORT
+                        ).show();
                     } else if (position == R.id.site_link_nav) {
                         //                    bundle.putString("url", "https://www.sundayassemblyla.org");
                         //                    fragment = new WebsiteFragment();
                         //                    fragment.setArguments(bundle);
-                        Toast.makeText(getApplicationContext(),
+                        Toast.makeText(
+                                getApplicationContext(),
                                 "This will display WebsiteFragment",
-                                Toast.LENGTH_SHORT).show();
+                                Toast.LENGTH_SHORT
+                        ).show();
                     }
                     if (fragment != null) {
                         getSupportFragmentManager()
@@ -309,61 +363,85 @@ public class MainActivity extends BaseActivity {
                     fragment = new AboutSalaFragment();
                     mAppBarTitle = mAboutTitle;
                     mAppBarImageUrl = mAboutBannerUrl;
-                } else if (position == mSideBarAdapter.getItemId(1)) {
-//                    fragment = new ProgramFragment();
-                    Toast.makeText(getApplicationContext(),
-                            "This will display ProgramFragment",
-                            Toast.LENGTH_SHORT).show();
-                } else if (position == mSideBarAdapter.getItemId(2)) {
-//                    fragment = new LyricsFragment();
-                    Toast.makeText(getApplicationContext(),
-                            "This will display LyricsFragment",
-                            Toast.LENGTH_SHORT).show();
-                } else if (position == mSideBarAdapter.getItemId(3)) {
-//                    fragment = new SpeakerFragment();
-                    Toast.makeText(getApplicationContext(),
-                            "This will display SpeakerFragment",
-                            Toast.LENGTH_SHORT).show();
                 } else if (position == mSideBarAdapter.getItemId(4)) {
 //                    fragment = new AssembliesFragment();
-                    Toast.makeText(getApplicationContext(),
+                    mAppBarTitle = mAssemblyDateAndTheme;
+                    mAboutBannerUrl = mAssemblyBackDrop;
+                    Toast.makeText(
+                            getApplicationContext(),
                             "This will display AssembliesFragment",
-                            Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_SHORT
+                    ).show();
+                } else if (position == mSideBarAdapter.getItemId(1)) {
+//                    fragment = new ProgramFragment();
+                    Toast.makeText(
+                            getApplicationContext(),
+                            "This will display ProgramFragment",
+                            Toast.LENGTH_SHORT
+                    ).show();
+                } else if (position == mSideBarAdapter.getItemId(2)) {
+//                    fragment = new LyricsFragment();
+                    Toast.makeText(
+                            getApplicationContext(),
+                            "This will display LyricsFragment",
+                            Toast.LENGTH_SHORT
+                    ).show();
+                } else if (position == mSideBarAdapter.getItemId(3)) {
+//                    fragment = new SpeakerFragment();
+                    Toast.makeText(
+                            getApplicationContext(),
+                            "This will display SpeakerFragment",
+                            Toast.LENGTH_SHORT
+                    ).show();
                 } else if (position == mSideBarAdapter.getItemId(5)) {
 //                    fragment = new HelpOftenFragment();
-                    Toast.makeText(getApplicationContext(),
+                    Toast.makeText(
+                            getApplicationContext(),
                             "This will display HelpOftenFragment",
-                            Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_SHORT
+                    ).show();
                 } else if (position == mSideBarAdapter.getItemId(6)) {
 //                    fragment = new LiveBetterFragment();
-                    Toast.makeText(getApplicationContext(),
+                    Toast.makeText(
+                            getApplicationContext(),
                             "This will display LiveBetterFragment",
-                            Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_SHORT
+                    ).show();
                 } else if (position == mSideBarAdapter.getItemId(7)) {
 //                    fragment = new ChatFragment();
-                    Toast.makeText(getApplicationContext(),
+                    Toast.makeText(
+                            getApplicationContext(),
                             "This will display ChatFragment",
-                            Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_SHORT
+                    ).show();
                     // TODO: Create intents for Instagram, Facebook and Twitter
                 } else if (position == mSideBarAdapter.getItemId(8)) {
-                    Toast.makeText(getApplicationContext(),
+                    Toast.makeText(
+                            getApplicationContext(),
                             "This will open Instagram",
-                            Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_SHORT
+                    ).show();
                 } else if (position == mSideBarAdapter.getItemId(9)) {
-                    Toast.makeText(getApplicationContext(),
+                    Toast.makeText(
+                            getApplicationContext(),
                             "This will open Facebook",
-                            Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_SHORT
+                    ).show();
                 } else if (position == mSideBarAdapter.getItemId(10)) {
-                    Toast.makeText(getApplicationContext(),
+                    Toast.makeText(
+                            getApplicationContext(),
                             "This will open Twitter",
-                            Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_SHORT
+                    ).show();
                 } else if (position == mSideBarAdapter.getItemId(11)) {
 //                    bundle.putString("url", "https://www.sundayassemblyla.org");
 //                    fragment = new WebsiteFragment();
 //                    fragment.setArguments(bundle);
-                    Toast.makeText(getApplicationContext(),
+                    Toast.makeText(
+                            getApplicationContext(),
                             "This will display WebsiteFragment",
-                            Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_SHORT
+                    ).show();
                 }
                 if (fragment != null) {
                     getSupportFragmentManager()
@@ -376,14 +454,6 @@ public class MainActivity extends BaseActivity {
 
             }
         });
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (mAssemblyListener != null) {
-            mAssemblyDbRef.removeEventListener(mAssemblyListener);
-        }
     }
 
     @Override

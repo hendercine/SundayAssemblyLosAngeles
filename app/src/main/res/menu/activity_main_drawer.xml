@@ -15,6 +15,10 @@
             android:icon="@android:drawable/ic_menu_info_details"
             android:title="@string/about_nav_title"/>
         <item
+            android:id="@+id/assemblies_nav"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/assemblies_nav_title"/>
+        <item
             android:id="@+id/program_nav"
             android:icon="@mipmap/ic_launcher"
             android:title="@string/program_nav_title"/>
@@ -26,10 +30,6 @@
             android:id="@+id/speaker_nav"
             android:icon="@mipmap/ic_launcher"
             android:title="@string/speaker_bio_nav_title"/>
-        <item
-            android:id="@+id/future_assemblies_nav"
-            android:icon="@mipmap/ic_launcher"
-            android:title="@string/future_assemblies_nav_title"/>
         <item
             android:id="@+id/help_often_nav"
             android:icon="@mipmap/ic_launcher"
