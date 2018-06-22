@@ -127,7 +127,7 @@ public class MainActivity extends BaseActivity {
     @BindString(R.string.speaker_bio_nav_title)
     String mSpeakerSideBar;
     @BindString(R.string.assemblies_nav_title)
-    String mFutureSideBar;
+    String mAssembliesSideBar;
     @BindString(R.string.help_often_nav_title)
     String mHelpSideBar;
     @BindString(R.string.live_better_nav_title)
@@ -164,10 +164,12 @@ public class MainActivity extends BaseActivity {
         mAppBarImageUrl = mAboutBannerUrl;
 
         if (!mTwoPane && mSideBarRecyclerView != null) {
-            mSideBarArray = new String[]{mAboutSideBar, mProgramSidebar,
-                    mLyricsSideBar, mSpeakerSideBar, mFutureSideBar,
-                    mHelpSideBar, mLiveSideBar, mChatSideBar, mInstaSideBar,
-                    mFacebookSideBar, mTwitterSideBar, mWebsiteSideBar, mLogoutSideBar};
+            mSideBarArray = new String[]{
+                    mAboutSideBar, mAssembliesSideBar, mProgramSidebar,
+                    mLyricsSideBar, mSpeakerSideBar, mHelpSideBar,
+                    mLiveSideBar, mChatSideBar, mInstaSideBar,
+                    mFacebookSideBar, mTwitterSideBar, mWebsiteSideBar,
+                    mLogoutSideBar};
             mSideBarRecyclerView.setLayoutManager(new LinearLayoutManager(this));
             mSideBarAdapter = new SideBarRVAdapter(mSideBarArray);
             mSideBarRecyclerView.setAdapter(mSideBarAdapter);
@@ -334,6 +336,12 @@ public class MainActivity extends BaseActivity {
                                 "This will display WebsiteFragment",
                                 Toast.LENGTH_SHORT
                         ).show();
+                    } else if (position == R.id.logout_nav) {
+                        FirebaseAuth.getInstance().signOut();
+                        startActivity(new Intent(MainActivity.this,
+                                SignInActivity.class));
+                        finish();
+                        return true;
                     }
                     if (fragment != null) {
                         getSupportFragmentManager()
@@ -363,7 +371,7 @@ public class MainActivity extends BaseActivity {
                     fragment = new AboutSalaFragment();
                     mAppBarTitle = mAboutTitle;
                     mAppBarImageUrl = mAboutBannerUrl;
-                } else if (position == mSideBarAdapter.getItemId(4)) {
+                } else if (position == mSideBarAdapter.getItemId(1)) {
 //                    fragment = new AssembliesFragment();
                     mAppBarTitle = mAssemblyDateAndTheme;
                     mAboutBannerUrl = mAssemblyBackDrop;
@@ -372,21 +380,21 @@ public class MainActivity extends BaseActivity {
                             "This will display AssembliesFragment",
                             Toast.LENGTH_SHORT
                     ).show();
-                } else if (position == mSideBarAdapter.getItemId(1)) {
+                } else if (position == mSideBarAdapter.getItemId(2)) {
 //                    fragment = new ProgramFragment();
                     Toast.makeText(
                             getApplicationContext(),
                             "This will display ProgramFragment",
                             Toast.LENGTH_SHORT
                     ).show();
-                } else if (position == mSideBarAdapter.getItemId(2)) {
+                } else if (position == mSideBarAdapter.getItemId(3)) {
 //                    fragment = new LyricsFragment();
                     Toast.makeText(
                             getApplicationContext(),
                             "This will display LyricsFragment",
                             Toast.LENGTH_SHORT
                     ).show();
-                } else if (position == mSideBarAdapter.getItemId(3)) {
+                } else if (position == mSideBarAdapter.getItemId(4)) {
 //                    fragment = new SpeakerFragment();
                     Toast.makeText(
                             getApplicationContext(),
@@ -465,17 +473,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int i = item.getItemId();
-        if (mToggle.onOptionsItemSelected(item)) {
-            return true;
-        } else if (i == R.id.logout_menu) {
-            FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(this, SignInActivity.class));
-            finish();
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
+        return mToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
     private void setCollapsingToolbarBehavior() {
