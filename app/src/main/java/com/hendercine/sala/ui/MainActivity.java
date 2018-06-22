@@ -15,6 +15,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -38,6 +39,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -58,9 +60,10 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+@SuppressWarnings("ALL")
 public class MainActivity extends BaseActivity {
 
-    private static final int RC_SIGN_IN = 237;
+    public static final int RC_SIGN_IN = 237;
 
     private String mAppBarTitle;
     private String mAppBarImageUrl;
@@ -70,6 +73,7 @@ public class MainActivity extends BaseActivity {
 
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     private ActionBarDrawerToggle mToggle;
     private ActionBar mActionBar;
@@ -111,6 +115,10 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.app_bar)
     AppBarLayout mAppBarLayout;
 
+    @BindView(R.id.user_nav_header_img_view)
+    ImageView mUserHeaderImageView;
+    @BindView(R.id.username_nav_header_text_view)
+    TextView mUsernameHeaderView;
     @BindView(R.id.content_frame)
     FrameLayout mContentFrame;
 
@@ -197,29 +205,103 @@ public class MainActivity extends BaseActivity {
         }
         setCollapsingToolbarBehavior();
 
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                // Check if user is signed in (non-null) and update UI accordingly.
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // already signed in
+                    Toast.makeText(MainActivity.this, "You're signed in!", Toast
+                            .LENGTH_SHORT).show();
+                } else {
+                    // not signed in
+                    startActivityForResult(
+                            AuthUI.getInstance()
+                                    .createSignInIntentBuilder()
+                                    .setIsSmartLockEnabled(!BuildConfig.DEBUG /* credentials */, true /* hints */)
+                                    .setAvailableProviders(Arrays.asList(
+                                            new AuthUI.IdpConfig.EmailBuilder().build(),
+                                            new AuthUI.IdpConfig.GoogleBuilder().build()
+                                    ))
+                                    .setLogo(R.drawable.sala_logo_grass)
+                                    .build(),
+                            RC_SIGN_IN
+                    );
+                }
+            }
+        };
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            if (resultCode == RESULT_OK) {
+                Snackbar.make(mContentFrame, "Signed in!", Snackbar
+                        .LENGTH_SHORT)
+                        .show();
+                updateUI(mAuth.getCurrentUser());
+            } else if (requestCode == RESULT_CANCELED) {
+                Snackbar.make(mContentFrame, "Sign in canceled", Toast
+                        .LENGTH_SHORT).show();
+                finish();
+            }
+        }
+    }
+
+    private void updateUI(FirebaseUser user) {
+        if (user != null) {
+            // Signed in
+            mUsernameHeaderView.setText(user.getDisplayName());
+            String userPhotoUrl = user.getPhotoUrl().toString();
+            Glide.with(this)
+                    .load(userPhotoUrl)
+                    .into(mUserHeaderImageView);
+        } else {
+            // Signed out
+            mUsernameHeaderView.setText(R.string.dummy_user_name);
+            Glide.with(this)
+                    .load(R.drawable.sala_logo_grass)
+                    .into(mUserHeaderImageView);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int i = item.getItemId();
+        if (i == R.id.logout_menu) {
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(this, SignInActivity.class));
+            finish();
+            return true;
+        } else {
+            return mToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        if (mAuth.getCurrentUser() != null) {
-            // already signed in
-        } else {
-            // not signed in
-            startActivityForResult(
-                    // Get an instance of AuthUI based on the default app
-                    AuthUI.getInstance()
-                            .createSignInIntentBuilder()
-                            .setIsSmartLockEnabled(!BuildConfig.DEBUG /* credentials */, true /* hints */)
-                            .setAvailableProviders(Arrays.asList(
-                                    new AuthUI.IdpConfig.EmailBuilder().build(),
-                                    new AuthUI.IdpConfig.GoogleBuilder().build()
-                            ))
-                            .build(),
-                    RC_SIGN_IN
-            );
-        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mAuth.addAuthStateListener(mAuthStateListener);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mAuth.removeAuthStateListener(mAuthStateListener);
     }
 
     private void getLastAssemblyData() {
@@ -506,26 +588,6 @@ public class MainActivity extends BaseActivity {
 
             }
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int i = item.getItemId();
-        if (i == R.id.logout_menu) {
-            FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(this, SignInActivity.class));
-            finish();
-            return true;
-        } else {
-            return mToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
-        }
     }
 
     private void setCollapsingToolbarBehavior() {
