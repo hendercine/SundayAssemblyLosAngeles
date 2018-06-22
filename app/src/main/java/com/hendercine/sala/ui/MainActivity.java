@@ -38,6 +38,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.ErrorCodes;
+import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -59,19 +61,23 @@ import java.util.Arrays;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import icepick.State;
 
 @SuppressWarnings("ALL")
 public class MainActivity extends BaseActivity {
 
     public static final int RC_SIGN_IN = 237;
 
-    private String mAppBarTitle;
-    private String mAppBarImageUrl;
-    private String mAssemblyDateAndTheme;
-    private String mAssemblyBackDrop;
-    private String mUserId;
+    @State private String mAppBarTitle;
+    @State private String mAppBarImageUrl;
+    @State private String mAssemblyDateAndTheme;
+    @State private String mAssemblyBackDrop;
+    @State private String mUserId;
+    @State private String mUsername;
 
-    private DatabaseReference mDatabase;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mDatabaseRef;
+    private DatabaseReference mAssemblyDbRef;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
@@ -159,9 +165,12 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        // Initialize Firebase Services
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        // Initialize Firebase Components
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mDatabaseRef = mFirebaseDatabase.getReference();
         mAuth = FirebaseAuth.getInstance();
+
+        mAssemblyDbRef = mFirebaseDatabase.getReference().child("assemblies");
 
         mTwoPane = getResources().getBoolean(R.bool.isTablet);
         setSupportActionBar(mToolbar);
@@ -212,10 +221,10 @@ public class MainActivity extends BaseActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // already signed in
-                    Toast.makeText(MainActivity.this, "You're signed in!", Toast
-                            .LENGTH_SHORT).show();
+                    onSignInInitialize(user.getDisplayName());
                 } else {
-                    // not signed in
+                    // user is signed out
+                    onSignedOutCleanup();
                     startActivityForResult(
                             AuthUI.getInstance()
                                     .createSignInIntentBuilder()
@@ -233,37 +242,37 @@ public class MainActivity extends BaseActivity {
         };
     }
 
+    private void onSignInInitialize(String username) {
+        mUsername = username;
+
+    }
+
+    private void onSignedOutCleanup() {
+        mUsername = null;
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
+            IdpResponse response = IdpResponse.fromResultIntent(data);
             if (resultCode == RESULT_OK) {
-                Snackbar.make(mContentFrame, "Signed in!", Snackbar
-                        .LENGTH_SHORT)
-                        .show();
+                showSnackBar(R.string.signed_in_snackbar);
                 updateUI(mAuth.getCurrentUser());
-            } else if (requestCode == RESULT_CANCELED) {
-                Snackbar.make(mContentFrame, "Sign in canceled", Toast
-                        .LENGTH_SHORT).show();
-                finish();
-            }
-        }
-    }
+            } else {
+                // Sign in failed
+                if (response == null) {
+                    // User pressed back button
+                showSnackBar(R.string.sign_in_canceled_snackbar);
+                return;
+                }
 
-    private void updateUI(FirebaseUser user) {
-        if (user != null) {
-            // Signed in
-            mUsernameHeaderView.setText(user.getDisplayName());
-            String userPhotoUrl = user.getPhotoUrl().toString();
-            Glide.with(this)
-                    .load(userPhotoUrl)
-                    .into(mUserHeaderImageView);
-        } else {
-            // Signed out
-            mUsernameHeaderView.setText(R.string.dummy_user_name);
-            Glide.with(this)
-                    .load(R.drawable.sala_logo_grass)
-                    .into(mUserHeaderImageView);
+                if (response.getError()
+                        .getErrorCode() == ErrorCodes.NO_NETWORK) {
+                    showSnackBar(R.string.no_network_connection);
+                }
+            }
         }
     }
 
@@ -278,9 +287,7 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int i = item.getItemId();
         if (i == R.id.logout_menu) {
-            FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(this, SignInActivity.class));
-            finish();
+            AuthUI.getInstance().signOut(this);
             return true;
         } else {
             return mToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
@@ -304,9 +311,26 @@ public class MainActivity extends BaseActivity {
         mAuth.removeAuthStateListener(mAuthStateListener);
     }
 
+    private void updateUI(FirebaseUser user) {
+        if (user != null) {
+            // Signed in
+            mUsernameHeaderView.setText(mUsername);
+            String userPhotoUrl = user.getPhotoUrl().toString();
+            Glide.with(this)
+                    .load(userPhotoUrl)
+                    .into(mUserHeaderImageView);
+        } else {
+            // Signed out
+            mUsernameHeaderView.setText(R.string.dummy_user_name);
+            Glide.with(this)
+                    .load(R.drawable.sala_logo_grass)
+                    .into(mUserHeaderImageView);
+        }
+    }
+
     private void getLastAssemblyData() {
         // [START single_value_read]
-        mDatabase.child("assemblies").child(String.valueOf(0))
+        mDatabaseRef.child("assemblies").child(String.valueOf(0))
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -453,11 +477,7 @@ public class MainActivity extends BaseActivity {
                                 Toast.LENGTH_SHORT
                         ).show();
                     } else if (position == R.id.logout_nav) {
-                        FirebaseAuth.getInstance().signOut();
-                        startActivity(new Intent(
-                                MainActivity.this,
-                                SignInActivity.class
-                        ));
+                        AuthUI.getInstance().signOut(MainActivity.this);
                         finish();
                         return true;
                     }
@@ -570,11 +590,7 @@ public class MainActivity extends BaseActivity {
                             Toast.LENGTH_SHORT
                     ).show();
                 } else if (position == mSideBarAdapter.getItemId(12)) {
-                    FirebaseAuth.getInstance().signOut();
-                    startActivity(new Intent(
-                            MainActivity.this,
-                            SignInActivity.class
-                    ));
+                    AuthUI.getInstance().signOut(MainActivity.this);
                     finish();
                 }
                 if (fragment != null) {
@@ -625,5 +641,11 @@ public class MainActivity extends BaseActivity {
         Glide.with(this)
                 .load(mAppBarImageUrl)
                 .into(collapsingToolbarBackDrop);
+    }
+
+
+    private void showSnackBar(int resId) {
+        Snackbar.make(findViewById(android.R.id.content), resId, Snackbar
+                .LENGTH_SHORT).show();
     }
 }

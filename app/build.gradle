@@ -54,6 +54,9 @@ dependencies {
     // Parceler
     implementation 'org.parceler:parceler-api:1.1.10'
     annotationProcessor 'org.parceler:parceler:1.1.10'
+    // IcePick
+    implementation 'frankiesardo:icepick:3.2.0'
+    annotationProcessor 'frankiesardo:icepick-processor:3.2.0'
     // Gson
     implementation 'com.google.code.gson:gson:2.8.4'
     // Retrofit

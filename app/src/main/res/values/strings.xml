@@ -16,7 +16,9 @@
     <string name="facebook_login_protocol_scheme" translatable="false">@string/sala_fb_login_protocol_scheme</string>
     <string name="twitter_consumer_key" translatable="false">@string/sala_twitter_consumer_key</string>
     <string name="twitter_consumer_secret" translatable="false">@string/sala_twitter_consumer_secret</string>
-
+    <string name="signed_in_snackbar">Signed in!</string>
+    <string name="sign_in_canceled_snackbar">Sign in canceled</string>
+    <string name="no_network_connection">No network connection</string>
     <string name="title_activity_salamander_chat">SalamanderChatActivity
     </string>
     <string name="action_settings">Settings</string>
@@ -54,5 +56,5 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="sunday_assembly_logo_description">Sunday Assembly Logo</string>
-    <string name="sign_up_btn_text">SIGN UP</string>
+    <string name="sign_up_btn_text">SIGN UP</string>>
 </resources>
