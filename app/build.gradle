@@ -75,10 +75,12 @@ dependencies {
     // Firebase UI Database
     implementation 'com.firebaseui:firebase-ui-database:4.0.1'
     // Firebase UI Auth
+    implementation 'com.firebaseui:firebase-ui-auth:4.0.1'
+    // Facebook Login
     // Find the latest Facebook SDK releases here: https://goo.gl/Ce5L94
-    // Find the latest Twitter SDK releases here: https://goo.gl/E5wZvQ
-    implementation 'com.firebaseui:firebase-ui-auth:4.0.0'
     implementation 'com.facebook.android:facebook-login:4.33.0'
+    // Twitter Core
+    // Find the latest Twitter SDK releases here: https://goo.gl/E5wZvQ
     implementation 'com.twitter.sdk.android:twitter-core:3.2.0'
     // Needed to fix a dependency conflict with FirebaseUI'
     implementation 'android.arch.core:runtime:1.1.1'

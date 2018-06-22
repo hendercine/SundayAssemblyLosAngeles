@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
+// TODO: Replace deprecated method with BakingTime solution
     private ProgressDialog mProgressDialog;
 
     public void showProgressDialog() {

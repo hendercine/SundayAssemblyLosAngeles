@@ -14,7 +14,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
  * sala created by hendercine on 5/20/18.
  */
 
-// [START blog_user_class]
+// [START user_class]
 @IgnoreExtraProperties
 public class User {
 
@@ -31,5 +31,5 @@ public class User {
     }
 
 }
-// [END blog_user_class]
+// [END user_class]
 

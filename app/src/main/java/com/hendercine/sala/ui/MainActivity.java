@@ -36,14 +36,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hendercine.sala.BaseActivity;
+import com.hendercine.sala.BuildConfig;
 import com.hendercine.sala.R;
 import com.hendercine.sala.models.Assembly;
 import com.hendercine.sala.models.Performer;
@@ -51,6 +52,7 @@ import com.hendercine.sala.models.Song;
 import com.hendercine.sala.ui.adapters.SideBarRVAdapter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -58,17 +60,16 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity {
 
+    private static final int RC_SIGN_IN = 237;
+
     private String mAppBarTitle;
     private String mAppBarImageUrl;
     private String mAssemblyDateAndTheme;
     private String mAssemblyBackDrop;
+    private String mUserId;
 
-    // [START declare_database_ref]
     private DatabaseReference mDatabase;
-    // [END declare_database_ref]
-
-    private ChildEventListener mChildEventListener;
-    private ValueEventListener mAssemblyListener;
+    private FirebaseAuth mAuth;
 
     private ActionBarDrawerToggle mToggle;
     private ActionBar mActionBar;
@@ -150,9 +151,9 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        // [START initialize_database_ref]
+        // Initialize Firebase Services
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        // [END initialize_database_ref]
+        mAuth = FirebaseAuth.getInstance();
 
         mTwoPane = getResources().getBoolean(R.bool.isTablet);
         setSupportActionBar(mToolbar);
@@ -194,42 +195,31 @@ public class MainActivity extends BaseActivity {
 
             activateDrawerItems();
         }
-        // Handle transition from expanded to collapsed and in between
-        if (mCollapsingToolbarLayout != null && mToolbar != null &&
-                mAppBarLayout != null) {
-            mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-                @Override
-                public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                    Fade fade = new Fade();
-                    if (Math.abs(verticalOffset) == mAppBarLayout.getTotalScrollRange()) {
-                        // Collapsed
-                        TransitionManager.beginDelayedTransition
-                                (mAppBarLayout, fade);
-                        mToolbar.setVisibility(View.VISIBLE);
-                        mCollapsingToolbarLayout.setTitleEnabled(true);
-                        mCollapsingToolbarLayout.setTitle(mAppBarTitle);
-                        mTitleView.setVisibility(View.GONE);
-                    } else if (verticalOffset == 0) {
-                        // Expanded
-                        mCollapsingToolbarLayout.setTitleEnabled(false);
-                        mToolbar.setVisibility(View.GONE);
-                        mTitleView.setText(mAppBarTitle);
-                        mTitleView.setVisibility(View.VISIBLE);
-                    } else {
-                        // Mid-scroll
-                        mCollapsingToolbarLayout.setTitleEnabled(true);
-                        mCollapsingToolbarLayout.setTitle(mAppBarTitle);
-                        mTitleView.setVisibility(View.GONE);
-                    }
-                }
-            });
-        }
-        // Load Backdrop Image
-        Glide.with(this)
-                .load(mAppBarImageUrl)
-                .into(collapsingToolbarBackDrop);
-//        setCollapsingToolbarBehavior();
+        setCollapsingToolbarBehavior();
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        if (mAuth.getCurrentUser() != null) {
+            // already signed in
+        } else {
+            // not signed in
+            startActivityForResult(
+                    // Get an instance of AuthUI based on the default app
+                    AuthUI.getInstance()
+                            .createSignInIntentBuilder()
+                            .setIsSmartLockEnabled(!BuildConfig.DEBUG /* credentials */, true /* hints */)
+                            .setAvailableProviders(Arrays.asList(
+                                    new AuthUI.IdpConfig.EmailBuilder().build(),
+                                    new AuthUI.IdpConfig.GoogleBuilder().build()
+                            ))
+                            .build(),
+                    RC_SIGN_IN
+            );
+        }
     }
 
     private void getLastAssemblyData() {
@@ -382,8 +372,10 @@ public class MainActivity extends BaseActivity {
                         ).show();
                     } else if (position == R.id.logout_nav) {
                         FirebaseAuth.getInstance().signOut();
-                        startActivity(new Intent(MainActivity.this,
-                                SignInActivity.class));
+                        startActivity(new Intent(
+                                MainActivity.this,
+                                SignInActivity.class
+                        ));
                         finish();
                         return true;
                     }
@@ -497,8 +489,10 @@ public class MainActivity extends BaseActivity {
                     ).show();
                 } else if (position == mSideBarAdapter.getItemId(12)) {
                     FirebaseAuth.getInstance().signOut();
-                    startActivity(new Intent(MainActivity.this,
-                            SignInActivity.class));
+                    startActivity(new Intent(
+                            MainActivity.this,
+                            SignInActivity.class
+                    ));
                     finish();
                 }
                 if (fragment != null) {
