@@ -55,7 +55,6 @@ import java.util.ArrayList;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 public class MainActivity extends BaseActivity {
 
@@ -155,12 +154,10 @@ public class MainActivity extends BaseActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         // [END initialize_database_ref]
 
-        getLastAssemblyData();
-
         mTwoPane = getResources().getBoolean(R.bool.isTablet);
         setSupportActionBar(mToolbar);
         mActionBar = getSupportActionBar();
-        mAppBarTitle = mAboutTitle;
+        mAppBarTitle = "SALA";
         mAppBarImageUrl = mAboutBannerUrl;
 
         if (!mTwoPane && mSideBarRecyclerView != null) {
@@ -197,35 +194,82 @@ public class MainActivity extends BaseActivity {
 
             activateDrawerItems();
         }
-
-        setCollapsingToolbarBehavior();
+        // Handle transition from expanded to collapsed and in between
+        if (mCollapsingToolbarLayout != null && mToolbar != null &&
+                mAppBarLayout != null) {
+            mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+                @Override
+                public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                    Fade fade = new Fade();
+                    if (Math.abs(verticalOffset) == mAppBarLayout.getTotalScrollRange()) {
+                        // Collapsed
+                        TransitionManager.beginDelayedTransition
+                                (mAppBarLayout, fade);
+                        mToolbar.setVisibility(View.VISIBLE);
+                        mCollapsingToolbarLayout.setTitleEnabled(true);
+                        mCollapsingToolbarLayout.setTitle(mAppBarTitle);
+                        mTitleView.setVisibility(View.GONE);
+                    } else if (verticalOffset == 0) {
+                        // Expanded
+                        mCollapsingToolbarLayout.setTitleEnabled(false);
+                        mToolbar.setVisibility(View.GONE);
+                        mTitleView.setText(mAppBarTitle);
+                        mTitleView.setVisibility(View.VISIBLE);
+                    } else {
+                        // Mid-scroll
+                        mCollapsingToolbarLayout.setTitleEnabled(true);
+                        mCollapsingToolbarLayout.setTitle(mAppBarTitle);
+                        mTitleView.setVisibility(View.GONE);
+                    }
+                }
+            });
+        }
+        // Load Backdrop Image
+        Glide.with(this)
+                .load(mAppBarImageUrl)
+                .into(collapsingToolbarBackDrop);
+//        setCollapsingToolbarBehavior();
 
     }
 
     private void getLastAssemblyData() {
         // [START single_value_read]
-        mDatabase.child("assemblies").child("assembly_date")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child("assemblies").child(String.valueOf(0))
+                .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        // Get assembly value
-                        Assembly assembly = dataSnapshot.getValue(Assembly.class);
-
-                        // [START_EXCLUDE]
-                        if (assembly == null) {
-                            // Assembly is null, error out
-                            Timber.e("Assembly is null");
-                            Toast.makeText(
-                                    MainActivity.this,
-                                    "Error: Could not fetch assembly",
-                                    Toast.LENGTH_SHORT
-                            ).show();
-                        } else {
-                            mAssemblyDateAndTheme =
-                                    assembly.mAssemblyDate + " " +
-                                    assembly.mAssemblyTheme;
-                            mAssemblyBackDrop = assembly.mAssemblyPhotoUrl;
+                        try {
+                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                String assemblyDate = ds.child
+                                        ("assembly_date")
+                                        .getValue(String.class);
+                                String assemblyTheme = ds.child
+                                        ("assembly_theme")
+                                        .getValue(String.class);
+                                mAssemblyDateAndTheme = assemblyDate + " " + assemblyTheme;
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
+//                        // Get assembly value
+//                        Assembly assembly = dataSnapshot.getValue(Assembly.class);
+//
+//                        // [START_EXCLUDE]
+//                        if (assembly == null) {
+//                            // Assembly is null, error out
+//                            Timber.e("Assembly is null");
+//                            Toast.makeText(
+//                                    MainActivity.this,
+//                                    "Error: Could not fetch assembly",
+//                                    Toast.LENGTH_SHORT
+//                            ).show();
+//                        } else {
+//                            mAssembly = new Assembly();
+//                            mAssemblyDateAndTheme =
+//                                    assembly.getAssemblyDate() + " " +
+//                                    assembly.getAssemblyTheme();
+//                            mAssemblyBackDrop = assembly.mAssemblyPhotoUrl;
+//                        }
                     }
 
                     @Override
@@ -373,8 +417,9 @@ public class MainActivity extends BaseActivity {
                     mAppBarImageUrl = mAboutBannerUrl;
                 } else if (position == mSideBarAdapter.getItemId(1)) {
 //                    fragment = new AssembliesFragment();
+                    getLastAssemblyData();
                     mAppBarTitle = mAssemblyDateAndTheme;
-                    mAboutBannerUrl = mAssemblyBackDrop;
+                    mAppBarImageUrl = mAboutBannerUrl;
                     Toast.makeText(
                             getApplicationContext(),
                             "This will display AssembliesFragment",
@@ -450,6 +495,11 @@ public class MainActivity extends BaseActivity {
                             "This will display WebsiteFragment",
                             Toast.LENGTH_SHORT
                     ).show();
+                } else if (position == mSideBarAdapter.getItemId(12)) {
+                    FirebaseAuth.getInstance().signOut();
+                    startActivity(new Intent(MainActivity.this,
+                            SignInActivity.class));
+                    finish();
                 }
                 if (fragment != null) {
                     getSupportFragmentManager()
@@ -473,7 +523,15 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return mToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+        int i = item.getItemId();
+        if (i == R.id.logout_menu) {
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(this, SignInActivity.class));
+            finish();
+            return true;
+        } else {
+            return mToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+        }
     }
 
     private void setCollapsingToolbarBehavior() {

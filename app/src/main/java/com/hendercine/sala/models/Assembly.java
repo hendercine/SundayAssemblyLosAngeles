@@ -38,6 +38,38 @@ public class Assembly {
         this.mAssemblyPhotoUrl = assemblyPhotoUrl;
     }
 
+    public String getAssemblyDate() {
+        return mAssemblyDate;
+    }
+
+    public void setAssemblyDate(String assemblyDate) {
+        mAssemblyDate = assemblyDate;
+    }
+
+    public String getAssemblyTheme() {
+        return mAssemblyTheme;
+    }
+
+    public void setAssemblyTheme(String assemblyTheme) {
+        mAssemblyTheme = assemblyTheme;
+    }
+
+    public String getAssemblyDescription() {
+        return mAssemblyDescription;
+    }
+
+    public void setAssemblyDescription(String assemblyDescription) {
+        mAssemblyDescription = assemblyDescription;
+    }
+
+    public String getAssemblyPhotoUrl() {
+        return mAssemblyPhotoUrl;
+    }
+
+    public void setAssemblyPhotoUrl(String assemblyPhotoUrl) {
+        mAssemblyPhotoUrl = assemblyPhotoUrl;
+    }
+
     // [START assembly_to_map]
     @Exclude
     public Map<String, Object> toMap() {

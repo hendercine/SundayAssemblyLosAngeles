@@ -36,7 +36,7 @@
     <string name="facebook_nav_title">Facebook</string>
     <string name="twitter_nav_title">Twitter</string>
     <string name="sala_on_the_web_nav_title">Sala on the Web</string>
-    <string name="logout_nav_title">Logout</string>
+    <string name="logout_nav_title">Log out</string>
     <string name="navigation_drawer_open">Open the Navigation Drawer</string>
     <string name="navigation_drawer_close">Close the Navigation Drawer</string>
     <string name="social_nav_title">Social</string>
