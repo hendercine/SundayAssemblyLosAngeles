@@ -8,8 +8,8 @@
 
 package com.hendercine.sala;
 
-import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ProgressBar;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -18,22 +18,20 @@ import com.google.firebase.auth.FirebaseAuth;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
-// TODO: Replace deprecated method with BakingTime solution
-    private ProgressDialog mProgressDialog;
+    private ProgressBar mProgressBar;
 
-    public void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setCancelable(false);
-            mProgressDialog.setMessage("Loading...");
+    public void showProgressBar() {
+        if (mProgressBar == null) {
+            mProgressBar = new ProgressBar(this);
         }
 
-        mProgressDialog.show();
+        mProgressBar.setVisibility(ProgressBar.VISIBLE);
     }
 
-    public void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
+    public void hideProgressBar() {
+        if (mProgressBar != null && mProgressBar.getVisibility() == ProgressBar
+                .VISIBLE) {
+            mProgressBar.setVisibility(ProgressBar.INVISIBLE);
         }
     }
 
