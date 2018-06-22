@@ -68,12 +68,12 @@ public class MainActivity extends BaseActivity {
 
     public static final int RC_SIGN_IN = 237;
 
-    @State private String mAppBarTitle;
-    @State private String mAppBarImageUrl;
-    @State private String mAssemblyDateAndTheme;
-    @State private String mAssemblyBackDrop;
-    @State private String mUserId;
-    @State private String mUsername;
+    @State String mAppBarTitle;
+    @State String mAppBarImageUrl;
+    @State String mAssemblyDateAndTheme;
+    @State String mAssemblyBackDrop;
+    @State String mUserId;
+    @State String mUsername;
 
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseRef;
@@ -221,10 +221,12 @@ public class MainActivity extends BaseActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // already signed in
-                    onSignInInitialize(user.getDisplayName());
+                    showSnackBar(R.string.signed_in_snackbar);
+                    updateUI(user);
+//                    onSignInInitialize(user.getDisplayName());
                 } else {
                     // user is signed out
-                    onSignedOutCleanup();
+//                    onSignedOutCleanup();
                     startActivityForResult(
                             AuthUI.getInstance()
                                     .createSignInIntentBuilder()
@@ -265,6 +267,7 @@ public class MainActivity extends BaseActivity {
                 if (response == null) {
                     // User pressed back button
                 showSnackBar(R.string.sign_in_canceled_snackbar);
+                finish();
                 return;
                 }
 
@@ -591,7 +594,6 @@ public class MainActivity extends BaseActivity {
                     ).show();
                 } else if (position == mSideBarAdapter.getItemId(12)) {
                     AuthUI.getInstance().signOut(MainActivity.this);
-                    finish();
                 }
                 if (fragment != null) {
                     getSupportFragmentManager()
