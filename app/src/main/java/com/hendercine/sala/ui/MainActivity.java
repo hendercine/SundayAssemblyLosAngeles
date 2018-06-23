@@ -55,6 +55,7 @@ import com.hendercine.sala.ui.adapters.SideBarRVAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -65,12 +66,21 @@ public class MainActivity extends BaseActivity {
 
     public static final int RC_SIGN_IN = 237;
 
+    static final String USER_ID = "userId";
+    static final String USER_NAME = "userName";
+    static final String USER_PHOTO_URL = "userPhotoUrl";
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     private String mAppBarTitle;
     private String mAppBarImageUrl;
     private String mAssemblyDateAndTheme;
     private String mAssemblyBackDrop;
     private String mUserId;
     private String mUsername;
+    private String mUserPhotoUrl;
+
+    private Fragment mFragment;
+    private Bundle mBundle;
 
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseRef;
@@ -168,6 +178,12 @@ public class MainActivity extends BaseActivity {
 
         mAssemblyDbRef = mFirebaseDatabase.getReference().child("assemblies");
 
+        if (savedInstanceState != null) {
+            mUserId = savedInstanceState.getString(USER_ID);
+            mUsername = savedInstanceState.getString(USER_NAME);
+            mUserPhotoUrl = savedInstanceState.getString(USER_PHOTO_URL);
+        }
+
         mTwoPane = getResources().getBoolean(R.bool.isTablet);
         setSupportActionBar(mToolbar);
         mActionBar = getSupportActionBar();
@@ -186,18 +202,13 @@ public class MainActivity extends BaseActivity {
             mSideBarRecyclerView.setAdapter(mSideBarAdapter);
 
             activateSideBarItems();
+
         } else {
+
             if (mActionBar != null) {
                 mActionBar.setDisplayHomeAsUpEnabled(true);
                 mActionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
             }
-            //TODO: Check for savedInstanceState if != null restore last active state
-            mFragmentManager = getSupportFragmentManager();
-            mAboutSalaFragment = new AboutSalaFragment();
-            mFragmentManager
-                    .beginTransaction()
-                    .add(mContentFrame.getId(), mAboutSalaFragment)
-                    .commit();
 
             mToggle = new ActionBarDrawerToggle(
                     this,
@@ -209,6 +220,16 @@ public class MainActivity extends BaseActivity {
 
             activateDrawerItems();
         }
+
+        if (savedInstanceState == null) {
+            mFragmentManager = getSupportFragmentManager();
+            mAboutSalaFragment = new AboutSalaFragment();
+            mFragmentManager
+                    .beginTransaction()
+                    .add(mContentFrame.getId(), mAboutSalaFragment)
+                    .commit();
+        }
+
         setCollapsingToolbarBehavior();
 
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
@@ -218,8 +239,7 @@ public class MainActivity extends BaseActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // already signed in
-                    Toast.makeText(MainActivity.this, "You're signed in!", Toast
-                            .LENGTH_SHORT).show();
+                    showSnackBar(R.string.signed_in_success_message);
                 } else {
                     // not signed in
                     startActivityForResult(
@@ -228,7 +248,8 @@ public class MainActivity extends BaseActivity {
                                     .setIsSmartLockEnabled(!BuildConfig.DEBUG /* credentials */, true /* hints */)
                                     .setAvailableProviders(Arrays.asList(
                                             new AuthUI.IdpConfig.EmailBuilder().build(),
-                                            new AuthUI.IdpConfig.GoogleBuilder().build()
+                                            new AuthUI.IdpConfig.GoogleBuilder()
+                                                    .build()
                                     ))
                                     .setLogo(R.drawable.sala_logo_grass)
                                     .build(),
@@ -274,7 +295,17 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+
+        outState.putString(USER_ID, mUserId);
+        outState.putString(USER_NAME, mUsername);
+        outState.putString(USER_PHOTO_URL, mUserPhotoUrl);
+
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
 
     }
 
@@ -287,6 +318,7 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         mAuth.addAuthStateListener(mAuthStateListener);
+        updateUI(mAuth.getCurrentUser());
     }
 
     @Override
@@ -300,9 +332,10 @@ public class MainActivity extends BaseActivity {
         if (user != null) {
             // Signed in
             mUsernameHeaderView.setText(user.getDisplayName());
-            String userPhotoUrl = user.getPhotoUrl().toString();
+            mUserPhotoUrl = Objects.requireNonNull(user.getPhotoUrl())
+                    .toString();
             Glide.with(this)
-                    .load(userPhotoUrl)
+                    .load(mUserPhotoUrl)
                     .into(mUserHeaderImageView);
         } else {
             // Signed out
@@ -372,15 +405,15 @@ public class MainActivity extends BaseActivity {
                     }
                     // TODO: Add code here to update the UI based on the item selected
                     // For example, swap UI fragments here
-                    Fragment fragment = null;
-                    Bundle bundle = new Bundle();
+                    mFragment = null;
+                    mBundle = new Bundle();
                     int position = menuItem.getItemId();
                     if (position == R.id.about_nav) {
-                        fragment = new AboutSalaFragment();
+                        mFragment = new AboutSalaFragment();
                         mAppBarTitle = mAboutTitle;
                         mAppBarImageUrl = mAboutBannerUrl;
                     } else if (position == R.id.assemblies_nav) {
-//                        fragment = new AssembliesFragment();
+//                        mFragment = new AssembliesFragment();
                         mAppBarTitle = mAssemblyDateAndTheme;
                         mAboutBannerUrl = mAssemblyBackDrop;
                         Toast.makeText(
@@ -389,45 +422,45 @@ public class MainActivity extends BaseActivity {
                                 Toast.LENGTH_SHORT
                         ).show();
                     } else if (position == R.id.program_nav) {
-//                        bundle.putParcelable("latest_assembly", Parcels.wrap
+//                        mBundle.putParcelable("latest_assembly", Parcels.wrap
 //                                (mAssembliesList.get(0))); // Get data at index 0 for the most recent Assembly
-//                        fragment = new ProgramFragment();
-//                        fragment.setArguments(bundle);
+//                        mFragment = new ProgramFragment();
+//                        mFragment.setArguments(mBundle);
                         Toast.makeText(
                                 getApplicationContext(),
                                 "This will display ProgramFragment",
                                 Toast.LENGTH_SHORT
                         ).show();
                     } else if (position == R.id.lyrics_nav) {
-                        //                    fragment = new LyricsFragment();
+                        //                    mFragment = new LyricsFragment();
                         Toast.makeText(
                                 getApplicationContext(),
                                 "This will display LyricsFragment",
                                 Toast.LENGTH_SHORT
                         ).show();
                     } else if (position == R.id.speaker_nav) {
-                        //                    fragment = new SpeakerFragment();
+                        //                    mFragment = new SpeakerFragment();
                         Toast.makeText(
                                 getApplicationContext(),
                                 "This will display SpeakerFragment",
                                 Toast.LENGTH_SHORT
                         ).show();
                     } else if (position == R.id.help_often_nav) {
-                        //                    fragment = new HelpOftenFragment();
+                        //                    mFragment = new HelpOftenFragment();
                         Toast.makeText(
                                 getApplicationContext(),
                                 "This will display HelpOftenFragment",
                                 Toast.LENGTH_SHORT
                         ).show();
                     } else if (position == R.id.live_better_nav) {
-                        //                    fragment = new LiveBetterFragment();
+                        //                    mFragment = new LiveBetterFragment();
                         Toast.makeText(
                                 getApplicationContext(),
                                 "This will display LiveBetterFragment",
                                 Toast.LENGTH_SHORT
                         ).show();
                     } else if (position == R.id.chat_nav) {
-                        //                    fragment = new ChatFragment();
+                        //                    mFragment = new ChatFragment();
                         Toast.makeText(
                                 getApplicationContext(),
                                 "This will display ChatFragment",
@@ -453,9 +486,9 @@ public class MainActivity extends BaseActivity {
                                 Toast.LENGTH_SHORT
                         ).show();
                     } else if (position == R.id.site_link_nav) {
-                        //                    bundle.putString("url", "https://www.sundayassemblyla.org");
-                        //                    fragment = new WebsiteFragment();
-                        //                    fragment.setArguments(bundle);
+                        //                    mBundle.putString("url", "https://www.sundayassemblyla.org");
+                        //                    mFragment = new WebsiteFragment();
+                        //                    mFragment.setArguments(mBundle);
                         Toast.makeText(
                                 getApplicationContext(),
                                 "This will display WebsiteFragment",
@@ -465,10 +498,10 @@ public class MainActivity extends BaseActivity {
                         AuthUI.getInstance().signOut(MainActivity.this);
                         return true;
                     }
-                    if (fragment != null) {
+                    if (mFragment != null) {
                         getSupportFragmentManager()
                                 .beginTransaction()
-                                .replace(R.id.content_frame, fragment)
+                                .replace(R.id.content_frame, mFragment)
                                 //                            .setTransition(R.anim.fade)
                                 .addToBackStack(null)
                                 .commit();
@@ -487,14 +520,14 @@ public class MainActivity extends BaseActivity {
             public void onItemClick(int position) {
                 // TODO: Add code here to update the UI based on the item selected
                 // For example, swap UI fragments here
-                Fragment fragment = null;
-                Bundle bundle = new Bundle();
+                mFragment = null;
+                mBundle = new Bundle();
                 if (position == mSideBarAdapter.getItemId(0)) {
-                    fragment = new AboutSalaFragment();
+                    mFragment = new AboutSalaFragment();
                     mAppBarTitle = mAboutTitle;
                     mAppBarImageUrl = mAboutBannerUrl;
                 } else if (position == mSideBarAdapter.getItemId(1)) {
-//                    fragment = new AssembliesFragment();
+//                    mFragment = new AssembliesFragment();
                     getLastAssemblyData();
                     mAppBarTitle = mAssemblyDateAndTheme;
                     mAppBarImageUrl = mAboutBannerUrl;
@@ -504,42 +537,42 @@ public class MainActivity extends BaseActivity {
                             Toast.LENGTH_SHORT
                     ).show();
                 } else if (position == mSideBarAdapter.getItemId(2)) {
-//                    fragment = new ProgramFragment();
+//                    mFragment = new ProgramFragment();
                     Toast.makeText(
                             getApplicationContext(),
                             "This will display ProgramFragment",
                             Toast.LENGTH_SHORT
                     ).show();
                 } else if (position == mSideBarAdapter.getItemId(3)) {
-//                    fragment = new LyricsFragment();
+//                    mFragment = new LyricsFragment();
                     Toast.makeText(
                             getApplicationContext(),
                             "This will display LyricsFragment",
                             Toast.LENGTH_SHORT
                     ).show();
                 } else if (position == mSideBarAdapter.getItemId(4)) {
-//                    fragment = new SpeakerFragment();
+//                    mFragment = new SpeakerFragment();
                     Toast.makeText(
                             getApplicationContext(),
                             "This will display SpeakerFragment",
                             Toast.LENGTH_SHORT
                     ).show();
                 } else if (position == mSideBarAdapter.getItemId(5)) {
-//                    fragment = new HelpOftenFragment();
+//                    mFragment = new HelpOftenFragment();
                     Toast.makeText(
                             getApplicationContext(),
                             "This will display HelpOftenFragment",
                             Toast.LENGTH_SHORT
                     ).show();
                 } else if (position == mSideBarAdapter.getItemId(6)) {
-//                    fragment = new LiveBetterFragment();
+//                    mFragment = new LiveBetterFragment();
                     Toast.makeText(
                             getApplicationContext(),
                             "This will display LiveBetterFragment",
                             Toast.LENGTH_SHORT
                     ).show();
                 } else if (position == mSideBarAdapter.getItemId(7)) {
-//                    fragment = new ChatFragment();
+//                    mFragment = new ChatFragment();
                     Toast.makeText(
                             getApplicationContext(),
                             "This will display ChatFragment",
@@ -565,9 +598,9 @@ public class MainActivity extends BaseActivity {
                             Toast.LENGTH_SHORT
                     ).show();
                 } else if (position == mSideBarAdapter.getItemId(11)) {
-//                    bundle.putString("url", "https://www.sundayassemblyla.org");
-//                    fragment = new WebsiteFragment();
-//                    fragment.setArguments(bundle);
+//                    mBundle.putString("url", "https://www.sundayassemblyla.org");
+//                    mFragment = new WebsiteFragment();
+//                    mFragment.setArguments(mBundle);
                     Toast.makeText(
                             getApplicationContext(),
                             "This will display WebsiteFragment",
@@ -576,15 +609,14 @@ public class MainActivity extends BaseActivity {
                 } else if (position == mSideBarAdapter.getItemId(12)) {
                     AuthUI.getInstance().signOut(MainActivity.this);
                 }
-                if (fragment != null) {
+                if (mFragment != null) {
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.content_frame, fragment)
+                            .replace(R.id.content_frame, mFragment)
 //                            .setTransition(R.anim.fade)
                             .addToBackStack(null)
                             .commit();
                 }
-
             }
         });
     }

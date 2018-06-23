@@ -57,4 +57,5 @@
     <string name="sign_up_btn_text">SIGN UP</string>
     <string name="signed_in_snackbar">Signed in!</string>
     <string name="sign_in_canceled_snackbar">Sign in canceled</string>
+    <string name="signed_in_success_message">You\'re signed in!</string>
 </resources>
