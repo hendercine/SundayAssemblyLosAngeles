@@ -58,8 +58,9 @@ import java.util.Arrays;
 
 import butterknife.BindString;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
-@SuppressWarnings("ALL")
+@SuppressWarnings("Convert2Lambda")
 public class MainActivity extends BaseActivity {
 
     public static final int RC_SIGN_IN = 237;
@@ -159,7 +160,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        ButterKnife.bind(this);
         // Initialize Firebase Components
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mDatabaseRef = mFirebaseDatabase.getReference();
@@ -170,7 +171,7 @@ public class MainActivity extends BaseActivity {
         mTwoPane = getResources().getBoolean(R.bool.isTablet);
         setSupportActionBar(mToolbar);
         mActionBar = getSupportActionBar();
-        mAppBarTitle = "SALA";
+        mAppBarTitle = mAboutTitle;
         mAppBarImageUrl = mAboutBannerUrl;
 
         if (!mTwoPane && mSideBarRecyclerView != null) {
@@ -269,6 +270,12 @@ public class MainActivity extends BaseActivity {
         } else {
             return mToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
     }
 
     @Override

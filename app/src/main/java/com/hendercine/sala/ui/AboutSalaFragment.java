@@ -55,6 +55,7 @@ public class AboutSalaFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+//        unbinder.unbind();
     }
 
     @Override

@@ -8,15 +8,11 @@
 
 package com.hendercine.sala;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
 
 import com.google.firebase.auth.FirebaseAuth;
-
-import butterknife.ButterKnife;
 
 /**
  * sala created by hendercine on 6/21/18.
@@ -24,18 +20,6 @@ import butterknife.ButterKnife;
 public abstract class BaseActivity extends AppCompatActivity {
 
     private ProgressBar mProgressBar;
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
-    }
-
-    @Override
-    protected void onDestroy() {
-        ButterKnife.bind(this);
-        super.onDestroy();
-    }
 
     public void showProgressBar() {
         if (mProgressBar == null) {
