@@ -70,8 +70,11 @@ public class MainActivity extends BaseActivity {
     private String mAssemblyDateAndTheme;
     private String mAssemblyBackDrop;
     private String mUserId;
+    private String mUsername;
 
-    private DatabaseReference mDatabase;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mDatabaseRef;
+    private DatabaseReference mAssemblyDbRef;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
@@ -159,9 +162,12 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        // Initialize Firebase Services
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        // Initialize Firebase Components
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mDatabaseRef = mFirebaseDatabase.getReference();
         mAuth = FirebaseAuth.getInstance();
+
+        mAssemblyDbRef = mFirebaseDatabase.getReference().child("assemblies");
 
         mTwoPane = getResources().getBoolean(R.bool.isTablet);
         setSupportActionBar(mToolbar);
@@ -306,7 +312,7 @@ public class MainActivity extends BaseActivity {
 
     private void getLastAssemblyData() {
         // [START single_value_read]
-        mDatabase.child("assemblies").child(String.valueOf(0))
+        mDatabaseRef.child("assemblies").child(String.valueOf(0))
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
