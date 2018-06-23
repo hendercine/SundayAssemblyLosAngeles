@@ -8,6 +8,7 @@
 
 package com.hendercine.sala;
 
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
 
@@ -38,5 +39,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     public String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
+
+    public void showSnackBar(int resId) {
+        Snackbar.make(
+                findViewById(android.R.id.content),
+                resId,
+                Snackbar.LENGTH_SHORT
+        ).show(); }
 
 }

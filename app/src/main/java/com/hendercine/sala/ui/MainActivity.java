@@ -15,7 +15,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -38,6 +37,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -185,6 +185,7 @@ public class MainActivity extends BaseActivity {
             mSideBarRecyclerView.setLayoutManager(new LinearLayoutManager(this));
             mSideBarAdapter = new SideBarRVAdapter(mSideBarArray);
             mSideBarRecyclerView.setAdapter(mSideBarAdapter);
+
             activateSideBarItems();
         } else {
             if (mActionBar != null) {
@@ -243,33 +244,14 @@ public class MainActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
+            IdpResponse response = IdpResponse.fromResultIntent(data);
             if (resultCode == RESULT_OK) {
-                Snackbar.make(mContentFrame, "Signed in!", Snackbar
-                        .LENGTH_SHORT)
-                        .show();
+                showSnackBar(R.string.signed_in_snackbar);
                 updateUI(mAuth.getCurrentUser());
-            } else if (requestCode == RESULT_CANCELED) {
-                Snackbar.make(mContentFrame, "Sign in canceled", Toast
-                        .LENGTH_SHORT).show();
+            } else if (response == null) {
+                showSnackBar(R.string.sign_in_canceled_snackbar);
                 finish();
             }
-        }
-    }
-
-    private void updateUI(FirebaseUser user) {
-        if (user != null) {
-            // Signed in
-            mUsernameHeaderView.setText(user.getDisplayName());
-            String userPhotoUrl = user.getPhotoUrl().toString();
-            Glide.with(this)
-                    .load(userPhotoUrl)
-                    .into(mUserHeaderImageView);
-        } else {
-            // Signed out
-            mUsernameHeaderView.setText(R.string.dummy_user_name);
-            Glide.with(this)
-                    .load(R.drawable.sala_logo_grass)
-                    .into(mUserHeaderImageView);
         }
     }
 
@@ -284,9 +266,7 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int i = item.getItemId();
         if (i == R.id.logout_menu) {
-            FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(this, SignInActivity.class));
-            finish();
+            AuthUI.getInstance().signOut(this);
             return true;
         } else {
             return mToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
@@ -308,6 +288,24 @@ public class MainActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
         mAuth.removeAuthStateListener(mAuthStateListener);
+    }
+
+
+    private void updateUI(FirebaseUser user) {
+        if (user != null) {
+            // Signed in
+            mUsernameHeaderView.setText(user.getDisplayName());
+            String userPhotoUrl = user.getPhotoUrl().toString();
+            Glide.with(this)
+                    .load(userPhotoUrl)
+                    .into(mUserHeaderImageView);
+        } else {
+            // Signed out
+            mUsernameHeaderView.setText(R.string.dummy_user_name);
+            Glide.with(this)
+                    .load(R.drawable.sala_logo_grass)
+                    .into(mUserHeaderImageView);
+        }
     }
 
     private void getLastAssemblyData() {
@@ -459,12 +457,7 @@ public class MainActivity extends BaseActivity {
                                 Toast.LENGTH_SHORT
                         ).show();
                     } else if (position == R.id.logout_nav) {
-                        FirebaseAuth.getInstance().signOut();
-                        startActivity(new Intent(
-                                MainActivity.this,
-                                SignInActivity.class
-                        ));
-                        finish();
+                        AuthUI.getInstance().signOut(MainActivity.this);
                         return true;
                     }
                     if (fragment != null) {
@@ -576,12 +569,7 @@ public class MainActivity extends BaseActivity {
                             Toast.LENGTH_SHORT
                     ).show();
                 } else if (position == mSideBarAdapter.getItemId(12)) {
-                    FirebaseAuth.getInstance().signOut();
-                    startActivity(new Intent(
-                            MainActivity.this,
-                            SignInActivity.class
-                    ));
-                    finish();
+                    AuthUI.getInstance().signOut(MainActivity.this);
                 }
                 if (fragment != null) {
                     getSupportFragmentManager()
