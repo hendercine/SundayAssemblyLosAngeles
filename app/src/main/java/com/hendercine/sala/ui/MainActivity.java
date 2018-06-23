@@ -58,7 +58,6 @@ import java.util.Arrays;
 
 import butterknife.BindString;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 @SuppressWarnings("ALL")
 public class MainActivity extends BaseActivity {
@@ -160,7 +159,6 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
 
         // Initialize Firebase Components
         mFirebaseDatabase = FirebaseDatabase.getInstance();
