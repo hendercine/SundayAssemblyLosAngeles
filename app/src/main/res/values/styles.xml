@@ -1,13 +1,12 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/grass_dark</item>
-        <item name="colorPrimaryDark">@color/peacock_dark</item>
-        <item name="colorAccent">@color/banana_medium</item>
-        <item name="android:textColor">@color/white</item>
-
+        <item name="colorPrimary" tools:override="true">@color/colorPrimary</item>
+        <item name="colorPrimaryDark" tools:override="true">@color/colorPrimaryDark</item>
+        <item name="colorAccent" tools:override="true">@color/colorAccent</item>
+        <item name="primaryTextColor" tools:override="true">@color/primaryTextColor</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <color name="grass_dark">#80a51b</color>
-    <color name="peacock_dark">#00847e</color>
-    <color name="banana_medium">#e8e100</color>
-    <color name="white">#ffffff</color>
+    <color name="colorPrimary" tools:override="true">#80a51b</color>
+    <color name="colorPrimaryDark" tools:override="true">#00847e</color>
+    <color name="colorAccent" tools:override="true">#e8e100</color>
+    <color name="primaryTextColor" tools:override="true">#ffffff</color>
 
 </resources>
