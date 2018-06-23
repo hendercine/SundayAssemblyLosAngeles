@@ -129,7 +129,7 @@ public class MainActivity extends BaseActivity {
     AppBarLayout mAppBarLayout;
 
     @BindView(R.id.user_nav_header_img_view)
-    ImageView mUserHeaderImageView;
+    ImageView mUserHeaderIV;
     @BindView(R.id.username_nav_header_text_view)
     TextView mUsernameHeaderView;
     @BindView(R.id.content_frame)
@@ -336,13 +336,13 @@ public class MainActivity extends BaseActivity {
                     .toString();
             Glide.with(this)
                     .load(mUserPhotoUrl)
-                    .into(mUserHeaderImageView);
+                    .into(mUserHeaderIV);
         } else {
             // Signed out
             mUsernameHeaderView.setText(R.string.dummy_user_name);
             Glide.with(this)
                     .load(R.drawable.sala_logo_grass)
-                    .into(mUserHeaderImageView);
+                    .into(mUserHeaderIV);
         }
     }
 

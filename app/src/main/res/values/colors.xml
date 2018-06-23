@@ -4,6 +4,6 @@
     <color name="colorPrimary" tools:override="true">#80a51b</color>
     <color name="colorPrimaryDark" tools:override="true">#00847e</color>
     <color name="colorAccent" tools:override="true">#e8e100</color>
-    <color name="primaryTextColor" tools:override="true">#ffffff</color>
+    <color name="color_over_primary" tools:override="true">#ffffff</color>
 
 </resources>

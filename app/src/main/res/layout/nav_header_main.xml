@@ -13,7 +13,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_header"
     android:layout_width="match_parent"
-    android:layout_height="160dp"
+    android:layout_height="@dimen/custom_app_bar_height"
     android:background="@color/colorPrimary"
     android:clickable="true"
     android:focusable="true"
@@ -31,11 +31,11 @@
         android:layout_marginStart="8dp"
         android:autoLink="email"
         android:background="@drawable/baseline_email_24"
-        app:layout_constraintBottom_toBottomOf="@+id/user_nav_header_img_view"
+        app:layout_constraintBottom_toBottomOf="@id/user_nav_header_img_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.406"
-        app:layout_constraintStart_toEndOf="@+id/user_nav_header_img_view"
-        app:layout_constraintTop_toTopOf="@+id/user_nav_header_img_view"/>
+        app:layout_constraintStart_toEndOf="@id/user_nav_header_img_view"
+        app:layout_constraintTop_toTopOf="@id/user_nav_header_img_view"/>
 
     <ImageView
         android:id="@+id/user_nav_header_img_view"
@@ -45,10 +45,10 @@
         android:layout_marginStart="8dp"
         android:adjustViewBounds="false"
         android:contentDescription="@string/nav_profile_picture_description"
-        app:layout_constraintBottom_toBottomOf="@+id/logout_btn"
+        app:layout_constraintBottom_toBottomOf="@id/logout_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/logout_btn"
+        app:layout_constraintTop_toTopOf="@id/logout_btn"
         app:srcCompat="@drawable/baseline_account_circle_48"/>
 
     <Button
@@ -60,7 +60,7 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/baseline_exit_to_app_24"
         android:scaleX="-1"
-        app:layout_constraintEnd_toStartOf="@+id/user_nav_header_img_view"
+        app:layout_constraintEnd_toStartOf="@id/user_nav_header_img_view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />
@@ -79,7 +79,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_nav_header_img_view"
+        app:layout_constraintTop_toBottomOf="@id/user_nav_header_img_view"
         tools:text="@string/dummy_user_name"/>
 
 </android.support.constraint.ConstraintLayout>
