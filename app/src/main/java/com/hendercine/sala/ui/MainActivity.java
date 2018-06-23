@@ -127,9 +127,10 @@ public class MainActivity extends BaseActivity {
     @Nullable
     @BindView(R.id.app_bar)
     AppBarLayout mAppBarLayout;
-
+    @Nullable
     @BindView(R.id.user_nav_header_img_view)
     ImageView mUserHeaderIV;
+    @Nullable
     @BindView(R.id.username_nav_header_text_view)
     TextView mUsernameHeaderView;
     @BindView(R.id.content_frame)
@@ -329,20 +330,24 @@ public class MainActivity extends BaseActivity {
 
 
     private void updateUI(FirebaseUser user) {
-        if (user != null) {
+        if (user != null ) {
             // Signed in
-            mUsernameHeaderView.setText(user.getDisplayName());
-            mUserPhotoUrl = Objects.requireNonNull(user.getPhotoUrl())
-                    .toString();
-            Glide.with(this)
-                    .load(mUserPhotoUrl)
-                    .into(mUserHeaderIV);
+            if (mUsernameHeaderView != null && mUserHeaderIV != null) {
+                mUsernameHeaderView.setText(user.getDisplayName());
+
+            mUserPhotoUrl = Objects.requireNonNull(user.getPhotoUrl()).toString();
+                Glide.with(this)
+                        .load(mUserPhotoUrl)
+                        .into(mUserHeaderIV);
+            }
         } else {
             // Signed out
-            mUsernameHeaderView.setText(R.string.dummy_user_name);
-            Glide.with(this)
-                    .load(R.drawable.sala_logo_grass)
-                    .into(mUserHeaderIV);
+            if (mUsernameHeaderView != null && mUserHeaderIV != null) {
+                mUsernameHeaderView.setText(R.string.dummy_user_name);
+                Glide.with(this)
+                        .load(R.drawable.sala_logo_grass)
+                        .into(mUserHeaderIV);
+            }
         }
     }
 
@@ -396,6 +401,7 @@ public class MainActivity extends BaseActivity {
     private void activateDrawerItems() {
         // Handle navigation drawer click events
         if (mNavView != null) {
+            updateUI(mAuth.getCurrentUser());
             mNavView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
