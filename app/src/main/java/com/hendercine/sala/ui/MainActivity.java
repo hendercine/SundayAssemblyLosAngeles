@@ -9,6 +9,7 @@
 package com.hendercine.sala.ui;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -54,6 +55,9 @@ import com.hendercine.sala.ui.adapters.SideBarRVAdapter;
 
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -61,6 +65,7 @@ import java.util.Objects;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 @SuppressWarnings("Convert2Lambda")
 public class MainActivity extends BaseActivity {
@@ -119,7 +124,7 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.collapsing_toolbar_backdrop_img)
     ImageView collapsingToolbarBackDrop;
-//    @BindView(R.id.app_bar_title)
+    //    @BindView(R.id.app_bar_title)
 //    TextView mTitleView;
     @Nullable
     @BindView(R.id.toolbar_main)
@@ -138,6 +143,8 @@ public class MainActivity extends BaseActivity {
     TextView mUsernameHeaderTV;
     @BindView(R.id.content_frame)
     FrameLayout mContentFrame;
+    @BindView(R.id.events_all_text)
+    TextView mEventsAllView;
 
     @BindString(R.string.about_banner_url)
     String mAboutBannerUrl;
@@ -226,12 +233,13 @@ public class MainActivity extends BaseActivity {
         }
 
         if (savedInstanceState == null) {
-            mFragmentManager = getSupportFragmentManager();
-            mAboutSalaFragment = new AboutSalaFragment();
-            mFragmentManager
-                    .beginTransaction()
-                    .add(mContentFrame.getId(), mAboutSalaFragment)
-                    .commit();
+            new FetchSalaWebsiteData().execute();
+//            mFragmentManager = getSupportFragmentManager();
+//            mAboutSalaFragment = new AboutSalaFragment();
+//            mFragmentManager
+//                    .beginTransaction()
+//                    .add(mContentFrame.getId(), mAboutSalaFragment)
+//                    .commit();
         }
 
         setCollapsingToolbarBehavior();
@@ -338,12 +346,13 @@ public class MainActivity extends BaseActivity {
 
 
     private void updateUI(FirebaseUser user) {
-        if (user != null ) {
+        if (user != null) {
             // Signed in
             if (mUsernameHeaderTV != null && mUserNavHeaderIV != null) {
                 mUsernameHeaderTV.setText(user.getDisplayName());
 
-            mUserPhotoUrl = Objects.requireNonNull(user.getPhotoUrl()).toString();
+                mUserPhotoUrl = Objects.requireNonNull(user.getPhotoUrl())
+                        .toString();
                 Glide.with(this)
                         .load(mUserPhotoUrl)
                         .into(mUserNavHeaderIV);
@@ -640,33 +649,61 @@ public class MainActivity extends BaseActivity {
 
     private void setCollapsingToolbarBehavior() {
         // Handle transition from expanded to collapsed and in between
-            if (mCollapsingToolbarLayout != null && mToolbar != null &&
-                    mAppBarLayout != null) {
-                mCollapsingToolbarLayout.setTitleEnabled(true);
-                mCollapsingToolbarLayout.setTitle(mAppBarTitle);
-                mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-                    @Override
-                    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                        Fade fade = new Fade();
-                        if (Math.abs(verticalOffset) == mAppBarLayout.getTotalScrollRange()) {
-                            // Collapsed
-                            TransitionManager.beginDelayedTransition
-                                    (mAppBarLayout, fade);
-                            mToolbar.setVisibility(View.VISIBLE);
-                        } else if (verticalOffset == 0) {
-                            // Expanded
-                            mToolbar.setVisibility(View.GONE);
-                        } else {
-                            // Mid-scroll
-                            TransitionManager.beginDelayedTransition
-                                    (mToolbar, fade);
-                        }
+        if (mCollapsingToolbarLayout != null && mToolbar != null &&
+                mAppBarLayout != null) {
+            mCollapsingToolbarLayout.setTitleEnabled(true);
+            mCollapsingToolbarLayout.setTitle(mAppBarTitle);
+            mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+                @Override
+                public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                    Fade fade = new Fade();
+                    if (Math.abs(verticalOffset) == mAppBarLayout.getTotalScrollRange()) {
+                        // Collapsed
+                        TransitionManager.beginDelayedTransition
+                                (mAppBarLayout, fade);
+                        mToolbar.setVisibility(View.VISIBLE);
+                    } else if (verticalOffset == 0) {
+                        // Expanded
+                        mToolbar.setVisibility(View.GONE);
+                    } else {
+                        // Mid-scroll
+                        TransitionManager.beginDelayedTransition
+                                (mToolbar, fade);
                     }
-                });
-            }
+                }
+            });
+        }
         // Load Backdrop Image
         Glide.with(this)
                 .load(mAppBarImageUrl)
                 .into(collapsingToolbarBackDrop);
+    }
+
+
+    public class FetchSalaWebsiteData extends AsyncTask<Void, Void, Void> {
+
+        String mEvents;
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            try {
+
+                Document eventSummary = Jsoup.connect("http://www" +
+                        ".sundayassemblyla.org/event_summary").get();
+                mEvents = eventSummary.text();
+            } catch (Exception e) {
+                Timber.e("Something went wrong in the background", e);
+                e.printStackTrace();
+            }
+            return null;
+
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            mEventsAllView.setText(mEvents);
+        }
     }
 }

@@ -21,6 +21,13 @@
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp"/>
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/events_all_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </FrameLayout>
 
 </android.support.v4.widget.NestedScrollView>
