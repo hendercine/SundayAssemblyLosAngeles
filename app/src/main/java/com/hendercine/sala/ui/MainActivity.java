@@ -13,8 +13,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
+import android.support.transition.Fade;
+import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -24,8 +25,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.transition.Fade;
-import android.transition.TransitionManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -52,6 +51,8 @@ import com.hendercine.sala.models.Assembly;
 import com.hendercine.sala.models.Performer;
 import com.hendercine.sala.models.Song;
 import com.hendercine.sala.ui.adapters.SideBarRVAdapter;
+
+import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -93,7 +94,7 @@ public class MainActivity extends BaseActivity {
 
     private FragmentManager mFragmentManager;
     private AboutSalaFragment mAboutSalaFragment;
-    private boolean mTwoPane;
+    private boolean mIsTwoPane;
     private String[] mSideBarArray;
     private SideBarRVAdapter mSideBarAdapter;
 
@@ -102,6 +103,8 @@ public class MainActivity extends BaseActivity {
     private Performer mPerformer;
     private Song mSong;
     private ArrayList<Assembly> mAssembliesList;
+
+    private View mNavHeaderView;
 
     @Nullable
     @BindView(R.id.drawer_layout)
@@ -116,8 +119,8 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.collapsing_toolbar_backdrop_img)
     ImageView collapsingToolbarBackDrop;
-    @BindView(R.id.app_bar_title)
-    TextView mTitleView;
+//    @BindView(R.id.app_bar_title)
+//    TextView mTitleView;
     @Nullable
     @BindView(R.id.toolbar_main)
     Toolbar mToolbar;
@@ -129,10 +132,10 @@ public class MainActivity extends BaseActivity {
     AppBarLayout mAppBarLayout;
     @Nullable
     @BindView(R.id.user_nav_header_img_view)
-    ImageView mUserHeaderIV;
+    ImageView mUserNavHeaderIV;
     @Nullable
     @BindView(R.id.username_nav_header_text_view)
-    TextView mUsernameHeaderView;
+    TextView mUsernameHeaderTV;
     @BindView(R.id.content_frame)
     FrameLayout mContentFrame;
 
@@ -185,13 +188,13 @@ public class MainActivity extends BaseActivity {
             mUserPhotoUrl = savedInstanceState.getString(USER_PHOTO_URL);
         }
 
-        mTwoPane = getResources().getBoolean(R.bool.isTablet);
+        mIsTwoPane = getResources().getBoolean(R.bool.isTablet);
         setSupportActionBar(mToolbar);
         mActionBar = getSupportActionBar();
         mAppBarTitle = mAboutTitle;
         mAppBarImageUrl = mAboutBannerUrl;
 
-        if (!mTwoPane && mSideBarRecyclerView != null) {
+        if (mIsTwoPane && mSideBarRecyclerView != null) {
             mSideBarArray = new String[]{
                     mAboutSideBar, mAssembliesSideBar, mProgramSidebar,
                     mLyricsSideBar, mSpeakerSideBar, mHelpSideBar,
@@ -284,6 +287,11 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        return !mIsTwoPane;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int i = item.getItemId();
         if (i == R.id.logout_menu) {
@@ -332,21 +340,21 @@ public class MainActivity extends BaseActivity {
     private void updateUI(FirebaseUser user) {
         if (user != null ) {
             // Signed in
-            if (mUsernameHeaderView != null && mUserHeaderIV != null) {
-                mUsernameHeaderView.setText(user.getDisplayName());
+            if (mUsernameHeaderTV != null && mUserNavHeaderIV != null) {
+                mUsernameHeaderTV.setText(user.getDisplayName());
 
             mUserPhotoUrl = Objects.requireNonNull(user.getPhotoUrl()).toString();
                 Glide.with(this)
                         .load(mUserPhotoUrl)
-                        .into(mUserHeaderIV);
+                        .into(mUserNavHeaderIV);
             }
         } else {
             // Signed out
-            if (mUsernameHeaderView != null && mUserHeaderIV != null) {
-                mUsernameHeaderView.setText(R.string.dummy_user_name);
+            if (mUsernameHeaderTV != null && mUserNavHeaderIV != null) {
+                mUsernameHeaderTV.setText(R.string.dummy_user_name);
                 Glide.with(this)
                         .load(R.drawable.sala_logo_grass)
-                        .into(mUserHeaderIV);
+                        .into(mUserNavHeaderIV);
             }
         }
     }
@@ -401,6 +409,9 @@ public class MainActivity extends BaseActivity {
     private void activateDrawerItems() {
         // Handle navigation drawer click events
         if (mNavView != null) {
+            mNavHeaderView = mNavView.getHeaderView(0);
+            mUsernameHeaderTV = mNavHeaderView.findViewById(R.id.username_nav_header_text_view);
+            mUserNavHeaderIV = mNavHeaderView.findViewById(R.id.user_nav_header_img_view);
             updateUI(mAuth.getCurrentUser());
             mNavView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -629,35 +640,30 @@ public class MainActivity extends BaseActivity {
 
     private void setCollapsingToolbarBehavior() {
         // Handle transition from expanded to collapsed and in between
-        if (mCollapsingToolbarLayout != null && mToolbar != null &&
-                mAppBarLayout != null) {
-            mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-                @Override
-                public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                    Fade fade = new Fade();
-                    if (Math.abs(verticalOffset) == mAppBarLayout.getTotalScrollRange()) {
-                        // Collapsed
-                        TransitionManager.beginDelayedTransition
-                                (mAppBarLayout, fade);
-                        mToolbar.setVisibility(View.VISIBLE);
-                        mCollapsingToolbarLayout.setTitleEnabled(true);
-                        mCollapsingToolbarLayout.setTitle(mAppBarTitle);
-                        mTitleView.setVisibility(View.GONE);
-                    } else if (verticalOffset == 0) {
-                        // Expanded
-                        mCollapsingToolbarLayout.setTitleEnabled(false);
-                        mToolbar.setVisibility(View.GONE);
-                        mTitleView.setText(mAppBarTitle);
-                        mTitleView.setVisibility(View.VISIBLE);
-                    } else {
-                        // Mid-scroll
-                        mCollapsingToolbarLayout.setTitleEnabled(true);
-                        mCollapsingToolbarLayout.setTitle(mAppBarTitle);
-                        mTitleView.setVisibility(View.GONE);
+            if (mCollapsingToolbarLayout != null && mToolbar != null &&
+                    mAppBarLayout != null) {
+                mCollapsingToolbarLayout.setTitleEnabled(true);
+                mCollapsingToolbarLayout.setTitle(mAppBarTitle);
+                mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+                    @Override
+                    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                        Fade fade = new Fade();
+                        if (Math.abs(verticalOffset) == mAppBarLayout.getTotalScrollRange()) {
+                            // Collapsed
+                            TransitionManager.beginDelayedTransition
+                                    (mAppBarLayout, fade);
+                            mToolbar.setVisibility(View.VISIBLE);
+                        } else if (verticalOffset == 0) {
+                            // Expanded
+                            mToolbar.setVisibility(View.GONE);
+                        } else {
+                            // Mid-scroll
+                            TransitionManager.beginDelayedTransition
+                                    (mToolbar, fade);
+                        }
                     }
-                }
-            });
-        }
+                });
+            }
         // Load Backdrop Image
         Glide.with(this)
                 .load(mAppBarImageUrl)

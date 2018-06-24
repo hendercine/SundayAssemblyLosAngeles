@@ -4,7 +4,7 @@
   ~ Copyright (c) Hendercine Productions and James Henderson 2018.
   ~ All rights reserved.
   ~
-  ~ Last modified 5/21/18 2:26 PM
+  ~ Last modified 6/23/18 1:55 PM
   -->
 
 <android.support.constraint.ConstraintLayout
@@ -25,68 +25,60 @@
 
     <Button
         android:id="@+id/contact_us_btn"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:autoLink="email"
         android:background="@drawable/baseline_email_24"
-        app:layout_constraintBottom_toBottomOf="@+id/user_nav_header_img_view"
+        app:layout_constraintBottom_toBottomOf="@id/user_nav_header_img_view"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.345"
+        app:layout_constraintHorizontal_bias="0.406"
         app:layout_constraintStart_toEndOf="@id/user_nav_header_img_view"
-        app:layout_constraintTop_toTopOf="@+id/user_nav_header_img_view"
-        app:layout_constraintVertical_bias="1.0"/>
+        app:layout_constraintTop_toTopOf="@id/user_nav_header_img_view"/>
 
     <ImageView
         android:id="@+id/user_nav_header_img_view"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:adjustViewBounds="false"
         android:contentDescription="@string/nav_profile_picture_description"
-        app:layout_constraintBottom_toBottomOf="@+id/logout_btn"
+        app:layout_constraintBottom_toTopOf="@+id/username_nav_header_text_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/logout_btn"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/baseline_account_circle_48"
-        />
+        app:srcCompat="@drawable/baseline_account_circle_48"/>
 
     <Button
         android:id="@+id/logout_btn"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/baseline_exit_to_app_24"
         android:scaleX="-1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/user_nav_header_img_view"
-        app:layout_constraintHorizontal_bias="0.558"
+        app:layout_constraintBottom_toBottomOf="@+id/user_nav_header_img_view"
+        app:layout_constraintEnd_toStartOf="@id/user_nav_header_img_view"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.77"/>
+        app:layout_constraintTop_toTopOf="@+id/user_nav_header_img_view"/>
 
     <TextView
         android:id="@+id/username_nav_header_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:paddingTop="16dp"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/user_nav_header_img_view"
-        app:layout_constraintVertical_bias="0.69"
         tools:text="@string/dummy_user_name"/>
 
 </android.support.constraint.ConstraintLayout>

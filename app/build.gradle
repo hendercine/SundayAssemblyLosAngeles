@@ -43,9 +43,10 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     // Constraint Layout
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    // Multi-Line Collapsing Toolbar
+    implementation 'net.opacapp:multiline-collapsingtoolbar:27.1.1'
     // Butterknife
     implementation 'com.jakewharton:butterknife:8.8.1'
-    implementation 'com.android.support:support-v4:27.1.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     // Timber
     implementation 'com.jakewharton.timber:timber:4.6.0'
