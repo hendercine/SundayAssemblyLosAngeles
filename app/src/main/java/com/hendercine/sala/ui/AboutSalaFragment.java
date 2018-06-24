@@ -15,11 +15,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.hendercine.sala.R;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -27,9 +25,6 @@ import butterknife.Unbinder;
 public class AboutSalaFragment extends Fragment {
 
     private Unbinder unbinder;
-
-    @BindView(R.id.all_text_view)
-    TextView mAllTextView;
 
     public AboutSalaFragment() {
         // Required empty public constructor

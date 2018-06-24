@@ -14,16 +14,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.MainActivity"
-                  android:theme="@style/AppTheme.NoActionBar">
+        <activity
+            android:name=".ui.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <action android:name="android.intent.action.VIEW"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
+
                 <data
-                    android:scheme="http"
-                    android:host="www.sundayassemblyla.org"/>
+                    android:host="www.sundayassemblyla.org"
+                    android:scheme="http"/>
             </intent-filter>
         </activity>
 
@@ -36,7 +39,12 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/salawidget_info"/>
         </receiver>
+
         <service android:name=".ui.widget.SalaWidgetRemoteViewsService"/>
+        <service
+            android:name=".SalaSiteIntentService"
+            android:exported="false">
+        </service>
     </application>
 
 </manifest>

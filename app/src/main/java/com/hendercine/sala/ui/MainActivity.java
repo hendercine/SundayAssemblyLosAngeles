@@ -57,6 +57,8 @@ import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -682,7 +684,7 @@ public class MainActivity extends BaseActivity {
 
     public class FetchSalaWebsiteData extends AsyncTask<Void, Void, Void> {
 
-        String mEvents;
+        String mAssembly;
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -690,8 +692,16 @@ public class MainActivity extends BaseActivity {
             try {
 
                 Document eventSummary = Jsoup.connect("http://www" +
-                        ".sundayassemblyla.org/event_summary").get();
-                mEvents = eventSummary.text();
+                        ".sundayassemblyla.org").get();
+                Elements assemblies = eventSummary.getElementsByClass
+                        ("event-wrap");
+                ArrayList<String> assemblyDetails = new ArrayList<>();
+                for (Element assembly : assemblies) {
+                    Element assemblyDetail = assembly.tagName("li");
+                    assemblyDetails.add(assemblyDetail.text());
+                }
+                mAssembly = assemblyDetails.get(0);
+
             } catch (Exception e) {
                 Timber.e("Something went wrong in the background", e);
                 e.printStackTrace();
@@ -703,7 +713,7 @@ public class MainActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            mEventsAllView.setText(mEvents);
+            mEventsAllView.setText(mAssembly);
         }
     }
 }
