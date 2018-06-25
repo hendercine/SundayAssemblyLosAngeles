@@ -8,7 +8,6 @@
 
 package com.hendercine.sala.ui.adapters;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.hendercine.sala.R;
 import com.hendercine.sala.models.Assembly;
 
@@ -29,11 +27,11 @@ import butterknife.ButterKnife;
 /**
  * sala created by hendercine on 6/24/18.
  */
-public class AssemliesRVAdapter extends RecyclerView.Adapter<AssemliesRVAdapter.AssembliesViewHolder>{
+public class AssembliesRVAdapter extends RecyclerView.Adapter<AssembliesRVAdapter.AssembliesViewHolder> {
 
-    private final ArrayList<Assembly> mAssemblies;
+    private ArrayList<Assembly> mAssemblies;
 
-    public AssemliesRVAdapter(ArrayList<Assembly> assemblies) {
+    public AssembliesRVAdapter(ArrayList<Assembly> assemblies) {
         this.mAssemblies = assemblies;
     }
 
@@ -49,18 +47,18 @@ public class AssemliesRVAdapter extends RecyclerView.Adapter<AssemliesRVAdapter.
     @Override
     public void onBindViewHolder(@NonNull AssembliesViewHolder holder, int position) {
 
-        Context context = holder.mAssemblyCardView.getContext();
+//        Context context = holder.mAssemblyCardView.getContext();
         Assembly assembly = mAssemblies.get(position);
         holder.mAssemblyDateLine.setText(assembly.getAssemblyDate());
-        holder.mAssemblyThemeHeadline.setText(assembly.getAssemblyTheme());
-        holder.mAssemblyDescription.setText(assembly.getAssemblyDescription());
-        if (!assembly.getAssemblyPhotoUrl().isEmpty()) {
-            Glide.with(context)
-                    .load(assembly.getAssemblyPhotoUrl())
-                    .into(holder.mAssemblyPic);
-        } else {
-            holder.mAssemblyPic.setImageResource(R.drawable.sala_logo_grass);
-        }
+//        holder.mAssemblyThemeHeadline.setText(assembly.getAssemblyTheme());
+//        holder.mAssemblyDescription.setText(assembly.getAssemblyDescription());
+//        if (!assembly.getAssemblyPhotoUrl().isEmpty()) {
+//            Glide.with(context)
+//                    .load(assembly.getAssemblyPhotoUrl())
+//                    .into(holder.mAssemblyPic);
+//        } else {
+//            holder.mAssemblyPic.setImageResource(R.drawable.sala_logo_grass);
+//        }
 
     }
 
@@ -70,9 +68,9 @@ public class AssemliesRVAdapter extends RecyclerView.Adapter<AssemliesRVAdapter.
     }
 
     public void setAssembliesList(ArrayList<Assembly> assemblies) {
-            mAssemblies.clear();
-            mAssemblies.addAll(assemblies);
-            notifyDataSetChanged();
+        mAssemblies = new ArrayList<>();
+        mAssemblies.addAll(assemblies);
+        notifyDataSetChanged();
     }
 
 
