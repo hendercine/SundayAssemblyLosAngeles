@@ -149,65 +149,21 @@ public class AssembliesFragment extends Fragment implements SiteServiceReceiver.
             mAssembly.setAssemblyDate(assemblies.get(i).getAssemblyDate());
 //            mAssembly.setAssemblyTheme(assemblies.get(i).getAssemblyTheme());
 //            mAssembly.setAssemblyDescription(assemblies.get(i).getAssemblyDescription());
-            mAssembly.setAssemblyPhotoUrl(assemblies.get(i).getAssemblyPhotoUrl());
+//            mAssembly.setAssemblyPhotoUrl(assemblies.get(i).getAssemblyPhotoUrl());
 
             mAssembliesList.add(mAssembly);
         }
 
-        Timber.i("Is there a String here in Fragment: '%s'", mAssembliesList.get(1).mAssemblyDate);
+        Timber.i("Is there a title String here in Fragment: '%s'",
+                mAssembliesList.get(1).mAssemblyDate);
+        Timber.i("Is there a theme String here in Fragment: '%s'",
+                mAssembliesList.get(1).mAssemblyTheme);
+        Timber.i("Is there a decription String here in Fragment: '%s'",
+                mAssembliesList.get(1).mAssemblyDescription);
+        Timber.i("Is there a String photo url here in Fragment: '%s'",
+                mAssembliesList.get(1).mAssemblyPhotoUrl);
         if (mAdapter != null) {
             mAdapter.setAssembliesList(mAssembliesList);
         }
     }
-
-//    public class FetchSalaWebsiteData extends AsyncTask<Void, Void, Void> {
-//
-//        @Override
-//        protected Void doInBackground(Void... params) {
-//
-//            // Check for network
-//            if (BaseActivity.isNetworkAvailable(Objects.requireNonNull(getContext())))
-//                Timber.d("Get html");
-//            try {
-//                String assemblyDateLine;
-//                String assemblyThemeLine;
-//                String assemblyDescription;
-//                String assemblyPhotoUrl;
-//
-//                Document eventSummary = Jsoup.connect(ASSEMBLIES_URL).get();
-//                Elements assemblyDetails = eventSummary.getElementsByClass(CLASS_NAME);
-//                Element assemblies = eventSummary.tagName(LI_ELEMENT);
-//                Elements titles = assemblies.select("h4");
-//                mAssemblyArrayList = new ArrayList<>();
-//                for (Element title : titles) {
-//                    assemblyDateLine = title.text();
-////                    assemblyThemeLine = assemblies.get(i).tagName("strong").text();
-////                    assemblyDescription = assemblies.tagName("span").text();
-////                    assemblyPhotoUrl = assemblies.get(i).attr("src");
-//
-//                    mAssembly = new Assembly();
-//                    mAssembly.setAssemblyDate(assemblyDateLine);
-////                    mAssembly.setAssemblyTheme(assemblyThemeLine);
-////                    mAssembly.setAssemblyDescription(assemblyDescription);
-////                    mAssembly.setAssemblyPhotoUrl(assemblyPhotoUrl);
-//                    mAssemblyArrayList.add(mAssembly);
-//                }
-//                Timber.i("Is there a string here: '%s'",
-//                        mAssemblyArrayList.get(0).getAssemblyDate());
-//
-//            } catch (Exception e) {
-//                Timber.e("Something went wrong in the background", e);
-//                e.printStackTrace();
-//            }
-//            return null;
-//
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Void result) {
-//            super.onPostExecute(result);
-//            mAssembliesList = mAssemblyArrayList;
-//            Timber.i("Is there a string here: ", mAssembliesList.get(0).getAssemblyDate());
-//        }
-//    }
 }

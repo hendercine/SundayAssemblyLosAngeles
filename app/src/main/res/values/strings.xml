@@ -58,4 +58,5 @@
     <string name="signed_in_snackbar">Signed in!</string>
     <string name="sign_in_canceled_snackbar">Sign in canceled</string>
     <string name="signed_in_success_message">You\'re signed in!</string>
+    <string name="no_network">You\'re not connected to a network!</string>
 </resources>
