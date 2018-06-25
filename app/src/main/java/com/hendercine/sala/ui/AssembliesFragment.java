@@ -35,6 +35,7 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import timber.log.Timber;
 
 public class AssembliesFragment extends Fragment implements SiteServiceReceiver.Listener {
 
@@ -67,9 +68,6 @@ public class AssembliesFragment extends Fragment implements SiteServiceReceiver.
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-        // Start the service call
-        Objects.requireNonNull(getActivity()).startService(createAssemblyIntentCall());
-
         if (getArguments() != null) {
             mAssembliesList = Parcels.unwrap(getArguments().getParcelable(ASSEMBLIES));
         }
@@ -84,6 +82,8 @@ public class AssembliesFragment extends Fragment implements SiteServiceReceiver.
         unbinder = ButterKnife.bind(this, rootView);
 
         mLinearLayoutManager = new LinearLayoutManager(getContext());
+        // Start the service call
+        Objects.requireNonNull(getActivity()).startService(createAssemblyIntentCall());
         // Set Adapter
         mAdapter = new AssemliesRVAdapter(mAssembliesList);
         if (mAssembliesRV != null) {
@@ -143,8 +143,9 @@ public class AssembliesFragment extends Fragment implements SiteServiceReceiver.
             mAssembliesList.add(mAssembly);
         }
 
-        mAssembliesRV.setLayoutManager(mLinearLayoutManager);
-        mAssembliesRV.smoothScrollToPosition(mScrollPosition);
-        mAdapter.setAssembliesList(mAssembliesList);
+        Timber.i("Is there a String here: '%s'", mAssembliesList.get(0).mAssemblyDate);
+        if (mAdapter != null) {
+            mAdapter.setAssembliesList(mAssembliesList);
+        }
     }
 }

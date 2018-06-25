@@ -11,11 +11,15 @@ package com.hendercine.sala;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
 
 import com.google.firebase.auth.FirebaseAuth;
+
+import timber.log.Timber;
 
 /**
  * sala created by hendercine on 6/21/18.
@@ -23,6 +27,14 @@ import com.google.firebase.auth.FirebaseAuth;
 public abstract class BaseActivity extends AppCompatActivity {
 
     private ProgressBar mProgressBar;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
+    }
 
     public void showProgressBar() {
         if (mProgressBar == null) {

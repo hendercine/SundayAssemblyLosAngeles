@@ -61,6 +61,7 @@ import java.util.Objects;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 @SuppressWarnings("Convert2Lambda")
 public class MainActivity extends BaseActivity {
@@ -175,6 +176,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        Timber.tag("LogMessage");
         // Initialize Firebase Components
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mDatabaseRef = mFirebaseDatabase.getReference();
@@ -546,15 +548,10 @@ public class MainActivity extends BaseActivity {
                     mAppBarTitle = mAboutTitle;
                     mAppBarImageUrl = mAboutBannerUrl;
                 } else if (position == mSideBarAdapter.getItemId(1)) {
-//                    mFragment = new AssembliesFragment();
-                    getLastAssemblyData();
-                    mAppBarTitle = mAssemblyDateAndTheme;
+                    mFragment = new AssembliesFragment();
+//                    getLastAssemblyData();
+                    mAppBarTitle = mAboutTitle;
                     mAppBarImageUrl = mAboutBannerUrl;
-                    Toast.makeText(
-                            getApplicationContext(),
-                            "This will display AssembliesFragment",
-                            Toast.LENGTH_SHORT
-                    ).show();
                 } else if (position == mSideBarAdapter.getItemId(2)) {
 //                    mFragment = new ProgramFragment();
                     Toast.makeText(

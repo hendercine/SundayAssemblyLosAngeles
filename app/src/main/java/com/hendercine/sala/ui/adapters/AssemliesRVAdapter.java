@@ -42,7 +42,7 @@ public class AssemliesRVAdapter extends RecyclerView.Adapter<AssemliesRVAdapter.
     public AssembliesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_assemblies, parent, false);
+                .inflate(R.layout.list_item_assemblies, parent, false);
         return new AssembliesViewHolder(view);
     }
 
@@ -66,16 +66,13 @@ public class AssemliesRVAdapter extends RecyclerView.Adapter<AssemliesRVAdapter.
 
     @Override
     public int getItemCount() {
-        return mAssemblies.size();
+        return (mAssemblies == null) ? 0 : mAssemblies.size();
     }
 
     public void setAssembliesList(ArrayList<Assembly> assemblies) {
-        if (assemblies == null) {
-            return;
-        }
-        mAssemblies.clear();
-        mAssemblies.addAll(assemblies);
-        notifyDataSetChanged();
+            mAssemblies.clear();
+            mAssemblies.addAll(assemblies);
+            notifyDataSetChanged();
     }
 
 
