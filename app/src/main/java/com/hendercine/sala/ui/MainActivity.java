@@ -251,14 +251,7 @@ public class MainActivity extends BaseActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // already signed in
-                    Timber.i("User is signed in.");
-                    FirebaseUserMetadata metadata = mAuth.getCurrentUser().getMetadata();
-                    if (metadata.getCreationTimestamp() == metadata.getLastSignInTimestamp()) {
-                        // The user is new, show them a fancy intro screen!
-
-                    } else {
-                        // This is an existing user, show them a welcome back screen.
-                    }
+                    checkIfNewUser(user);
                 } else {
                     // not signed in
                     startActivityForResult(
@@ -277,6 +270,21 @@ public class MainActivity extends BaseActivity {
                 }
             }
         };
+    }
+
+    private void checkIfNewUser(FirebaseUser user) {
+        String displayName = user.getDisplayName();
+        Timber.i("User is signed in.");
+        FirebaseUserMetadata metadata = Objects.requireNonNull(mAuth
+                .getCurrentUser()).getMetadata();
+        assert metadata != null;
+        if (metadata.getCreationTimestamp() == metadata.getLastSignInTimestamp()) {
+            // The user is new, show them a fancy intro screen!
+            showToast("Welcome " + displayName + "!");
+        } else {
+            // This is an existing user, show them a welcome back screen.
+            showToast("Welcome back " + displayName + "!");
+        }
     }
 
     @Override
