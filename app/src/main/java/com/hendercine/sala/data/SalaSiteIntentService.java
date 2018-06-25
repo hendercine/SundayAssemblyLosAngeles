@@ -31,7 +31,10 @@ public class SalaSiteIntentService extends IntentService {
     // Base strings to run through Jsoup
     private static final String ASSEMBLIES_URL = "http://www.sundayassemblyla.org";
     private static final String LI_ELEMENT = "li";
-    private static final String ASSEMBLIES = "assemblies";
+    private static final String ASSEMBLY_TITLES = "assembly_titles";
+    private static final String ASSEMBLY_THEMES = "assembly_themes";
+    private static final String ASSEMBLY_DESCRIPTIONS = "assembly_descriptions";
+    private static final String ASSEMBLY_PHOTO_URLS = "assembly_photo_urls";
 
     private Assembly mAssembly;
     private ArrayList<Assembly> mAssemblyArrayList;
@@ -101,29 +104,26 @@ public class SalaSiteIntentService extends IntentService {
                         mAssembly.setAssemblyPhotoUrl(assemblyPhotoUrl);
                         picsArray.add(mAssembly);
                     }
-                    mAssemblyArrayList.addAll(titleArray);
-//                    mAssemblyArrayList.addAll(themeArray);
-//                    mAssemblyArrayList.addAll(descArray);
-//                    mAssemblyArrayList.addAll(picsArray);
+
                     Timber.i(
                             "Is there a title string here in svc: '%s'",
                             titleArray.get(0).getAssemblyDate()
                     );
                     Timber.i(
                             "Is there a title string here in svc: '%s'",
-                            mAssemblyArrayList.get(1).getAssemblyDate()
+                            titleArray.get(1).getAssemblyDate()
                     );
                     Timber.i(
                             "Is there a title string here in svc: '%s'",
-                            mAssemblyArrayList.get(2).getAssemblyDate()
+                            titleArray.get(2).getAssemblyDate()
                     );
                     Timber.i(
                             "Is there a title string here in svc: '%s'",
-                            mAssemblyArrayList.get(3).getAssemblyDate()
+                            titleArray.get(3).getAssemblyDate()
                     );
                     Timber.i(
                             "Is there a title string here in svc: '%s'",
-                            mAssemblyArrayList.get(4).getAssemblyDate()
+                            titleArray.get(4).getAssemblyDate()
                     );
                     Timber.i(
                             "Is there a theme string here in svc: '%s'",
@@ -139,7 +139,10 @@ public class SalaSiteIntentService extends IntentService {
                     );
 
                     Bundle args = new Bundle();
-                    args.putParcelable(ASSEMBLIES, Parcels.wrap(mAssemblyArrayList));
+                    args.putParcelable(ASSEMBLY_TITLES, Parcels.wrap(titleArray));
+                    args.putParcelable(ASSEMBLY_THEMES, Parcels.wrap(themeArray));
+                    args.putParcelable(ASSEMBLY_DESCRIPTIONS, Parcels.wrap(descArray));
+                    args.putParcelable(ASSEMBLY_PHOTO_URLS, Parcels.wrap(picsArray));
                     rec.send(0, args);
 
                 } catch (Exception e) {

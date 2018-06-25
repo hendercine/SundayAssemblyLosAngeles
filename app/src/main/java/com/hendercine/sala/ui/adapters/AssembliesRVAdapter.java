@@ -8,6 +8,7 @@
 
 package com.hendercine.sala.ui.adapters;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.hendercine.sala.R;
 import com.hendercine.sala.models.Assembly;
 
@@ -29,10 +31,16 @@ import butterknife.ButterKnife;
  */
 public class AssembliesRVAdapter extends RecyclerView.Adapter<AssembliesRVAdapter.AssembliesViewHolder> {
 
-    private ArrayList<Assembly> mAssemblies;
+    private ArrayList<Assembly> mAssemblyTitles;
+    private ArrayList<Assembly> mAssemblyThemes;
+    private ArrayList<Assembly> mAssemblyDescriptions;
+    private ArrayList<Assembly> mAssemblyPhotoUrls;
 
-    public AssembliesRVAdapter(ArrayList<Assembly> assemblies) {
-        this.mAssemblies = assemblies;
+    public AssembliesRVAdapter(ArrayList<Assembly> assemblyTitles, ArrayList<Assembly> assemblyThemes, ArrayList<Assembly> assemblyDescriptions, ArrayList<Assembly> assemblyPhotoUrls) {
+        mAssemblyTitles = assemblyTitles;
+        mAssemblyThemes = assemblyThemes;
+        mAssemblyDescriptions = assemblyDescriptions;
+        mAssemblyPhotoUrls = assemblyPhotoUrls;
     }
 
     @NonNull
@@ -47,29 +55,45 @@ public class AssembliesRVAdapter extends RecyclerView.Adapter<AssembliesRVAdapte
     @Override
     public void onBindViewHolder(@NonNull AssembliesViewHolder holder, int position) {
 
-//        Context context = holder.mAssemblyCardView.getContext();
-        Assembly assembly = mAssemblies.get(position);
-        holder.mAssemblyDateLine.setText(assembly.getAssemblyDate());
-//        holder.mAssemblyThemeHeadline.setText(assembly.getAssemblyTheme());
-//        holder.mAssemblyDescription.setText(assembly.getAssemblyDescription());
-//        if (!assembly.getAssemblyPhotoUrl().isEmpty()) {
-//            Glide.with(context)
-//                    .load(assembly.getAssemblyPhotoUrl())
-//                    .into(holder.mAssemblyPic);
-//        } else {
-//            holder.mAssemblyPic.setImageResource(R.drawable.sala_logo_grass);
-//        }
+        Context context = holder.mAssemblyCardView.getContext();
+        Assembly assemblyTitles = mAssemblyTitles.get(position);
+        Assembly assemblyThemes = mAssemblyThemes.get(position);
+        Assembly assemblyDescriptions = mAssemblyDescriptions.get(position);
+        Assembly assemblyPhotoUrls = mAssemblyPhotoUrls.get(position);
+
+        holder.mAssemblyDateLine.setText(assemblyTitles.getAssemblyDate());
+        holder.mAssemblyThemeHeadline.setText(assemblyThemes.getAssemblyTheme());
+        holder.mAssemblyDescription.setText(assemblyDescriptions.getAssemblyDescription());
+        if (!assemblyPhotoUrls.getAssemblyPhotoUrl().isEmpty()) {
+            Glide.with(context)
+                    .load(assemblyPhotoUrls.getAssemblyPhotoUrl())
+                    .into(holder.mAssemblyPic);
+        } else {
+            holder.mAssemblyPic.setImageResource(R.drawable.sala_logo_grass);
+        }
 
     }
 
     @Override
     public int getItemCount() {
-        return (mAssemblies == null) ? 0 : mAssemblies.size();
+        return (mAssemblyTitles == null) ? 0 : mAssemblyTitles.size();
     }
 
-    public void setAssembliesList(ArrayList<Assembly> assemblies) {
-        mAssemblies = new ArrayList<>();
-        mAssemblies.addAll(assemblies);
+    public void setAssembliesList(ArrayList<Assembly> assemblyTitles,
+                                  ArrayList<Assembly> assemblyThemes,
+                                  ArrayList<Assembly> assemblyDescriptions,
+                                  ArrayList<Assembly> assemblyPhotoUrls) {
+        mAssemblyTitles.clear();
+        mAssemblyTitles.addAll(assemblyTitles);
+        notifyDataSetChanged();
+        mAssemblyThemes.clear();
+        mAssemblyThemes.addAll(assemblyThemes);
+        notifyDataSetChanged();
+        mAssemblyDescriptions.clear();
+        mAssemblyDescriptions.addAll(assemblyDescriptions);
+        notifyDataSetChanged();
+        mAssemblyPhotoUrls.clear();
+        mAssemblyPhotoUrls.addAll(assemblyPhotoUrls);
         notifyDataSetChanged();
     }
 
