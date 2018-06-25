@@ -57,7 +57,7 @@ public class SalaSiteIntentService extends IntentService {
         if (intent != null) {
             final ResultReceiver rec = intent.getParcelableExtra("rec");
             mFirebaseDatabase = FirebaseDatabase.getInstance();
-            mDatabaseRef = mFirebaseDatabase.getReference();
+            mDatabaseRef = mFirebaseDatabase.getReference().child(ASSEMBLIES);
 
             // Check for network
             if (!BaseActivity.isNetworkAvailable(this))

@@ -37,8 +37,12 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.FirebaseUserMetadata;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -50,6 +54,7 @@ import com.hendercine.sala.R;
 import com.hendercine.sala.models.Assembly;
 import com.hendercine.sala.models.Performer;
 import com.hendercine.sala.models.Song;
+import com.hendercine.sala.models.User;
 import com.hendercine.sala.ui.adapters.SideBarRVAdapter;
 
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
@@ -246,7 +251,14 @@ public class MainActivity extends BaseActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // already signed in
-                    showSnackBar(R.string.signed_in_success_message);
+                    Timber.i("User is signed in.");
+                    FirebaseUserMetadata metadata = mAuth.getCurrentUser().getMetadata();
+                    if (metadata.getCreationTimestamp() == metadata.getLastSignInTimestamp()) {
+                        // The user is new, show them a fancy intro screen!
+
+                    } else {
+                        // This is an existing user, show them a welcome back screen.
+                    }
                 } else {
                     // not signed in
                     startActivityForResult(
@@ -324,6 +336,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
     }
 
     @Override
@@ -339,6 +353,26 @@ public class MainActivity extends BaseActivity {
         mAuth.removeAuthStateListener(mAuthStateListener);
     }
 
+    private void createAccount(String email, String password) {
+        Timber.d("createAccount: " + email);
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Timber.d("createUserWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI(user);
+                        } else {
+                            Timber.w("createUserWithEmail:failure", task.getException());
+                            Toast.makeText(MainActivity.this,
+                                    "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        updateUI(null);
+                    }
+                });
+    }
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
@@ -346,11 +380,17 @@ public class MainActivity extends BaseActivity {
             if (mUsernameHeaderTV != null && mUserNavHeaderIV != null) {
                 mUsernameHeaderTV.setText(user.getDisplayName());
 
-                mUserPhotoUrl = Objects.requireNonNull(user.getPhotoUrl())
-                        .toString();
-                Glide.with(this)
-                        .load(mUserPhotoUrl)
-                        .into(mUserNavHeaderIV);
+                if (user.getProviderId().equals("google.com")) {
+                    mUserPhotoUrl = Objects.requireNonNull(user.getPhotoUrl())
+                            .toString();
+                    Glide.with(this)
+                            .load(mUserPhotoUrl)
+                            .into(mUserNavHeaderIV);
+                } else {
+                    Glide.with(this)
+                            .load(R.drawable.baseline_account_circle_48)
+                            .into(mUserNavHeaderIV);
+                }
             }
         } else {
             // Signed out
@@ -361,6 +401,12 @@ public class MainActivity extends BaseActivity {
                         .into(mUserNavHeaderIV);
             }
         }
+    }
+
+    private void writeNewUser(String userId, String name, String email) {
+        User user = new User(name, email);
+
+        mDatabaseRef.child("users").child(userId).setValue(user);
     }
 
     private void getLastAssemblyData() {
