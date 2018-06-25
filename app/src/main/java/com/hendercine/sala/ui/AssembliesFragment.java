@@ -154,6 +154,7 @@ public class AssembliesFragment extends Fragment implements SiteServiceReceiver.
             mAssembliesList.add(mAssembly);
         }
 
+
         Timber.i("Is there a title String here in Fragment: '%s'",
                 mAssembliesList.get(1).mAssemblyDate);
         Timber.i("Is there a theme String here in Fragment: '%s'",

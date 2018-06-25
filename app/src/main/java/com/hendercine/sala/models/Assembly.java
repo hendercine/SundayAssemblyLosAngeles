@@ -8,14 +8,20 @@
 
 package com.hendercine.sala.models;
 
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
+
 import org.parceler.Parcel;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * sala created by hendercine on 6/14/18.
  */
 
 // [START assembly_class]
-/*@IgnoreExtraProperties*/
+@IgnoreExtraProperties
 @SuppressWarnings("WeakerAccess")
 @Parcel
 public class Assembly {
@@ -69,16 +75,16 @@ public class Assembly {
     }
 
     // [START assembly_to_map]
-//    @Exclude
-//    public Map<String, Object> toMap() {
-//        HashMap<String, Object> result = new HashMap<>();
-//        result.put("assembly_date", mAssemblyDate);
-//        result.put("assembly_theme", mAssemblyTheme);
-//        result.put("assembly_description", mAssemblyDescription);
-//        result.put("assembly_photo_url", mAssemblyPhotoUrl);
-//
-//        return result;
-//    }
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("assembly_date", mAssemblyDate);
+        result.put("assembly_theme", mAssemblyTheme);
+        result.put("assembly_description", mAssemblyDescription);
+        result.put("assembly_photo_url", mAssemblyPhotoUrl);
+
+        return result;
+    }
     // [END assembly_to_map]
 }
 // [END assembly_class]

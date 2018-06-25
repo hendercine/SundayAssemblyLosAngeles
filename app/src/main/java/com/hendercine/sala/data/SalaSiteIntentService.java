@@ -13,6 +13,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.hendercine.sala.BaseActivity;
 import com.hendercine.sala.models.Assembly;
 
@@ -23,6 +25,8 @@ import org.jsoup.select.Elements;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import timber.log.Timber;
 
@@ -32,6 +36,9 @@ public class SalaSiteIntentService extends IntentService {
     private static final String ASSEMBLIES_URL = "http://www.sundayassemblyla.org";
     private static final String LI_ELEMENT = "li";
     private static final String ASSEMBLIES = "assemblies";
+
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mDatabaseRef;
 
     private Assembly mAssembly;
     private ArrayList<Assembly> mAssemblyArrayList;
@@ -49,6 +56,8 @@ public class SalaSiteIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
             final ResultReceiver rec = intent.getParcelableExtra("rec");
+            mFirebaseDatabase = FirebaseDatabase.getInstance();
+            mDatabaseRef = mFirebaseDatabase.getReference();
 
             // Check for network
             if (!BaseActivity.isNetworkAvailable(this))
@@ -101,10 +110,20 @@ public class SalaSiteIntentService extends IntentService {
                         mAssembly.setAssemblyPhotoUrl(assemblyPhotoUrl);
                         picsArray.add(mAssembly);
                     }
+
+                    Map<String, Object> assemblyMaps = new HashMap<>();
+                    assemblyMaps.put("assembly_date", titleArray);
+                    assemblyMaps.put("assembly_description", descArray);
+                    assemblyMaps.put("assembly_photo_url", picsArray);
+                    assemblyMaps.put("assembly_theme", themeArray);
+
                     mAssemblyArrayList.addAll(titleArray);
+                    mDatabaseRef.updateChildren(assemblyMaps);
 //                    mAssemblyArrayList.addAll(themeArray);
-//                    mAssemblyArrayList.addAll(descArray);
+//                    mAssemblyArrayList.addAll(descArray);*-+
+
 //                    mAssemblyArrayList.addAll(picsArray);
+
                     Timber.i(
                             "Is there a title string here in svc: '%s'",
                             titleArray.get(0).getAssemblyDate()
