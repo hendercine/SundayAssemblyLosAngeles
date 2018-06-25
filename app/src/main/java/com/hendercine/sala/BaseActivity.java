@@ -8,6 +8,9 @@
 
 package com.hendercine.sala;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
@@ -46,5 +49,15 @@ public abstract class BaseActivity extends AppCompatActivity {
                 resId,
                 Snackbar.LENGTH_SHORT
         ).show(); }
+
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = null;
+        if (connectivityManager != null) {
+            activeNetwork = connectivityManager.getActiveNetworkInfo();
+        }
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+    }
 
 }

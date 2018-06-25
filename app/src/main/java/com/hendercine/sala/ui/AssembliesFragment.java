@@ -9,109 +9,142 @@
 package com.hendercine.sala.ui;
 
 import android.content.Context;
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.hendercine.sala.R;
+import com.hendercine.sala.data.SalaSiteIntentService;
+import com.hendercine.sala.data.SiteServiceReceiver;
+import com.hendercine.sala.models.Assembly;
+import com.hendercine.sala.ui.adapters.AssemliesRVAdapter;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link AssembliesFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link AssembliesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class AssembliesFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import org.parceler.Parcels;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+import java.util.ArrayList;
+import java.util.Objects;
 
-    private OnFragmentInteractionListener mListener;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
+public class AssembliesFragment extends Fragment implements SiteServiceReceiver.Listener {
+
+    private static final String ASSEMBLIES = "assemblies";
+    private static final String POSITION_STATE_KEY = "scroll_position";
+    private Unbinder unbinder;
+    private ArrayList<Assembly> mAssembliesList;
+    private Assembly mAssembly;
+
+    @BindView(R.id.assemblies_recycler_view)
+    RecyclerView mAssembliesRV;
+    private AssemliesRVAdapter mAdapter;
+    private LinearLayoutManager mLinearLayoutManager;
+    private int mScrollPosition;
 
     public AssembliesFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AssembliesFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AssembliesFragment newInstance(String param1, String param2) {
+    public AssembliesFragment newInstance(Assembly assembly) {
         AssembliesFragment fragment = new AssembliesFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putParcelable(ASSEMBLIES, Parcels.wrap(assembly));
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+
+        // Start the service call
+        Objects.requireNonNull(getActivity()).startService(createAssemblyIntentCall());
+
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mAssembliesList = Parcels.unwrap(getArguments().getParcelable(ASSEMBLIES));
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_assemblies, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_assemblies, container,
+                false);
+        unbinder = ButterKnife.bind(this, rootView);
+
+        mLinearLayoutManager = new LinearLayoutManager(getContext());
+        // Set Adapter
+        mAdapter = new AssemliesRVAdapter(mAssembliesList);
+        if (mAssembliesRV != null) {
+            mAssembliesRV.setLayoutManager(mLinearLayoutManager);
+            mAssembliesRV.setAdapter(mAdapter);
+        }
+
+        return rootView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mScrollPosition = mLinearLayoutManager.findFirstCompletelyVisibleItemPosition();
+        outState.putInt(POSITION_STATE_KEY, mScrollPosition);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentSelectedListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    private Intent createAssemblyIntentCall() {
+        Intent intent = new Intent(getContext(), SalaSiteIntentService.class);
+        SiteServiceReceiver receiver = new SiteServiceReceiver(new Handler());
+        receiver.setListener(this);
+        intent.putExtra("rec", receiver);
+        intent.putExtra("assemblies", Parcels.wrap(mAssembliesList));
+
+        return intent;
+    }
+
+    @Override
+    public void onReceiveResult(int resultCode, Bundle resultData) {
+        ArrayList<Assembly> assemblies = Parcels.unwrap(resultData
+                .getParcelable(ASSEMBLIES));
+
+        mAssembliesList = new ArrayList<>();
+        for (int i = 0; i < assemblies.size(); i++) {
+            mAssembly = new Assembly();
+            mAssembly.setAssemblyDate(assemblies.get(i).getAssemblyDate());
+            mAssembly.setAssemblyTheme(assemblies.get(i).getAssemblyTheme());
+            mAssembly.setAssemblyDescription(assemblies.get(i).getAssemblyDescription());
+            mAssembly.setAssemblyPhotoUrl(assemblies.get(i).getAssemblyPhotoUrl());
+
+            mAssembliesList.add(mAssembly);
+        }
+
+        mAssembliesRV.setLayoutManager(mLinearLayoutManager);
+        mAssembliesRV.smoothScrollToPosition(mScrollPosition);
+        mAdapter.setAssembliesList(mAssembliesList);
     }
 }

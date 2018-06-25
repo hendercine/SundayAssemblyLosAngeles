@@ -9,7 +9,6 @@
 package com.hendercine.sala.ui;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -55,11 +54,6 @@ import com.hendercine.sala.ui.adapters.SideBarRVAdapter;
 
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -67,7 +61,6 @@ import java.util.Objects;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 @SuppressWarnings("Convert2Lambda")
 public class MainActivity extends BaseActivity {
@@ -101,6 +94,8 @@ public class MainActivity extends BaseActivity {
 
     private FragmentManager mFragmentManager;
     private AboutSalaFragment mAboutSalaFragment;
+    private AssembliesFragment mAssemliesFragment;
+
     private boolean mIsTwoPane;
     private String[] mSideBarArray;
     private SideBarRVAdapter mSideBarAdapter;
@@ -126,8 +121,6 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.collapsing_toolbar_backdrop_img)
     ImageView collapsingToolbarBackDrop;
-    //    @BindView(R.id.app_bar_title)
-//    TextView mTitleView;
     @Nullable
     @BindView(R.id.toolbar_main)
     Toolbar mToolbar;
@@ -145,8 +138,6 @@ public class MainActivity extends BaseActivity {
     TextView mUsernameHeaderTV;
     @BindView(R.id.content_frame)
     FrameLayout mContentFrame;
-    @BindView(R.id.events_all_text)
-    TextView mEventsAllView;
 
     @BindString(R.string.about_banner_url)
     String mAboutBannerUrl;
@@ -235,13 +226,13 @@ public class MainActivity extends BaseActivity {
         }
 
         if (savedInstanceState == null) {
-            new FetchSalaWebsiteData().execute();
-//            mFragmentManager = getSupportFragmentManager();
-//            mAboutSalaFragment = new AboutSalaFragment();
-//            mFragmentManager
-//                    .beginTransaction()
-//                    .add(mContentFrame.getId(), mAboutSalaFragment)
-//                    .commit();
+
+            mFragmentManager = getSupportFragmentManager();
+            mAssemliesFragment = new AssembliesFragment();
+            mFragmentManager
+                    .beginTransaction()
+                    .add(mContentFrame.getId(), mAssemliesFragment)
+                    .commit();
         }
 
         setCollapsingToolbarBehavior();
@@ -681,39 +672,4 @@ public class MainActivity extends BaseActivity {
                 .into(collapsingToolbarBackDrop);
     }
 
-
-    public class FetchSalaWebsiteData extends AsyncTask<Void, Void, Void> {
-
-        String mAssembly;
-
-        @Override
-        protected Void doInBackground(Void... params) {
-
-            try {
-
-                Document eventSummary = Jsoup.connect("http://www" +
-                        ".sundayassemblyla.org").get();
-                Elements assemblies = eventSummary.getElementsByClass
-                        ("event-wrap");
-                ArrayList<String> assemblyDetails = new ArrayList<>();
-                for (Element assembly : assemblies) {
-                    Element assemblyDetail = assembly.tagName("li");
-                    assemblyDetails.add(assemblyDetail.text());
-                }
-                mAssembly = assemblyDetails.get(0);
-
-            } catch (Exception e) {
-                Timber.e("Something went wrong in the background", e);
-                e.printStackTrace();
-            }
-            return null;
-
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            mEventsAllView.setText(mAssembly);
-        }
-    }
 }

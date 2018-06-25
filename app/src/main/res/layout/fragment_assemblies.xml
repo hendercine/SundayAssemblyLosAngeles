@@ -13,11 +13,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     tools:context=".ui.AssembliesFragment">
 
-
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/future_assemblies_recycler_view"
+        android:id="@+id/assemblies_recycler_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"

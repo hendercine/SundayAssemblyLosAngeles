@@ -42,7 +42,7 @@
 
         <service android:name=".ui.widget.SalaWidgetRemoteViewsService"/>
         <service
-            android:name=".SalaSiteIntentService"
+            android:name=".data.SalaSiteIntentService"
             android:exported="false">
         </service>
     </application>

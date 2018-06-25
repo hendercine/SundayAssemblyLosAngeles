@@ -18,30 +18,30 @@ import org.parceler.Parcel;
 /*@IgnoreExtraProperties*/
 @SuppressWarnings("WeakerAccess")
 @Parcel
-public class AssemblyListing {
+public class Assembly {
 
-    public String mAssemblyHeadline;
+    public String mAssemblyDate;
     public String mAssemblyTheme;
     public String mAssemblyDescription;
     public String mAssemblyPhotoUrl;
 
-    public AssemblyListing() {
+    public Assembly() {
         // Neccessary empty constructor for Parceler
     }
 
-    public AssemblyListing(String assemblyHeadline, String assemblyTheme, String assemblyDescription, String assemblyPhotoUrl) {
-        this.mAssemblyHeadline = assemblyHeadline;
+    public Assembly(String assemblyDate, String assemblyTheme, String assemblyDescription, String assemblyPhotoUrl) {
+        this.mAssemblyDate = assemblyDate;
         this.mAssemblyTheme = assemblyTheme;
         this.mAssemblyDescription = assemblyDescription;
         this.mAssemblyPhotoUrl = assemblyPhotoUrl;
     }
 
-    public String getAssemblyHeadline() {
-        return mAssemblyHeadline;
+    public String getAssemblyDate() {
+        return mAssemblyDate;
     }
 
-    public void setAssemblyHeadline(String assemblyHeadline) {
-        mAssemblyHeadline = assemblyHeadline;
+    public void setAssemblyDate(String assemblyDate) {
+        mAssemblyDate = assemblyDate;
     }
 
     public String getAssemblyTheme() {
@@ -72,7 +72,7 @@ public class AssemblyListing {
 //    @Exclude
 //    public Map<String, Object> toMap() {
 //        HashMap<String, Object> result = new HashMap<>();
-//        result.put("assembly_date", mAssemblyHeadline);
+//        result.put("assembly_date", mAssemblyDate);
 //        result.put("assembly_theme", mAssemblyTheme);
 //        result.put("assembly_description", mAssemblyDescription);
 //        result.put("assembly_photo_url", mAssemblyPhotoUrl);

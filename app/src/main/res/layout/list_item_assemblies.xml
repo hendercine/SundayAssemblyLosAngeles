@@ -12,72 +12,84 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:background="@color/colorAccent">
 
     <android.support.v7.widget.CardView
         android:id="@+id/assembly_item_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         app:cardCornerRadius="4dp"
         app:cardElevation="4dp"
         app:cardUseCompatPadding="true"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryDark">
 
             <TextView
-                android:id="@+id/assmbly_date_and_theme"
+                android:id="@+id/assembly_date_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:layout_marginTop="8dp"
+                android:layout_margin="8dp"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                app:layout_constraintBottom_toTopOf="@+id/assembly_pic"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="spread_inside"
-                tools:text="Assembly Date and Theme"/>
+                tools:text=" Month dd, Sunday Assembly "/>
 
             <ImageView
                 android:id="@+id/assembly_pic"
                 android:layout_width="320dp"
                 android:layout_height="240dp"
+                android:layout_marginTop="8dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/future_featured_speaker"
                 android:cropToPadding="true"
                 android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/assembly_date_title"
+                app:srcCompat="@drawable/pippa_evans"/>
+
+            <TextView
+                android:id="@+id/assembly_theme_headline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                 app:layout_constraintBottom_toTopOf="@+id/assembly_description"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/assmbly_date_and_theme"
-                app:srcCompat="@drawable/pippa_evans"/>
+                app:layout_constraintTop_toBottomOf="@+id/assembly_pic"
+                tools:text="Lava Conquers All"/>
 
             <TextView
                 android:id="@+id/assembly_description"
                 android:layout_width="0dp"
-                android:layout_height="100dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:maxLines="4"
+                android:padding="8dp"
                 android:textAlignment="textStart"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/assembly_pic"
+                app:layout_constraintTop_toBottomOf="@+id/assembly_theme_headline"
                 tools:text="@sample/tools:lorem/random"/>
+
         </android.support.constraint.ConstraintLayout>
 
     </android.support.v7.widget.CardView>
