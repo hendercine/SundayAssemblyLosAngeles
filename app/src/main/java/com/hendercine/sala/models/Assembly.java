@@ -8,42 +8,40 @@
 
 package com.hendercine.sala.models;
 
-import com.google.firebase.database.Exclude;
-import com.google.firebase.database.IgnoreExtraProperties;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.parceler.Parcel;
 
 /**
  * sala created by hendercine on 6/14/18.
  */
 
 // [START assembly_class]
-@IgnoreExtraProperties
-public class Assembly {
+/*@IgnoreExtraProperties*/
+@SuppressWarnings("WeakerAccess")
+@Parcel
+public class AssemblyListing {
 
-    public String mAssemblyDate;
+    public String mAssemblyHeadline;
     public String mAssemblyTheme;
     public String mAssemblyDescription;
     public String mAssemblyPhotoUrl;
 
-    public Assembly() {
+    public AssemblyListing() {
         // Neccessary empty constructor for Parceler
     }
 
-    public Assembly(String assemblyDate, String assemblyTheme, String assemblyDescription, String assemblyPhotoUrl) {
-        this.mAssemblyDate = assemblyDate;
+    public AssemblyListing(String assemblyHeadline, String assemblyTheme, String assemblyDescription, String assemblyPhotoUrl) {
+        this.mAssemblyHeadline = assemblyHeadline;
         this.mAssemblyTheme = assemblyTheme;
         this.mAssemblyDescription = assemblyDescription;
         this.mAssemblyPhotoUrl = assemblyPhotoUrl;
     }
 
-    public String getAssemblyDate() {
-        return mAssemblyDate;
+    public String getAssemblyHeadline() {
+        return mAssemblyHeadline;
     }
 
-    public void setAssemblyDate(String assemblyDate) {
-        mAssemblyDate = assemblyDate;
+    public void setAssemblyHeadline(String assemblyHeadline) {
+        mAssemblyHeadline = assemblyHeadline;
     }
 
     public String getAssemblyTheme() {
@@ -71,16 +69,16 @@ public class Assembly {
     }
 
     // [START assembly_to_map]
-    @Exclude
-    public Map<String, Object> toMap() {
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("assembly_date", mAssemblyDate);
-        result.put("assembly_theme", mAssemblyTheme);
-        result.put("assembly_description", mAssemblyDescription);
-        result.put("assembly_photo_url", mAssemblyPhotoUrl);
-
-        return result;
-    }
+//    @Exclude
+//    public Map<String, Object> toMap() {
+//        HashMap<String, Object> result = new HashMap<>();
+//        result.put("assembly_date", mAssemblyHeadline);
+//        result.put("assembly_theme", mAssemblyTheme);
+//        result.put("assembly_description", mAssemblyDescription);
+//        result.put("assembly_photo_url", mAssemblyPhotoUrl);
+//
+//        return result;
+//    }
     // [END assembly_to_map]
 }
 // [END assembly_class]
