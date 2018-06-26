@@ -72,13 +72,8 @@ public class AssembliesFragment extends Fragment implements SiteServiceReceiver.
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setRetainInstance(true);
+        setRetainInstance(true);
 
-//        if (getArguments() != null) {
-//            mAssembly = Parcels.unwrap(getArguments().getParcelable(ASSEMBLIES));
-//            mAssembliesList.add(mAssembly);
-//            mAdapter.setAssembliesList(mAssembliesList);
-//        }
     }
 
     @Override
@@ -94,8 +89,6 @@ public class AssembliesFragment extends Fragment implements SiteServiceReceiver.
         // Start the service call
         Objects.requireNonNull(getActivity()).startService(createAssemblyIntentCall());
 
-        // Set Adapter
-//        new FetchSalaWebsiteData().execute();
         mAdapter = new AssembliesRVAdapter(mAssembliesList);
         if (mAssembliesRV != null) {
             mAssembliesRV.setLayoutManager(mLinearLayoutManager);

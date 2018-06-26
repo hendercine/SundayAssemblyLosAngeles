@@ -8,8 +8,6 @@
 
 package com.hendercine.sala.models;
 
-import com.google.gson.annotations.SerializedName;
-
 import org.parceler.Parcel;
 
 /**
@@ -21,40 +19,15 @@ import org.parceler.Parcel;
 public class Program {
 
     // Fields must be public for Parceler.
-//    @SerializedName("performance_category_header")
-//    public String mPerformanceCategoryHeader;
-//    @SerializedName("song_number_header")
-//    public String mSongNumberHeader;
-    @SerializedName("milestone_header")
     public String mMilestoneHeader;
-    @SerializedName("kids_header")
     public String mKidsHeader;
-    @SerializedName("audience_interaction_header")
     public String mAudienceInteractionHeader;
-    @SerializedName("quiet_reflection_header")
     public String mQuietReflectionHeader;
-    @SerializedName("collection_announcements_header")
     public String mCollectionHeader;
 
-    public Program() {
+    Program() {
         // Necessary empty constructor for Parceler
     }
-// TODO: Remove or uncomment commented code as required
-//    public String getPerformanceCategoryHeader() {
-//        return mPerformanceCategoryHeader;
-//    }
-//
-//    public void setPerformanceCategoryHeader(String performanceCategoryHeader) {
-//        mPerformanceCategoryHeader = performanceCategoryHeader;
-//    }
-//
-//    public String getSongNumberHeader() {
-//        return mSongNumberHeader;
-//    }
-//
-//    public void setSongNumberHeader(String songNumberHeader) {
-//        mSongNumberHeader = songNumberHeader;
-//    }
 
     public String getMilestoneHeader() {
         return mMilestoneHeader;
