@@ -13,6 +13,14 @@ android {
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
     }
+    signingConfigs {
+        release {
+            storeFile file("$rootDir/sala.jks")
+            storePassword "112358"
+            keyAlias "salaCapstone"
+            keyPassword "112358"
+        }
+    }
     buildTypes {
         debug {
             minifyEnabled false
@@ -21,6 +29,12 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    flavorDimensions "tier"
+    productFlavors{
+        free {
+            dimension "tier"
         }
     }
     compileOptions {
