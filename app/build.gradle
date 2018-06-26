@@ -108,8 +108,8 @@ dependencies {
     // Needed to fix a dependency conflict with FirebaseUI'
     implementation 'android.arch.core:runtime:1.1.1'
 
-//    // Google Services
-//    implementation 'com.google.gms:google-services:4.0.0'
+    // Google Services
+    implementation 'com.google.android.gms:play-services-auth:15.0.1'
 
     // Espresso and testing-only dependencies
     testImplementation 'junit:junit:4.12'

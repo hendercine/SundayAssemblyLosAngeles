@@ -37,9 +37,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.FirebaseUserMetadata;
@@ -253,6 +250,19 @@ public class MainActivity extends BaseActivity {
                 if (user != null) {
                     // already signed in
                     checkIfNewUser(user);
+                    // Check if userId exists in database
+                    mDatabaseRef.child("users")
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
                 } else {
                     // not signed in
                     startActivityForResult(
@@ -274,17 +284,41 @@ public class MainActivity extends BaseActivity {
     }
 
     private void checkIfNewUser(FirebaseUser user) {
+        String userId = getUid();
         String displayName = user.getDisplayName();
+        String userMail = user.getEmail();
+
+        mDatabaseRef.child("users").child(userId).addListenerForSingleValueEvent
+                (new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user1 = dataSnapshot.getValue(User.class);
+
+                if (user1 == null) {
+                    writeNewUser(userId, displayName, userMail);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         Timber.i("User is signed in.");
         FirebaseUserMetadata metadata = Objects.requireNonNull(mAuth
                 .getCurrentUser()).getMetadata();
-        assert metadata != null;
-        if (metadata.getCreationTimestamp() == metadata.getLastSignInTimestamp()) {
-            // The user is new, show them a fancy intro screen!
-            showToast("Welcome " + displayName + "!");
-        } else {
-            // This is an existing user, show them a welcome back screen.
-            showToast("Welcome back " + displayName + "!");
+
+        if (metadata != null) {
+            if (metadata.getCreationTimestamp() == metadata.getLastSignInTimestamp()) {
+                // The user is new, show them a fancy intro screen!
+                writeNewUser(userId, displayName, userMail);
+                showToast("Welcome " + displayName + "!");
+
+            } else {
+                // This is an existing user, show them a welcome back screen.
+                showToast("Welcome back " + displayName + "!");
+            }
         }
     }
 
@@ -362,27 +396,27 @@ public class MainActivity extends BaseActivity {
         mAuth.removeAuthStateListener(mAuthStateListener);
     }
 
-    private void createAccount(String email, String password) {
-        Timber.d("createAccount: " + email);
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Timber.d("createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            writeNewUser(Objects.requireNonNull(user).getUid(), email, password);
-                            updateUI(user);
-                        } else {
-                            Timber.w("createUserWithEmail:failure", task.getException());
-                            Toast.makeText(MainActivity.this,
-                                    "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                        updateUI(null);
-                    }
-                });
-    }
+//    private void createAccount(String email, String password) {
+//        Timber.d("createAccount: " + email);
+//        mAuth.createUserWithEmailAndPassword(email, password)
+//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            Timber.d("createUserWithEmail:success");
+//                            FirebaseUser user = mAuth.getCurrentUser();
+//                            writeNewUser(Objects.requireNonNull(user).getUid(), email, password);
+//                            updateUI(user);
+//                        } else {
+//                            Timber.w("createUserWithEmail:failure", task.getException());
+//                            Toast.makeText(MainActivity.this,
+//                                    "Authentication failed.",
+//                                    Toast.LENGTH_SHORT).show();
+//                        }
+//                        updateUI(null);
+//                    }
+//                });
+//    }
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
@@ -414,9 +448,12 @@ public class MainActivity extends BaseActivity {
     }
 
     private void writeNewUser(String userId, String name, String email) {
-        User user = new User(name, email);
-
+        User user = new User();
+        user.setEmail(email);
+        user.setUserId(userId);
+        user.setUsername(name);
         mDatabaseRef.child("users").child(userId).setValue(user);
+
     }
 
 
@@ -425,7 +462,7 @@ public class MainActivity extends BaseActivity {
     }
 
     @OnClick(R.id.logout_btn)
-    public void onClick(){
+    public void onClick() {
         signOut();
     }
 
