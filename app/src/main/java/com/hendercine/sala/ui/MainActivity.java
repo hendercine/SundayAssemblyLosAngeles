@@ -72,10 +72,12 @@ public class MainActivity extends BaseActivity {
 
     public static final int RC_SIGN_IN = 237;
 
-    static final String USER_ID = "userId";
-    static final String USER_NAME = "userName";
-    static final String USER_PHOTO_URL = "userPhotoUrl";
+    private static final String USER_ID = "userId";
+    private static final String USER_NAME = "userName";
+    private static final String USER_PHOTO_URL = "userPhotoUrl";
+    private static final String CURRENT_USER = "current_user";
     private static final String TAG = MainActivity.class.getSimpleName();
+
 
     private String mAppBarTitle;
     private String mAppBarImageUrl;
@@ -93,6 +95,7 @@ public class MainActivity extends BaseActivity {
     private DatabaseReference mAssemblyDbRef;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
+    private FirebaseUser mCurrentUser;
 
     private ActionBarDrawerToggle mToggle;
     private ActionBar mActionBar;
@@ -250,26 +253,28 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 // Check if user is signed in (non-null) and update UI accordingly.
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // already signed in
-                    checkIfNewUser(user);
-                    updateUI(user);
-                } else {
-                    // not signed in
-                    startActivityForResult(
-                            AuthUI.getInstance()
-                                    .createSignInIntentBuilder()
-                                    .setIsSmartLockEnabled(!BuildConfig.DEBUG /* credentials */, true /* hints */)
-                                    .setAvailableProviders(Arrays.asList(
-                                            new AuthUI.IdpConfig.EmailBuilder().build(),
-                                            new AuthUI.IdpConfig.GoogleBuilder()
-                                                    .build()
-                                    ))
-                                    .setLogo(R.drawable.sala_logo_grass)
-                                    .build(),
-                            RC_SIGN_IN
-                    );
+                mCurrentUser = firebaseAuth.getCurrentUser();
+                if (savedInstanceState == null) {
+                    if (mCurrentUser != null) {
+                        // already signed in
+                        checkIfNewUser(mCurrentUser);
+                        updateUI(mCurrentUser);
+                    } else {
+                        // not signed in
+                        startActivityForResult(
+                                AuthUI.getInstance()
+                                        .createSignInIntentBuilder()
+                                        .setIsSmartLockEnabled(!BuildConfig.DEBUG /* credentials */, true /* hints */)
+                                        .setAvailableProviders(Arrays.asList(
+                                                new AuthUI.IdpConfig.EmailBuilder().build(),
+                                                new AuthUI.IdpConfig.GoogleBuilder()
+                                                        .build()
+                                        ))
+                                        .setLogo(R.drawable.sala_logo_grass)
+                                        .build(),
+                                RC_SIGN_IN
+                        );
+                    }
                 }
             }
         };
@@ -355,6 +360,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
 
+        outState.putParcelable(CURRENT_USER, mCurrentUser);
         outState.putString(USER_ID, mUserId);
         outState.putString(USER_NAME, mUsername);
         outState.putString(USER_PHOTO_URL, mUserPhotoUrl);
