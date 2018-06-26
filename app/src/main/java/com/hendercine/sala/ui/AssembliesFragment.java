@@ -26,6 +26,7 @@ import com.hendercine.sala.data.SalaSiteIntentService;
 import com.hendercine.sala.data.SiteServiceReceiver;
 import com.hendercine.sala.models.Assembly;
 import com.hendercine.sala.ui.adapters.AssembliesRVAdapter;
+import com.hendercine.sala.ui.widget.WidgetIntentService;
 
 import org.parceler.Parcels;
 
@@ -108,12 +109,14 @@ public class AssembliesFragment extends Fragment implements SiteServiceReceiver.
         unbinder.unbind();
     }
 
+
     private Intent createAssemblyIntentCall() {
         Intent intent = new Intent(getContext(), SalaSiteIntentService.class);
         SiteServiceReceiver receiver = new SiteServiceReceiver(new Handler());
         receiver.setListener(this);
         intent.putExtra("rec", receiver);
         intent.putExtra("assemblies", Parcels.wrap(mAssembliesList));
+        WidgetIntentService.startActionAddDate(getContext());
 
         return intent;
     }
