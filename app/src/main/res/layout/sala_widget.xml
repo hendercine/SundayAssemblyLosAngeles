@@ -12,8 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/colorPrimary"
-        android:padding="4dp">
+        android:layout_gravity="center"
+        android:background="@drawable/widget_shape"
+        android:layout_margin="@dimen/widget_margin">
 
         <TextView
             android:id="@+id/sala_widget_static_text"

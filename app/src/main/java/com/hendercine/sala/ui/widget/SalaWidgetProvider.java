@@ -8,9 +8,11 @@
 
 package com.hendercine.sala.ui.widget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.Intent;
 import android.widget.RemoteViews;
 
 import com.hendercine.sala.R;
@@ -20,13 +22,21 @@ import com.hendercine.sala.R;
  */
 public class SalaWidgetProvider extends AppWidgetProvider {
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
+    private static final String ACTION_CLICK = "ACTION_CLICK";
 
-        CharSequence widgetText = context.getString(R.string.appwidget_static_text);
-        // Construct the RemoteViews object
+    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
+                                String dateStr, int appWidgetId) {
+
+        Intent intent = new Intent(context, WidgetIntentService.class);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
+                intent, 0
+        );
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.sala_widget);
-        views.setTextViewText(R.id.sala_widget_static_text, widgetText);
+        views.setTextViewText(R.id.sala_widget_date_text, dateStr);
+        // Construct the RemoteViews object
+        views.setOnClickPendingIntent(R.id.sala_widget_date_text, pendingIntent);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -34,9 +44,15 @@ public class SalaWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+
+       WidgetIntentService.startActionAddDate(context);
+    }
+
+    public static void updateDateWidgets(Context context, AppWidgetManager
+            appWidgetManager, String dateStr, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId);
+            updateAppWidget(context, appWidgetManager, dateStr, appWidgetId);
         }
     }
 
