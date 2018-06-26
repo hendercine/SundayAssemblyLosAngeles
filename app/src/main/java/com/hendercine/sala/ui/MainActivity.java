@@ -18,6 +18,7 @@ import android.support.transition.Fade;
 import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -29,6 +30,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -63,7 +65,6 @@ import java.util.Objects;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import timber.log.Timber;
 
 @SuppressWarnings("Convert2Lambda")
@@ -140,6 +141,9 @@ public class MainActivity extends BaseActivity {
     @Nullable
     @BindView(R.id.username_nav_header_text_view)
     TextView mUsernameHeaderTV;
+    @Nullable
+    @BindView(R.id.logout_btn)
+    Button mNavLogoutBtn;
     @BindView(R.id.content_frame)
     FrameLayout mContentFrame;
 
@@ -250,19 +254,7 @@ public class MainActivity extends BaseActivity {
                 if (user != null) {
                     // already signed in
                     checkIfNewUser(user);
-                    // Check if userId exists in database
-                    mDatabaseRef.child("users")
-                            .addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
+                    updateUI(user);
                 } else {
                     // not signed in
                     startActivityForResult(
@@ -292,8 +284,8 @@ public class MainActivity extends BaseActivity {
                 (new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user1 = dataSnapshot.getValue(User.class);
 
+                User user1 = dataSnapshot.getValue(User.class);
                 if (user1 == null) {
                     writeNewUser(userId, displayName, userMail);
                 }
@@ -396,28 +388,6 @@ public class MainActivity extends BaseActivity {
         mAuth.removeAuthStateListener(mAuthStateListener);
     }
 
-//    private void createAccount(String email, String password) {
-//        Timber.d("createAccount: " + email);
-//        mAuth.createUserWithEmailAndPassword(email, password)
-//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            Timber.d("createUserWithEmail:success");
-//                            FirebaseUser user = mAuth.getCurrentUser();
-//                            writeNewUser(Objects.requireNonNull(user).getUid(), email, password);
-//                            updateUI(user);
-//                        } else {
-//                            Timber.w("createUserWithEmail:failure", task.getException());
-//                            Toast.makeText(MainActivity.this,
-//                                    "Authentication failed.",
-//                                    Toast.LENGTH_SHORT).show();
-//                        }
-//                        updateUI(null);
-//                    }
-//                });
-//    }
-
     private void updateUI(FirebaseUser user) {
         if (user != null) {
             // Signed in
@@ -456,14 +426,8 @@ public class MainActivity extends BaseActivity {
 
     }
 
-
     private void signOut() {
         AuthUI.getInstance().signOut(MainActivity.this);
-    }
-
-    @OnClick(R.id.logout_btn)
-    public void onClick() {
-        signOut();
     }
 
     private void getLastAssemblyData() {
@@ -485,25 +449,7 @@ public class MainActivity extends BaseActivity {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-//                        // Get assembly value
-//                        Assembly assembly = dataSnapshot.getValue(Assembly.class);
-//
-//                        // [START_EXCLUDE]
-//                        if (assembly == null) {
-//                            // Assembly is null, error out
-//                            Timber.e("Assembly is null");
-//                            Toast.makeText(
-//                                    MainActivity.this,
-//                                    "Error: Could not fetch assembly",
-//                                    Toast.LENGTH_SHORT
-//                            ).show();
-//                        } else {
-//                            mAssembly = new Assembly();
-//                            mAssemblyDateAndTheme =
-//                                    assembly.getAssemblyDate() + " " +
-//                                    assembly.getAssemblyTheme();
-//                            mAssemblyBackDrop = assembly.mAssemblyPhotoUrl;
-//                        }
+
                     }
 
                     @Override
@@ -517,6 +463,15 @@ public class MainActivity extends BaseActivity {
         // Handle navigation drawer click events
         if (mNavView != null) {
             mNavHeaderView = mNavView.getHeaderView(0);
+            mNavLogoutBtn = mNavHeaderView.findViewById(R.id.logout_btn);
+            if (mNavLogoutBtn != null) {
+                mNavLogoutBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        signOut();
+                    }
+                });
+            }
             mUsernameHeaderTV = mNavHeaderView.findViewById(R.id.username_nav_header_text_view);
             mUserNavHeaderIV = mNavHeaderView.findViewById(R.id.user_nav_header_img_view);
             updateUI(mAuth.getCurrentUser());
@@ -546,45 +501,36 @@ public class MainActivity extends BaseActivity {
                                 Toast.LENGTH_SHORT
                         ).show();
                     } else if (position == R.id.program_nav) {
-//                        mBundle.putParcelable("latest_assembly", Parcels.wrap
-//                                (mAssembliesList.get(0))); // Get data at index 0 for the most recent Assembly
-//                        mFragment = new ProgramFragment();
-//                        mFragment.setArguments(mBundle);
                         Toast.makeText(
                                 getApplicationContext(),
                                 "This will display ProgramFragment",
                                 Toast.LENGTH_SHORT
                         ).show();
                     } else if (position == R.id.lyrics_nav) {
-                        //                    mFragment = new LyricsFragment();
                         Toast.makeText(
                                 getApplicationContext(),
                                 "This will display LyricsFragment",
                                 Toast.LENGTH_SHORT
                         ).show();
                     } else if (position == R.id.speaker_nav) {
-                        //                    mFragment = new SpeakerFragment();
                         Toast.makeText(
                                 getApplicationContext(),
                                 "This will display SpeakerFragment",
                                 Toast.LENGTH_SHORT
                         ).show();
                     } else if (position == R.id.help_often_nav) {
-                        //                    mFragment = new HelpOftenFragment();
                         Toast.makeText(
                                 getApplicationContext(),
                                 "This will display HelpOftenFragment",
                                 Toast.LENGTH_SHORT
                         ).show();
                     } else if (position == R.id.live_better_nav) {
-                        //                    mFragment = new LiveBetterFragment();
                         Toast.makeText(
                                 getApplicationContext(),
                                 "This will display LiveBetterFragment",
                                 Toast.LENGTH_SHORT
                         ).show();
                     } else if (position == R.id.chat_nav) {
-                        //                    mFragment = new ChatFragment();
                         Toast.makeText(
                                 getApplicationContext(),
                                 "This will display ChatFragment",
@@ -610,9 +556,6 @@ public class MainActivity extends BaseActivity {
                                 Toast.LENGTH_SHORT
                         ).show();
                     } else if (position == R.id.site_link_nav) {
-                        //                    mBundle.putString("url", "https://www.sundayassemblyla.org");
-                        //                    mFragment = new WebsiteFragment();
-                        //                    mFragment.setArguments(mBundle);
                         Toast.makeText(
                                 getApplicationContext(),
                                 "This will display WebsiteFragment",
@@ -623,10 +566,11 @@ public class MainActivity extends BaseActivity {
                         return true;
                     }
                     if (mFragment != null) {
+                        Fade fade = new Fade();
                         getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(R.id.content_frame, mFragment)
-                                //                            .setTransition(R.anim.fade)
+                                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                                 .addToBackStack(null)
                                 .commit();
                     }

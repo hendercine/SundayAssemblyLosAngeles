@@ -47,10 +47,10 @@
         android:adjustViewBounds="false"
         android:contentDescription="@string/nav_profile_picture_description"
         android:onClick="signOut"
-        app:layout_constraintBottom_toBottomOf="@+id/logout_btn"
+        app:layout_constraintBottom_toBottomOf="@id/logout_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/logout_btn"
+        app:layout_constraintTop_toTopOf="@id/logout_btn"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/baseline_account_circle_48"
         />
