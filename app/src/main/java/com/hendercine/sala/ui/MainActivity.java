@@ -254,28 +254,29 @@ public class MainActivity extends BaseActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 // Check if user is signed in (non-null) and update UI accordingly.
                 mCurrentUser = firebaseAuth.getCurrentUser();
-                if (savedInstanceState == null) {
-                    if (mCurrentUser != null) {
+                if (mCurrentUser != null) {
+                    if (savedInstanceState == null) {
                         // already signed in
                         checkIfNewUser(mCurrentUser);
                         updateUI(mCurrentUser);
-                    } else {
-                        // not signed in
-                        startActivityForResult(
-                                AuthUI.getInstance()
-                                        .createSignInIntentBuilder()
-                                        .setIsSmartLockEnabled(!BuildConfig.DEBUG /* credentials */, true /* hints */)
-                                        .setAvailableProviders(Arrays.asList(
-                                                new AuthUI.IdpConfig.EmailBuilder().build(),
-                                                new AuthUI.IdpConfig.GoogleBuilder()
-                                                        .build()
-                                        ))
-                                        .setLogo(R.drawable.sala_logo_grass)
-                                        .build(),
-                                RC_SIGN_IN
-                        );
                     }
+                } else {
+                    // not signed in
+                    startActivityForResult(
+                            AuthUI.getInstance()
+                                    .createSignInIntentBuilder()
+                                    .setIsSmartLockEnabled(!BuildConfig.DEBUG /* credentials */, true /* hints */)
+                                    .setAvailableProviders(Arrays.asList(
+                                            new AuthUI.IdpConfig.EmailBuilder().build(),
+                                            new AuthUI.IdpConfig.GoogleBuilder()
+                                                    .build()
+                                    ))
+                                    .setLogo(R.drawable.sala_logo_grass)
+                                    .build(),
+                            RC_SIGN_IN
+                    );
                 }
+
             }
         };
     }
@@ -287,20 +288,20 @@ public class MainActivity extends BaseActivity {
 
         mDatabaseRef.child("users").child(userId).addListenerForSingleValueEvent
                 (new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                User user1 = dataSnapshot.getValue(User.class);
-                if (user1 == null) {
-                    writeNewUser(userId, displayName, userMail);
-                }
-            }
+                        User user1 = dataSnapshot.getValue(User.class);
+                        if (user1 == null) {
+                            writeNewUser(userId, displayName, userMail);
+                        }
+                    }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                    }
+                });
 
         Timber.i("User is signed in.");
         FirebaseUserMetadata metadata = Objects.requireNonNull(mAuth
@@ -440,6 +441,7 @@ public class MainActivity extends BaseActivity {
 
     public void signOut() {
         AuthUI.getInstance().signOut(MainActivity.this);
+        mAssembliesList.clear();
     }
 
     private void getLastAssemblyData() {
