@@ -86,10 +86,13 @@ public class AssembliesFragment extends Fragment implements SiteServiceReceiver.
 
         mLinearLayoutManager = new LinearLayoutManager(getContext());
 
-        // Start the service call
-        Objects.requireNonNull(getActivity()).startService(createAssemblyIntentCall());
+        if (savedInstanceState == null) {
+            // Start the service call
+            Objects.requireNonNull(getActivity()).startService(createAssemblyIntentCall());
 
-        mAdapter = new AssembliesRVAdapter(mAssembliesList);
+            mAdapter = new AssembliesRVAdapter(mAssembliesList);
+        }
+
         if (mAssembliesRV != null) {
             mAssembliesRV.setLayoutManager(mLinearLayoutManager);
             mAssembliesRV.setAdapter(mAdapter);
@@ -103,6 +106,7 @@ public class AssembliesFragment extends Fragment implements SiteServiceReceiver.
         super.onSaveInstanceState(outState);
         mScrollPosition = mLinearLayoutManager.findFirstCompletelyVisibleItemPosition();
         outState.putInt(POSITION_STATE_KEY, mScrollPosition);
+        outState.putParcelable("assemblies", Parcels.wrap(mAssembliesList));
     }
 
     @Override
