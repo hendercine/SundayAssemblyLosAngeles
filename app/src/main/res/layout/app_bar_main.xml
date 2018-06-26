@@ -50,16 +50,6 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/scrim"/>
 
-            <!--<TextView-->
-                    <!--android:id="@+id/app_bar_title"-->
-                    <!--style="@style/AppTheme.AppBarTitle"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_gravity="bottom"-->
-                    <!--android:paddingStart="8dp"-->
-                    <!--android:paddingEnd="8dp"-->
-                    <!--app:layout_collapseMode="pin"/>-->
-
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar_main"
                 android:layout_width="match_parent"

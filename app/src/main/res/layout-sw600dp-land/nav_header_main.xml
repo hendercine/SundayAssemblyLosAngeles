@@ -61,6 +61,7 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/baseline_exit_to_app_24"
         android:scaleX="-1"
+        android:onClick="headerLogout"
         app:layout_constraintBottom_toBottomOf="@+id/user_nav_header_img_view"
         app:layout_constraintEnd_toStartOf="@id/user_nav_header_img_view"
         app:layout_constraintStart_toStartOf="parent"

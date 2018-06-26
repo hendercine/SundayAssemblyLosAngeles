@@ -426,7 +426,13 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    private void signOut() {
+    public void headerLogout(View view) {
+        if (view != null) {
+            signOut();
+        }
+    }
+
+    public void signOut() {
         AuthUI.getInstance().signOut(MainActivity.this);
     }
 
@@ -468,7 +474,7 @@ public class MainActivity extends BaseActivity {
                 mNavLogoutBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        signOut();
+                        headerLogout(v);
                     }
                 });
             }
