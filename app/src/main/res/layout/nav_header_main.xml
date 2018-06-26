@@ -46,6 +46,7 @@
         android:layout_marginStart="8dp"
         android:adjustViewBounds="false"
         android:contentDescription="@string/nav_profile_picture_description"
+        android:onClick="signOut"
         app:layout_constraintBottom_toBottomOf="@+id/logout_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

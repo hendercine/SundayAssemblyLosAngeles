@@ -66,6 +66,7 @@ import java.util.Objects;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import timber.log.Timber;
 
 @SuppressWarnings("Convert2Lambda")
@@ -370,6 +371,7 @@ public class MainActivity extends BaseActivity {
                         if (task.isSuccessful()) {
                             Timber.d("createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            writeNewUser(Objects.requireNonNull(user).getUid(), email, password);
                             updateUI(user);
                         } else {
                             Timber.w("createUserWithEmail:failure", task.getException());
@@ -415,6 +417,16 @@ public class MainActivity extends BaseActivity {
         User user = new User(name, email);
 
         mDatabaseRef.child("users").child(userId).setValue(user);
+    }
+
+
+    private void signOut() {
+        AuthUI.getInstance().signOut(MainActivity.this);
+    }
+
+    @OnClick(R.id.logout_btn)
+    public void onClick(){
+        signOut();
     }
 
     private void getLastAssemblyData() {
@@ -570,7 +582,7 @@ public class MainActivity extends BaseActivity {
                                 Toast.LENGTH_SHORT
                         ).show();
                     } else if (position == R.id.logout_nav) {
-                        AuthUI.getInstance().signOut(MainActivity.this);
+                        signOut();
                         return true;
                     }
                     if (mFragment != null) {
@@ -677,7 +689,7 @@ public class MainActivity extends BaseActivity {
                             Toast.LENGTH_SHORT
                     ).show();
                 } else if (position == mSideBarAdapter.getItemId(12)) {
-                    AuthUI.getInstance().signOut(MainActivity.this);
+                    signOut();
                 }
                 if (mFragment != null) {
                     getSupportFragmentManager()
