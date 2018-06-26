@@ -59,4 +59,15 @@
     <string name="sign_in_canceled_snackbar">Sign in canceled</string>
     <string name="signed_in_success_message">You\'re signed in!</string>
     <string name="no_network">You\'re not connected to a network!</string>
+    <string name="website_msg">This will display the Sunday Assembly website</string>
+    <string name="twitter_msg">This will open Twitter</string>
+    <string name="facebook_msg">This will open Facebook</string>
+    <string name="insta_msg">This will open Instagram</string>
+    <string name="sala_chat_msg">This will open a chat for SALAmanders</string>
+    <string name="live_better_msg">This will display Live Better Events</string>
+    <string name="help_often_msg">This will display Help Often Events</string>
+    <string name="speaker_bio_msg">This will display the speaker\'s bio</string>
+    <string name="lyrics_msg">This will display today\'s lyrics</string>
+    <string name="program_msg">This will display today\'s program</string>
+    <string name="user_signed_in_msg">User is signed in.</string>
 </resources>
