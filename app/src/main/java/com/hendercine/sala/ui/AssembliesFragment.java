@@ -35,22 +35,14 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import timber.log.Timber;
 
 public class AssembliesFragment extends Fragment implements SiteServiceReceiver.Listener {
 
-    // Base strings to run through Jsoup
-    private static final String ASSEMBLIES_URL = "http://www.sundayassemblyla.org";
-    private static final String CLASS_NAME = "event-wrap";
-    private static final String LI_ELEMENT = "li";
     private static final String ASSEMBLIES = "assemblies";
     private static final String POSITION_STATE_KEY = "scroll_position";
 
     private Unbinder unbinder;
     private ArrayList<Assembly> mAssembliesList;
-    private ArrayList<Assembly> mAssemblyArrayList;
-    private Assembly mAssembly;
-    private int mScrollPosition;
 
     @BindView(R.id.assemblies_recycler_view)
     RecyclerView mAssembliesRV;
@@ -61,19 +53,10 @@ public class AssembliesFragment extends Fragment implements SiteServiceReceiver.
         // Required empty public constructor
     }
 
-    public AssembliesFragment newInstance(Assembly assembly) {
-        AssembliesFragment fragment = new AssembliesFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(ASSEMBLIES, Parcels.wrap(assembly));
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-
     }
 
     @Override
@@ -104,8 +87,8 @@ public class AssembliesFragment extends Fragment implements SiteServiceReceiver.
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        mScrollPosition = mLinearLayoutManager.findFirstCompletelyVisibleItemPosition();
-        outState.putInt(POSITION_STATE_KEY, mScrollPosition);
+        int scrollPosition = mLinearLayoutManager.findFirstCompletelyVisibleItemPosition();
+        outState.putInt(POSITION_STATE_KEY, scrollPosition);
         outState.putParcelable("assemblies", Parcels.wrap(mAssembliesList));
     }
 
@@ -142,24 +125,12 @@ public class AssembliesFragment extends Fragment implements SiteServiceReceiver.
 
         mAssembliesList = new ArrayList<>();
         for (int i = 0; i < assemblies.size(); i++) {
-            mAssembly = new Assembly();
-            mAssembly.setAssemblyDate(assemblies.get(i).getAssemblyDate());
-//            mAssembly.setAssemblyTheme(assemblies.get(i).getAssemblyTheme());
-//            mAssembly.setAssemblyDescription(assemblies.get(i).getAssemblyDescription());
-//            mAssembly.setAssemblyPhotoUrl(assemblies.get(i).getAssemblyPhotoUrl());
+            Assembly assembly = new Assembly();
+            assembly.setAssemblyDate(assemblies.get(i).getAssemblyDate());
 
-            mAssembliesList.add(mAssembly);
+            mAssembliesList.add(assembly);
         }
 
-
-        Timber.i("Is there a title String here in Fragment: '%s'",
-                mAssembliesList.get(1).mAssemblyDate);
-        Timber.i("Is there a theme String here in Fragment: '%s'",
-                mAssembliesList.get(1).mAssemblyTheme);
-        Timber.i("Is there a decription String here in Fragment: '%s'",
-                mAssembliesList.get(1).mAssemblyDescription);
-        Timber.i("Is there a String photo url here in Fragment: '%s'",
-                mAssembliesList.get(1).mAssemblyPhotoUrl);
         if (mAdapter != null) {
             mAdapter.setAssembliesList(mAssembliesList);
         }

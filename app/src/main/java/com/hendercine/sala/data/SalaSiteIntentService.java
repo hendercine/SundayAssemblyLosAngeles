@@ -37,16 +37,6 @@ public class SalaSiteIntentService extends IntentService {
     private static final String LI_ELEMENT = "li";
     private static final String ASSEMBLIES = "assemblies";
 
-    private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mDatabaseRef;
-
-    private Assembly mAssembly;
-    private ArrayList<Assembly> mAssemblyArrayList;
-    private ArrayList<Assembly> titleArray;
-    private ArrayList<Assembly> themeArray;
-    private ArrayList<Assembly> descArray;
-    private ArrayList<Assembly> picsArray;
-
     public SalaSiteIntentService() {
         super("SalaSiteIntentService");
     }
@@ -56,8 +46,9 @@ public class SalaSiteIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
             final ResultReceiver rec = intent.getParcelableExtra("rec");
-            mFirebaseDatabase = FirebaseDatabase.getInstance();
-            mDatabaseRef = mFirebaseDatabase.getReference().child(ASSEMBLIES);
+            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+            DatabaseReference databaseRef = firebaseDatabase.getReference()
+                    .child(ASSEMBLIES);
 
             // Check for network
             if (!BaseActivity.isNetworkAvailable(this))
@@ -77,38 +68,39 @@ public class SalaSiteIntentService extends IntentService {
                     Elements photoSources = assemblies.getElementsByClass
                             ("event-wrap").select("img");
 
-                    mAssemblyArrayList = new ArrayList<>();
-                    titleArray = new ArrayList<>();
-                    themeArray = new ArrayList<>();
-                    descArray = new ArrayList<>();
-                    picsArray = new ArrayList<>();
+                    ArrayList<Assembly> assemblyArrayList = new ArrayList<>();
+                    ArrayList<Assembly> titleArray = new ArrayList<>();
+                    ArrayList<Assembly> themeArray = new ArrayList<>();
+                    ArrayList<Assembly> descArray = new ArrayList<>();
+                    ArrayList<Assembly> picsArray = new ArrayList<>();
 
+                    Assembly assembly;
                     for (Element title : titles) {
-                        mAssembly = new Assembly();
+                        assembly = new Assembly();
                         assemblyDateLine = title.text();
-                        mAssembly.setAssemblyDate(assemblyDateLine);
-                        titleArray.add(mAssembly);
+                        assembly.setAssemblyDate(assemblyDateLine);
+                        titleArray.add(assembly);
                     }
 
                     for (Element theme : themes) {
-                        mAssembly = new Assembly();
+                        assembly = new Assembly();
                         assemblyThemeLine = theme.text();
-                        mAssembly.setAssemblyTheme(assemblyThemeLine);
-                        themeArray.add(mAssembly);
+                        assembly.setAssemblyTheme(assemblyThemeLine);
+                        themeArray.add(assembly);
                     }
 
                     for (Element description : descriptions) {
-                        mAssembly = new Assembly();
+                        assembly = new Assembly();
                         assemblyDescriptionLine = description.text();
-                        mAssembly.setAssemblyDescription(assemblyDescriptionLine);
-                        descArray.add(mAssembly);
+                        assembly.setAssemblyDescription(assemblyDescriptionLine);
+                        descArray.add(assembly);
                     }
 
                     for (Element photoSource : photoSources) {
-                        mAssembly = new Assembly();
+                        assembly = new Assembly();
                         assemblyPhotoUrl = photoSource.attr("abs:src");
-                        mAssembly.setAssemblyPhotoUrl(assemblyPhotoUrl);
-                        picsArray.add(mAssembly);
+                        assembly.setAssemblyPhotoUrl(assemblyPhotoUrl);
+                        picsArray.add(assembly);
                     }
 
                     Map<String, Object> assemblyMaps = new HashMap<>();
@@ -117,48 +109,11 @@ public class SalaSiteIntentService extends IntentService {
                     assemblyMaps.put("assembly_photo_url", picsArray);
                     assemblyMaps.put("assembly_theme", themeArray);
 
-                    mAssemblyArrayList.addAll(titleArray);
-                    mDatabaseRef.updateChildren(assemblyMaps);
-//                    mAssemblyArrayList.addAll(themeArray);
-//                    mAssemblyArrayList.addAll(descArray);*-+
-
-//                    mAssemblyArrayList.addAll(picsArray);
-
-                    Timber.i(
-                            "Is there a title string here in svc: '%s'",
-                            titleArray.get(0).getAssemblyDate()
-                    );
-                    Timber.i(
-                            "Is there a title string here in svc: '%s'",
-                            mAssemblyArrayList.get(1).getAssemblyDate()
-                    );
-                    Timber.i(
-                            "Is there a title string here in svc: '%s'",
-                            mAssemblyArrayList.get(2).getAssemblyDate()
-                    );
-                    Timber.i(
-                            "Is there a title string here in svc: '%s'",
-                            mAssemblyArrayList.get(3).getAssemblyDate()
-                    );
-                    Timber.i(
-                            "Is there a title string here in svc: '%s'",
-                            mAssemblyArrayList.get(4).getAssemblyDate()
-                    );
-                    Timber.i(
-                            "Is there a theme string here in svc: '%s'",
-                            themeArray.get(0).getAssemblyTheme()
-                    );
-                    Timber.i(
-                            "Is there a description string here in svc: '%s'",
-                            descArray.get(0).getAssemblyDescription()
-                    );
-                    Timber.i(
-                            "Is there a string photo url here in svc: '%s'",
-                            picsArray.get(0).getAssemblyPhotoUrl()
-                    );
+                    assemblyArrayList.addAll(titleArray);
+                    databaseRef.updateChildren(assemblyMaps);
 
                     Bundle args = new Bundle();
-                    args.putParcelable(ASSEMBLIES, Parcels.wrap(mAssemblyArrayList));
+                    args.putParcelable(ASSEMBLIES, Parcels.wrap(assemblyArrayList));
                     rec.send(0, args);
 
                 } catch (Exception e) {

@@ -34,7 +34,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
@@ -50,15 +49,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.hendercine.sala.BaseActivity;
 import com.hendercine.sala.BuildConfig;
 import com.hendercine.sala.R;
-import com.hendercine.sala.models.Assembly;
-import com.hendercine.sala.models.Performer;
-import com.hendercine.sala.models.Song;
 import com.hendercine.sala.models.User;
 import com.hendercine.sala.ui.adapters.SideBarRVAdapter;
 
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -75,9 +70,9 @@ public class MainActivity extends BaseActivity {
     private static final String USER_ID = "userId";
     private static final String USER_NAME = "userName";
     private static final String USER_PHOTO_URL = "userPhotoUrl";
+    private static final String USERS = "users";
     private static final String CURRENT_USER = "current_user";
-    private static final String TAG = MainActivity.class.getSimpleName();
-
+    private static final String ASSEMBLIES = "assemblies";
 
     private String mAppBarTitle;
     private String mAppBarImageUrl;
@@ -101,18 +96,11 @@ public class MainActivity extends BaseActivity {
     private ActionBar mActionBar;
 
     private FragmentManager mFragmentManager;
-    private AboutSalaFragment mAboutSalaFragment;
-    private AssembliesFragment mAssemliesFragment;
+    private AssembliesFragment mAssembliesFragment;
 
     private boolean mIsTwoPane;
     private String[] mSideBarArray;
     private SideBarRVAdapter mSideBarAdapter;
-
-    private Assembly mAssemblyData;
-    private Assembly mAssembly;
-    private Performer mPerformer;
-    private Song mSong;
-    private ArrayList<Assembly> mAssembliesList;
 
     private View mNavHeaderView;
 
@@ -192,7 +180,7 @@ public class MainActivity extends BaseActivity {
         mDatabaseRef = mFirebaseDatabase.getReference();
         mAuth = FirebaseAuth.getInstance();
 
-        mAssemblyDbRef = mFirebaseDatabase.getReference().child("assemblies");
+        mAssemblyDbRef = mFirebaseDatabase.getReference().child(ASSEMBLIES);
 
         if (savedInstanceState != null) {
             mUserId = savedInstanceState.getString(USER_ID);
@@ -240,10 +228,10 @@ public class MainActivity extends BaseActivity {
         if (savedInstanceState == null) {
 
             mFragmentManager = getSupportFragmentManager();
-            mAssemliesFragment = new AssembliesFragment();
+            mAssembliesFragment = new AssembliesFragment();
             mFragmentManager
                     .beginTransaction()
-                    .add(mContentFrame.getId(), mAssemliesFragment)
+                    .add(mContentFrame.getId(), mAssembliesFragment)
                     .commit();
         }
 
@@ -286,7 +274,7 @@ public class MainActivity extends BaseActivity {
         String displayName = user.getDisplayName();
         String userMail = user.getEmail();
 
-        mDatabaseRef.child("users").child(userId).addListenerForSingleValueEvent
+        mDatabaseRef.child(USERS).child(userId).addListenerForSingleValueEvent
                 (new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -303,7 +291,7 @@ public class MainActivity extends BaseActivity {
                     }
                 });
 
-        Timber.i("User is signed in.");
+        Timber.i(getString(R.string.user_signed_in_msg));
         FirebaseUserMetadata metadata = Objects.requireNonNull(mAuth
                 .getCurrentUser()).getMetadata();
 
@@ -429,7 +417,7 @@ public class MainActivity extends BaseActivity {
         user.setEmail(email);
         user.setUserId(userId);
         user.setUsername(name);
-        mDatabaseRef.child("users").child(userId).setValue(user);
+        mDatabaseRef.child(USERS).child(userId).setValue(user);
 
     }
 
@@ -441,36 +429,6 @@ public class MainActivity extends BaseActivity {
 
     public void signOut() {
         AuthUI.getInstance().signOut(MainActivity.this);
-        mAssembliesList.clear();
-    }
-
-    private void getLastAssemblyData() {
-        // [START single_value_read]
-        mDatabaseRef.child("assemblies").child(String.valueOf(0))
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        try {
-                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                String assemblyDate = ds.child
-                                        ("assembly_date")
-                                        .getValue(String.class);
-                                String assemblyTheme = ds.child
-                                        ("assembly_theme")
-                                        .getValue(String.class);
-                                mAssemblyDateAndTheme = assemblyDate + " " + assemblyTheme;
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
     }
 
     private void activateDrawerItems() {
@@ -496,8 +454,6 @@ public class MainActivity extends BaseActivity {
                     if (mDrawer != null) {
                         mDrawer.closeDrawer(GravityCompat.START, true);
                     }
-                    // TODO: Add code here to update the UI based on the item selected
-                    // For example, swap UI fragments here
                     mFragment = null;
                     mBundle = new Bundle();
                     int position = menuItem.getItemId();
@@ -506,81 +462,34 @@ public class MainActivity extends BaseActivity {
                         mAppBarTitle = mAboutTitle;
                         mAppBarImageUrl = mAboutBannerUrl;
                     } else if (position == R.id.assemblies_nav) {
-//                        mFragment = new AssembliesFragment();
-                        mAppBarTitle = mAssemblyDateAndTheme;
-                        mAboutBannerUrl = mAssemblyBackDrop;
-                        Toast.makeText(
-                                getApplicationContext(),
-                                "This will display AssembliesFragment",
-                                Toast.LENGTH_SHORT
-                        ).show();
+                        mFragment = new AssembliesFragment();
+                        mAppBarTitle = mAboutTitle;
+                        mAppBarImageUrl = mAboutBannerUrl;
                     } else if (position == R.id.program_nav) {
-                        Toast.makeText(
-                                getApplicationContext(),
-                                "This will display ProgramFragment",
-                                Toast.LENGTH_SHORT
-                        ).show();
+                        showToast(R.string.program_msg);
                     } else if (position == R.id.lyrics_nav) {
-                        Toast.makeText(
-                                getApplicationContext(),
-                                "This will display LyricsFragment",
-                                Toast.LENGTH_SHORT
-                        ).show();
+                        showToast(R.string.lyrics_msg);
                     } else if (position == R.id.speaker_nav) {
-                        Toast.makeText(
-                                getApplicationContext(),
-                                "This will display SpeakerFragment",
-                                Toast.LENGTH_SHORT
-                        ).show();
+                        showToast(R.string.speaker_bio_msg);
                     } else if (position == R.id.help_often_nav) {
-                        Toast.makeText(
-                                getApplicationContext(),
-                                "This will display HelpOftenFragment",
-                                Toast.LENGTH_SHORT
-                        ).show();
+                        showToast(R.string.help_often_msg);
                     } else if (position == R.id.live_better_nav) {
-                        Toast.makeText(
-                                getApplicationContext(),
-                                "This will display LiveBetterFragment",
-                                Toast.LENGTH_SHORT
-                        ).show();
+                        showToast(R.string.live_better_msg);
                     } else if (position == R.id.chat_nav) {
-                        Toast.makeText(
-                                getApplicationContext(),
-                                "This will display ChatFragment",
-                                Toast.LENGTH_SHORT
-                        ).show();
-                        // TODO: Create intents for Instagram, Facebook and Twitter
+                        showToast(R.string.sala_chat_msg);
                     } else if (position == R.id.insta_link_nav) {
-                        Toast.makeText(
-                                getApplicationContext(),
-                                "This will open Instagram",
-                                Toast.LENGTH_SHORT
-                        ).show();
+                        showToast(R.string.insta_msg);
                     } else if (position == R.id.facebook_link_nav) {
-                        Toast.makeText(
-                                getApplicationContext(),
-                                "This will open Facebook",
-                                Toast.LENGTH_SHORT
-                        ).show();
+                        showToast(R.string.facebook_msg);
                     } else if (position == R.id.twitter_link_nav) {
-                        Toast.makeText(
-                                getApplicationContext(),
-                                "This will open Twitter",
-                                Toast.LENGTH_SHORT
-                        ).show();
+                        showToast(R.string.twitter_msg);
                     } else if (position == R.id.site_link_nav) {
-                        Toast.makeText(
-                                getApplicationContext(),
-                                "This will display WebsiteFragment",
-                                Toast.LENGTH_SHORT
-                        ).show();
+                        showToast(R.string.website_msg);
                     } else if (position == R.id.logout_nav) {
                         signOut();
                         return true;
                     }
                     if (mFragment != null) {
-                        Fade fade = new Fade();
                         getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(R.id.content_frame, mFragment)
@@ -600,7 +509,6 @@ public class MainActivity extends BaseActivity {
         mSideBarAdapter.setClickListener(new SideBarRVAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                // TODO: Add code here to update the UI based on the item selected
                 // For example, swap UI fragments here
                 mFragment = null;
                 mBundle = new Bundle();
@@ -610,79 +518,36 @@ public class MainActivity extends BaseActivity {
                     mAppBarImageUrl = mAboutBannerUrl;
                 } else if (position == mSideBarAdapter.getItemId(1)) {
                     mFragment = new AssembliesFragment();
-//                    getLastAssemblyData();
                     mAppBarTitle = mAboutTitle;
                     mAppBarImageUrl = mAboutBannerUrl;
                 } else if (position == mSideBarAdapter.getItemId(2)) {
-//                    mFragment = new ProgramFragment();
-                    Toast.makeText(
-                            getApplicationContext(),
-                            "This will display ProgramFragment",
-                            Toast.LENGTH_SHORT
-                    ).show();
-                } else if (position == mSideBarAdapter.getItemId(3)) {
-//                    mFragment = new LyricsFragment();
-                    Toast.makeText(
-                            getApplicationContext(),
-                            "This will display LyricsFragment",
-                            Toast.LENGTH_SHORT
-                    ).show();
-                } else if (position == mSideBarAdapter.getItemId(4)) {
-//                    mFragment = new SpeakerFragment();
-                    Toast.makeText(
-                            getApplicationContext(),
-                            "This will display SpeakerFragment",
-                            Toast.LENGTH_SHORT
-                    ).show();
-                } else if (position == mSideBarAdapter.getItemId(5)) {
-//                    mFragment = new HelpOftenFragment();
-                    Toast.makeText(
-                            getApplicationContext(),
-                            "This will display HelpOftenFragment",
-                            Toast.LENGTH_SHORT
-                    ).show();
-                } else if (position == mSideBarAdapter.getItemId(6)) {
-//                    mFragment = new LiveBetterFragment();
-                    Toast.makeText(
-                            getApplicationContext(),
-                            "This will display LiveBetterFragment",
-                            Toast.LENGTH_SHORT
-                    ).show();
-                } else if (position == mSideBarAdapter.getItemId(7)) {
-//                    mFragment = new ChatFragment();
-                    Toast.makeText(
-                            getApplicationContext(),
-                            "This will display ChatFragment",
-                            Toast.LENGTH_SHORT
-                    ).show();
-                    // TODO: Create intents for Instagram, Facebook and Twitter
-                } else if (position == mSideBarAdapter.getItemId(8)) {
-                    Toast.makeText(
-                            getApplicationContext(),
-                            "This will open Instagram",
-                            Toast.LENGTH_SHORT
-                    ).show();
-                } else if (position == mSideBarAdapter.getItemId(9)) {
-                    Toast.makeText(
-                            getApplicationContext(),
-                            "This will open Facebook",
-                            Toast.LENGTH_SHORT
-                    ).show();
-                } else if (position == mSideBarAdapter.getItemId(10)) {
-                    Toast.makeText(
-                            getApplicationContext(),
-                            "This will open Twitter",
-                            Toast.LENGTH_SHORT
-                    ).show();
-                } else if (position == mSideBarAdapter.getItemId(11)) {
-//                    mBundle.putString("url", "https://www.sundayassemblyla.org");
-//                    mFragment = new WebsiteFragment();
-//                    mFragment.setArguments(mBundle);
-                    Toast.makeText(
-                            getApplicationContext(),
-                            "This will display WebsiteFragment",
-                            Toast.LENGTH_SHORT
-                    ).show();
+                    mFragment = new AboutSalaFragment();
+                    mAppBarTitle = mAboutTitle;
+                    mAppBarImageUrl = mAboutBannerUrl;
+                } else if (position == R.id.assemblies_nav) {
+                    mFragment = new AssembliesFragment();
+                    mAppBarTitle = mAboutTitle;
+                    mAppBarImageUrl = mAboutBannerUrl;
+                } else if (position == R.id.program_nav) {
+                    showToast(R.string.program_msg);
+                } else if (position == R.id.lyrics_nav) {
+                    showToast(R.string.lyrics_msg);
+                } else if (position == R.id.speaker_nav) {
+                    showToast(R.string.speaker_bio_msg);
+                } else if (position == R.id.help_often_nav) {
+                    showToast(R.string.help_often_msg);
+                } else if (position == R.id.live_better_nav) {
+                    showToast(R.string.live_better_msg);
+                } else if (position == R.id.chat_nav) {
+                    showToast(R.string.sala_chat_msg);
+                } else if (position == R.id.insta_link_nav) {
+                    showToast(R.string.insta_msg);
+                } else if (position == R.id.facebook_link_nav) {
+                    showToast(R.string.facebook_msg);
+                } else if (position == R.id.twitter_link_nav) {
+                    showToast(R.string.twitter_msg);
+                } else if (position == R.id.site_link_nav) {
+                    showToast(R.string.website_msg);
                 } else if (position == mSideBarAdapter.getItemId(12)) {
                     signOut();
                 }
@@ -690,7 +555,7 @@ public class MainActivity extends BaseActivity {
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.content_frame, mFragment)
-//                            .setTransition(R.anim.fade)
+                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                             .addToBackStack(null)
                             .commit();
                 }
