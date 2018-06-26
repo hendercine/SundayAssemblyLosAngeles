@@ -610,46 +610,39 @@ public class MainActivity extends BaseActivity {
                     mAppBarImageUrl = mAboutBannerUrl;
                 } else if (position == mSideBarAdapter.getItemId(1)) {
                     mFragment = new AssembliesFragment();
-//                    getLastAssemblyData();
                     mAppBarTitle = mAboutTitle;
                     mAppBarImageUrl = mAboutBannerUrl;
                 } else if (position == mSideBarAdapter.getItemId(2)) {
-//                    mFragment = new ProgramFragment();
                     Toast.makeText(
                             getApplicationContext(),
                             "This will display ProgramFragment",
                             Toast.LENGTH_SHORT
                     ).show();
                 } else if (position == mSideBarAdapter.getItemId(3)) {
-//                    mFragment = new LyricsFragment();
                     Toast.makeText(
                             getApplicationContext(),
                             "This will display LyricsFragment",
                             Toast.LENGTH_SHORT
                     ).show();
                 } else if (position == mSideBarAdapter.getItemId(4)) {
-//                    mFragment = new SpeakerFragment();
                     Toast.makeText(
                             getApplicationContext(),
                             "This will display SpeakerFragment",
                             Toast.LENGTH_SHORT
                     ).show();
                 } else if (position == mSideBarAdapter.getItemId(5)) {
-//                    mFragment = new HelpOftenFragment();
                     Toast.makeText(
                             getApplicationContext(),
                             "This will display HelpOftenFragment",
                             Toast.LENGTH_SHORT
                     ).show();
                 } else if (position == mSideBarAdapter.getItemId(6)) {
-//                    mFragment = new LiveBetterFragment();
                     Toast.makeText(
                             getApplicationContext(),
                             "This will display LiveBetterFragment",
                             Toast.LENGTH_SHORT
                     ).show();
                 } else if (position == mSideBarAdapter.getItemId(7)) {
-//                    mFragment = new ChatFragment();
                     Toast.makeText(
                             getApplicationContext(),
                             "This will display ChatFragment",
@@ -675,9 +668,6 @@ public class MainActivity extends BaseActivity {
                             Toast.LENGTH_SHORT
                     ).show();
                 } else if (position == mSideBarAdapter.getItemId(11)) {
-//                    mBundle.putString("url", "https://www.sundayassemblyla.org");
-//                    mFragment = new WebsiteFragment();
-//                    mFragment.setArguments(mBundle);
                     Toast.makeText(
                             getApplicationContext(),
                             "This will display WebsiteFragment",
@@ -690,7 +680,7 @@ public class MainActivity extends BaseActivity {
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.content_frame, mFragment)
-//                            .setTransition(R.anim.fade)
+                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                             .addToBackStack(null)
                             .commit();
                 }
