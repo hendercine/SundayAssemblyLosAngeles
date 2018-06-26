@@ -51,7 +51,7 @@
     <string name="type_your_message_here">Type Your Message Here</string>
     <string name="user_avatar">User Avatar</string>
     <string name="future_featured_speaker">Future Featured Speaker</string>
-    <string name="appwidget_text">EXAMPLE</string>
+    <string name="appwidget_static_text">NEXT ASSEMBLY: </string>
     <string name="add_widget">Add widget</string>
     <string name="sunday_assembly_logo_description">Sunday Assembly Logo</string>
     <string name="sign_up_btn_text">SIGN UP</string>
