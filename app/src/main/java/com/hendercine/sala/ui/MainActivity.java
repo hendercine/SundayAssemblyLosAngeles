@@ -394,7 +394,7 @@ public class MainActivity extends BaseActivity {
             if (mUsernameHeaderTV != null && mUserNavHeaderIV != null) {
                 mUsernameHeaderTV.setText(user.getDisplayName());
 
-                if (user.getProviderId().equals("google.com")) {
+                if (user.getPhotoUrl() != null) {
                     mUserPhotoUrl = Objects.requireNonNull(user.getPhotoUrl())
                             .toString();
                     Glide.with(this)
