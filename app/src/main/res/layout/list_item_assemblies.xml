@@ -61,7 +61,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/assembly_date_title"
-                app:srcCompat="@drawable/pippa_evans"/>
+                app:srcCompat="@drawable/sala_logo_grass"/>
 
             <TextView
                 android:id="@+id/assembly_theme_headline"
