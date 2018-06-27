@@ -148,6 +148,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        //noinspection HardCodedStringLiteral
         Timber.tag("LogMessage");
         // Initialize Firebase Components
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -268,11 +269,11 @@ public class MainActivity extends BaseActivity {
             if (metadata.getCreationTimestamp() == metadata.getLastSignInTimestamp()) {
                 // The user is new, show them a fancy intro screen!
                 writeNewUser(userId, displayName, userMail);
-                showToast("Welcome " + displayName + "!");
+                showToast(getString(R.string.welcome_msg) + displayName + "!");
 
             } else {
                 // This is an existing user, show them a welcome back screen.
-                showToast("Welcome back " + displayName + "!");
+                showToast(getString(R.string.welcome_back_msg) + displayName + "!");
             }
         }
     }

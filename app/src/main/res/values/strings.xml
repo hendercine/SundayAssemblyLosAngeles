@@ -70,4 +70,6 @@
     <string name="lyrics_msg">This will display today\'s lyrics</string>
     <string name="program_msg">This will display today\'s program</string>
     <string name="user_signed_in_msg">User is signed in.</string>
+    <string name="welcome_msg">Welcome</string>
+    <string name="welcome_back_msg">Welcome back</string>
 </resources>

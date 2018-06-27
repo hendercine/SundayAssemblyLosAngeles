@@ -26,6 +26,10 @@ import java.util.Map;
 @Parcel
 public class Assembly {
 
+    public static final String ASSEMBLY_PHOTO_URL = "assembly_photo_url";
+    public static final String ASSEMBLY_DESCRIPTION = "assembly_description";
+    public static final String ASSEMBLY_THEME = "assembly_theme";
+    public static final String ASSEMBLY_DATE = "assembly_date";
     public String mAssemblyDate;
     public String mAssemblyTheme;
     public String mAssemblyDescription;
@@ -78,10 +82,10 @@ public class Assembly {
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
-        result.put("assembly_date", mAssemblyDate);
-        result.put("assembly_theme", mAssemblyTheme);
-        result.put("assembly_description", mAssemblyDescription);
-        result.put("assembly_photo_url", mAssemblyPhotoUrl);
+        result.put(ASSEMBLY_DATE, mAssemblyDate);
+        result.put(ASSEMBLY_THEME, mAssemblyTheme);
+        result.put(ASSEMBLY_DESCRIPTION, mAssemblyDescription);
+        result.put(ASSEMBLY_PHOTO_URL, mAssemblyPhotoUrl);
 
         return result;
     }

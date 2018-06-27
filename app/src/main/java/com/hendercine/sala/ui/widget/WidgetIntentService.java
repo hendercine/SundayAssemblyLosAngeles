@@ -32,9 +32,11 @@ public class WidgetIntentService extends IntentService {
     // Base strings to run through Jsoup
     private static final String ASSEMBLIES_URL = "http://www.sundayassemblyla.org";
     private static final String LI_ELEMENT = "li";
+    public static final String H_4 = "h4";
+    public static final String WIDGET_INTENT_SERVICE = "WidgetIntentService";
 
     public WidgetIntentService() {
-        super("WidgetIntentService");
+        super(WIDGET_INTENT_SERVICE);
     }
 
     public static void startActionAddDate(Context context) {
@@ -64,7 +66,7 @@ public class WidgetIntentService extends IntentService {
 
             Document eventSummary = Jsoup.connect(ASSEMBLIES_URL).get();
             Element assemblies = eventSummary.tagName(LI_ELEMENT);
-            Elements titles = assemblies.select("h4");
+            Elements titles = assemblies.select(H_4);
 
             for (Element title : titles) {
                 mAssembly = new Assembly();

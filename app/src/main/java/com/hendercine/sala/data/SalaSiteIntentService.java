@@ -36,16 +36,28 @@ public class SalaSiteIntentService extends IntentService {
     private static final String ASSEMBLIES_URL = "http://www.sundayassemblyla.org";
     private static final String LI_ELEMENT = "li";
     private static final String ASSEMBLIES = "assemblies";
+    public static final String ASSEMBLY_THEME = "assembly_theme";
+    public static final String ASSEMBLY_PHOTO_URL = "assembly_photo_url";
+    public static final String ASSEMBLY_DESCRIPTION = "assembly_description";
+    public static final String ASSEMBLY_DATE = "assembly_date";
+    public static final String ABS_SRC = "abs:src";
+    public static final String IMG = "img";
+    public static final String EVENT_WRAP = "event-wrap";
+    public static final String SPAN = "span";
+    public static final String STRONG = "strong";
+    public static final String H_4 = "h4";
+    public static final String REC = "rec";
+    public static final String SALA_SITE_INTENT_SERVICE = "SalaSiteIntentService";
 
     public SalaSiteIntentService() {
-        super("SalaSiteIntentService");
+        super(SALA_SITE_INTENT_SERVICE);
     }
 
 
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
-            final ResultReceiver rec = intent.getParcelableExtra("rec");
+            final ResultReceiver rec = intent.getParcelableExtra(REC);
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             DatabaseReference databaseRef = firebaseDatabase.getReference()
                     .child(ASSEMBLIES);
@@ -62,11 +74,11 @@ public class SalaSiteIntentService extends IntentService {
 
                     Document eventSummary = Jsoup.connect(ASSEMBLIES_URL).get();
                     Element assemblies = eventSummary.tagName(LI_ELEMENT);
-                    Elements titles = assemblies.select("h4");
-                    Elements themes = assemblies.select("strong");
-                    Elements descriptions = assemblies.select("span");
+                    Elements titles = assemblies.select(H_4);
+                    Elements themes = assemblies.select(STRONG);
+                    Elements descriptions = assemblies.select(SPAN);
                     Elements photoSources = assemblies.getElementsByClass
-                            ("event-wrap").select("img");
+                            (EVENT_WRAP).select(IMG);
 
                     ArrayList<Assembly> assemblyArrayList = new ArrayList<>();
                     ArrayList<Assembly> titleArray = new ArrayList<>();
@@ -98,16 +110,16 @@ public class SalaSiteIntentService extends IntentService {
 
                     for (Element photoSource : photoSources) {
                         assembly = new Assembly();
-                        assemblyPhotoUrl = photoSource.attr("abs:src");
+                        assemblyPhotoUrl = photoSource.attr(ABS_SRC);
                         assembly.setAssemblyPhotoUrl(assemblyPhotoUrl);
                         picsArray.add(assembly);
                     }
 
                     Map<String, Object> assemblyMaps = new HashMap<>();
-                    assemblyMaps.put("assembly_date", titleArray);
-                    assemblyMaps.put("assembly_description", descArray);
-                    assemblyMaps.put("assembly_photo_url", picsArray);
-                    assemblyMaps.put("assembly_theme", themeArray);
+                    assemblyMaps.put(ASSEMBLY_DATE, titleArray);
+                    assemblyMaps.put(ASSEMBLY_DESCRIPTION, descArray);
+                    assemblyMaps.put(ASSEMBLY_PHOTO_URL, picsArray);
+                    assemblyMaps.put(ASSEMBLY_THEME, themeArray);
 
                     assemblyArrayList.addAll(titleArray);
                     databaseRef.updateChildren(assemblyMaps);

@@ -39,8 +39,9 @@ import butterknife.Unbinder;
 
 public class AssembliesFragment extends Fragment implements SiteServiceReceiver.Listener {
 
-    private static final String ASSEMBLIES = "assemblies";
+    public static final String ASSEMBLIES = "assemblies";
     private static final String POSITION_STATE_KEY = "scroll_position";
+    public static final String REC = "rec";
 
     private Unbinder unbinder;
     private ArrayList<Assembly> mAssembliesList;
@@ -90,7 +91,7 @@ public class AssembliesFragment extends Fragment implements SiteServiceReceiver.
         super.onSaveInstanceState(outState);
         int scrollPosition = mLinearLayoutManager.findFirstCompletelyVisibleItemPosition();
         outState.putInt(POSITION_STATE_KEY, scrollPosition);
-        outState.putParcelable("assemblies", Parcels.wrap(mAssembliesList));
+        outState.putParcelable(ASSEMBLIES, Parcels.wrap(mAssembliesList));
     }
 
     @Override
@@ -114,8 +115,8 @@ public class AssembliesFragment extends Fragment implements SiteServiceReceiver.
         Intent intent = new Intent(getContext(), SalaSiteIntentService.class);
         SiteServiceReceiver receiver = new SiteServiceReceiver(new Handler());
         receiver.setListener(this);
-        intent.putExtra("rec", receiver);
-        intent.putExtra("assemblies", Parcels.wrap(mAssembliesList));
+        intent.putExtra(REC, receiver);
+        intent.putExtra(ASSEMBLIES, Parcels.wrap(mAssembliesList));
         WidgetIntentService.startActionAddDate(getContext());
 
         return intent;
