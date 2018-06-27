@@ -7,20 +7,20 @@
   ~ Last modified 6/15/18 5:58 PM
   -->
 
-<resources xmlns:android="http://schemas.android.com/tools">
+<resources>
     <string-array name="side_bar_array">
-        <item android:title="@string/about_nav_title"/>
-        <item android:title="@string/program_nav_title"/>
-        <item android:title="@string/lyrics_nav_title"/>
-        <item android:title="@string/speaker_bio_nav_title"/>
-        <item android:title="@string/assemblies_nav_title"/>
-        <item android:title="@string/help_often_nav_title"/>
-        <item android:title="@string/live_better_nav_title"/>
-        <item android:title="@string/salamander_chat_nav_title"/>
-        <item android:title="@string/instagram_nav_title"/>
-        <item android:title="@string/facebook_nav_title"/>
-        <item android:title="@string/twitter_nav_title"/>
-        <item android:title="@string/sala_on_the_web_nav_title"/>
-        <item android:title="@string/logout_nav_title"/>
+        <item>About</item>
+        <item>Assemblies</item>
+        <item>Program</item>
+        <item>Lyrics</item>
+        <item>Speaker Bio</item>
+        <item>Help Often</item>
+        <item>Live Better</item>
+        <item>Chat</item>
+        <item>Instagram</item>
+        <item>Facebook</item>
+        <item>Twitter</item>
+        <item>SALA on the Web</item>
+        <item>Logout</item>
     </string-array>
 </resources>

@@ -142,32 +142,6 @@ public class MainActivity extends BaseActivity {
     String mAboutBannerUrl;
     @BindString(R.string.about_sala_title)
     String mAboutTitle;
-    @BindString(R.string.about_nav_title)
-    String mAboutSideBar;
-    @BindString(R.string.program_nav_title)
-    String mProgramSidebar;
-    @BindString(R.string.lyrics_nav_title)
-    String mLyricsSideBar;
-    @BindString(R.string.speaker_bio_nav_title)
-    String mSpeakerSideBar;
-    @BindString(R.string.assemblies_nav_title)
-    String mAssembliesSideBar;
-    @BindString(R.string.help_often_nav_title)
-    String mHelpSideBar;
-    @BindString(R.string.live_better_nav_title)
-    String mLiveSideBar;
-    @BindString(R.string.salamander_chat_nav_title)
-    String mChatSideBar;
-    @BindString(R.string.instagram_nav_title)
-    String mInstaSideBar;
-    @BindString(R.string.facebook_nav_title)
-    String mFacebookSideBar;
-    @BindString(R.string.twitter_nav_title)
-    String mTwitterSideBar;
-    @BindString(R.string.sala_on_the_web_nav_title)
-    String mWebsiteSideBar;
-    @BindString(R.string.logout_nav_title)
-    String mLogoutSideBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,12 +169,7 @@ public class MainActivity extends BaseActivity {
         mAppBarImageUrl = mAboutBannerUrl;
 
         if (mIsTwoPane && mSideBarRecyclerView != null) {
-            mSideBarArray = new String[]{
-                    mAboutSideBar, mAssembliesSideBar, mProgramSidebar,
-                    mLyricsSideBar, mSpeakerSideBar, mHelpSideBar,
-                    mLiveSideBar, mChatSideBar, mInstaSideBar,
-                    mFacebookSideBar, mTwitterSideBar, mWebsiteSideBar,
-                    mLogoutSideBar};
+            mSideBarArray = getResources().getStringArray(R.array.side_bar_array);
             mSideBarRecyclerView.setLayoutManager(new LinearLayoutManager(this));
             mSideBarAdapter = new SideBarRVAdapter(mSideBarArray);
             mSideBarRecyclerView.setAdapter(mSideBarAdapter);
