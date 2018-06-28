@@ -1,5 +1,8 @@
 apply plugin: 'com.android.application'
 
+def keystorePropertiesFile = rootDir.file(keystore.properties)
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 android {
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
@@ -15,10 +18,10 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file("$rootDir/sala.jks")
-            storePassword "112358"
-            keyAlias "salaCapstone"
-            keyPassword "112358"
+            storeFile file(keystoreProperties[storeFile])
+            storePassword keystoreProperties[storePassword]
+            keyAlias keystoreProperties[keyAlias]
+            keyPassword keystoreProperties[keyPassword]
         }
     }
     buildTypes {
