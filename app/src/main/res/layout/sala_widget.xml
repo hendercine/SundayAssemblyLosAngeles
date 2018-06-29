@@ -6,30 +6,38 @@
   ~ Last modified 6/14/18 12:55 PM
   -->
 
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#09C"
-    android:padding="@dimen/widget_margin">
-
-    <ListView
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:minWidth="296dp"
-        tools:listitem="@layout/list_item_widget"/>
-
-    <TextView
-        android:id="@+id/appwidget_text"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:background="#09C"
-        android:contentDescription="@string/appwidget_text"
-        android:text="@string/appwidget_text"
-        android:textColor="#ffffff"
-        android:textSize="24sp"
-        android:textStyle="bold|italic"/>
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:background="@drawable/widget_shape"
+        android:layout_margin="@dimen/widget_margin">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/sala_widget_static_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="3"
+            android:contentDescription="@string/appwidget_static_text"
+            android:text="@string/appwidget_static_text"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textColor="@color/colorAccent"/>
+
+        <TextView
+            android:id="@+id/sala_widget_date_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textAllCaps="true"
+            android:textColor="@color/colorAccent"
+            tools:text="@tools:sample/date/ddmmyy"/>
+    </LinearLayout>
