@@ -1,8 +1,5 @@
 apply plugin: 'com.android.application'
 
-def keystorePropertiesFile = rootDir.file(keystore.properties)
-def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 android {
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
@@ -18,10 +15,10 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file(keystoreProperties[storeFile])
-            storePassword keystoreProperties[storePassword]
-            keyAlias keystoreProperties[keyAlias]
-            keyPassword keystoreProperties[keyPassword]
+//            storeFile file(keystoreProperties[storeFile])
+//            storePassword keystoreProperties[storePassword]
+//            keyAlias keystoreProperties[keyAlias]
+//            keyPassword keystoreProperties[keyPassword]
         }
     }
     buildTypes {
@@ -117,5 +114,17 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-idling-resource:3.0.2'
     implementation 'com.android.support.test.espresso:espresso-idling-resource:3.0.2'
 }
+
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(rootProject.file("keystore.properties")))
+
+android.signingConfigs.release.storeFile rootProject.file(keystoreProperties.keyStore)
+
+android.signingConfigs.release.storePassword keystoreProperties.keyStorePassword
+
+android.signingConfigs.release.keyAlias keystoreProperties.keyAlias
+
+android.signingConfigs.release.keyPassword keystoreProperties.keyAliasPassword
+
 
 apply plugin: 'com.google.gms.google-services'
