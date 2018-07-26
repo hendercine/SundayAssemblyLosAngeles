@@ -6,6 +6,28 @@ into the Assembly with the program schedule, song lyrics and speaker profiles.
 It also enables assemblers to connect with each other and Sunday Assembly 
 organizers in between assemblies, with notifications about service and social 
 events and a "calendar of events" widget.
+### Installation
+#### Setup Signing config
+If you wish to install the release variant, generate a keystore and signed Apk. Then create a file called keystore.properties. There is a sample keystore properties file in the repo from which you can copy a template and paste it into your actual
+ keystore.properties file and adjust the settings.   
+
+Further nest your passwords in the gradle.properties file 
+and name them STORE_PASSWORD and KEY_PASSWORD.
+
+NOTE: This step can be skipped. As long as you create a keystore.properties 
+files Android Studio should allow your gradle to build and then you run the 
+app from the freeDebug Build Variant.
+#### Download Google Services Json File
+In order to run the app you will need to create a Firebase project in the 
+Firebase console and connect the app to that project. This can be done within
+ Android Studio with pretty detailed instructions from google. Once you've 
+ completed all the steps a google-services.json file should be downloaded and
+  will then allow you to run the app.
+
+NOTE: Please be sure that your google-services.json file is included in your 
+.gitignore file. All of the excluded files should be listed in this repo's 
+gitignore as well.
+
 ### Current State of App
 ![screenshot_1](sala_handheld_portrait_1.png?raw=true "MainActivity 
 on a Handheld Device in Portrait")
