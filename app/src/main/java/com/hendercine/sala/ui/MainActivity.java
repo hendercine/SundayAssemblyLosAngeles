@@ -30,8 +30,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -134,7 +134,7 @@ public class MainActivity extends BaseActivity {
     TextView mUsernameHeaderTV;
     @Nullable
     @BindView(R.id.logout_btn)
-    Button mNavLogoutBtn;
+    ImageButton mNavLogoutBtn;
     @BindView(R.id.content_frame)
     FrameLayout mContentFrame;
 
